@@ -1,27 +1,48 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import { solid, regular, brands } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { Button } from './Button';
 
 
 function Navbar() {
   const [click, setClick] = useState(false);
-
+  const handleClick= () => setClick(!click);
+  const closeMobileMenu= () => setClick(false);
   return (
     <>
         <nav classname="navbar">
         <FontAwesomeIcon icon="fa-solid fa-book" />
             <div class="navbar-container">
                 <Link to="/" classname="navbar-logo">
-                    Zoop <FontAwesomeIcon icon={faCoffee} />
+                    Zoop
                     <FontAwesomeIcon icon={solid('user-secret')} />
-                    <FontAwesomeIcon icon={regular('coffee')} />
-                    <FontAwesomeIcon icon={brands('twitter')} />
                 </Link>
-                <div className="menu-icon">
-                  <i className={click ? 'fas fa-alarm-plus' : 'fas fa-alarm-exclamation'}/>
+                <div className="menu-icon" onClick={handleClick}>
+                  <FontAwesomeIcon icon={click ? solid('xmark') : solid('bars')}/>
                 </div>
+                <ul className='nav-item'>
+                  <li className='nav-item'>
+                    <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                      Home
+                    </Link>
+                  </li>
+                  <li className='nav-item'>
+                    <Link to='/tomatosauce' className='nav-links' onClick={closeMobileMenu}>
+                      Tomato Sauce
+                    </Link>
+                  </li>
+                  <li className='nav-item'>
+                    <Link to='/bumblebee' className='nav-links' onClick={closeMobileMenu}>
+                      Bumble Bee
+                    </Link>
+                  </li>
+                  <li className='nav-item'>
+                    <Link to='/signup' className='nav-links' onClick={closeMobileMenu}>
+                      <Button/>Sign Up
+                    </Link>
+                  </li>
+                </ul>
             </div>
         </nav>
     </>
