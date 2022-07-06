@@ -157,9 +157,6 @@ function Navbar() {
 
     </nav>
 
-    <section class="home">
-        <div class="text">Dashboard there</div>
-    </section>
 
     <script>
       
