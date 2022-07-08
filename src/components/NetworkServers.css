@@ -1,0 +1,18 @@
+.add-button{
+    position: absolute;
+    top: 60px;
+    right: 60px;
+}
+
+.table{
+    position: absolute;
+    width: calc(100% - 250px);;
+    top: 150px;
+    left: 60px;
+
+}
+
+.table .ttext{
+    font-size: 20px;
+    text-align: center;
+}

@@ -1,28 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { Button } from './Button';
 import './Navbar.css'
 
 
 function Navbar() {
-  const [click, setClick] = useState(false);
-  const [button, setButton] = useState(true);
-
-  const handleClick= () => setClick(!click);
-  const closeMobileMenu= () => setClick(false);
-  const showButton = () => {
-    if(window.innerWidth <= 960){
-      setButton(false);
-    } else{
-      setButton(true);
-    }
-  };
-
-  useEffect(() => {
-    showButton()
-  }, [])
 
   window.onload=function(){
   const body = document.querySelector('body'),
@@ -32,14 +14,18 @@ function Navbar() {
   modeSwitch = body.querySelector(".toggle-switch"),
   modeText = body.querySelector(".mode-text");
 
+  if(toggle){
   toggle.addEventListener("click" , () =>{
   sidebar.classList.toggle("close");
 })
-
+  }
+  if(searchBtn){
   searchBtn.addEventListener("click" , () =>{
     sidebar.classList.remove("close");
   })
+  }
 
+  if(modeSwitch){
   modeSwitch.addEventListener("click" , () =>{
     body.classList.toggle("dark");
     
@@ -50,10 +36,9 @@ function Navbar() {
         
     }
   });
-
+  }
 }
 
-  window.addEventListener('resize', showButton);
   return (
     <>
        <nav class="sidebar close">
@@ -82,42 +67,42 @@ function Navbar() {
 
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/dashboard">
                             <FontAwesomeIcon icon={solid("house")} class="ficon"></FontAwesomeIcon>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/network-servers">
                         <FontAwesomeIcon icon={solid("server")} class="ficon"></FontAwesomeIcon>
                             <span class="text nav-text">Network Servers</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/gateways">
                             <FontAwesomeIcon icon={solid("tower-cell")} class="ficon"></FontAwesomeIcon>
                             <span class="text nav-text">Gateway Profiles</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/organizations">
                             <FontAwesomeIcon icon={solid("landmark")} class="ficon"/>
                             <span class="text nav-text">Organizations</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/users">
                             <FontAwesomeIcon icon={solid("users")} class="ficon"/>
                             <span class="text nav-text">All Users</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/api-keys">
                             <FontAwesomeIcon icon={solid("key")} class="ficon"/>
                             <span class="text nav-text">API Keys</span>
                         </a>
