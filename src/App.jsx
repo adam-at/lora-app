@@ -8,6 +8,7 @@ import AllGateways from './components/pages/AllGateways';
 import AllOrganizations from './components/pages/AllOrganizations';
 import AllUsers from './components/pages/AllUsers';
 import AllApiKeys from './components/pages/AllApiKeys';
+import AddUser from './components/pages/AddUser';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/organizations" element={<AllOrganizations/>}/>
           <Route path="/users" element={<AllUsers/>}/>
           <Route path="/api-keys" element={<AllApiKeys/>}/>
+          <Route path="/add-user" element={<AddUser/>}/>
         </Routes>
       </Router>
     </div>

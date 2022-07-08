@@ -37,7 +37,9 @@ function Users(){
              <b>Users</b>
         </div>
         <div className="add-button">
-            <Button><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <form action="/add-user" >
+                <Button><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            </form>
         </div>
         <table className="table">
             <tbody>
