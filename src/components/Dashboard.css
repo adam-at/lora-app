@@ -6,14 +6,11 @@
 
 .card-grid{
   position:absolute;
-  top: 100px;
-  left: 0px;
+  top: 120px;
+  left: 50px;
   margin: 50px;
-  grid-template-columns: auto auto auto;
+  width: calc(100% - 250px);
   height: 200px;
-  display: grid;
-  column-gap: 50px;
-  row-gap: 50px;
 
 }
 

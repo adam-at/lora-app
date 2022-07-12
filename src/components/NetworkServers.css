@@ -6,9 +6,9 @@
 
 .table{
     position: absolute;
-    width: calc(100% - 250px);;
+    right: 20px;
     top: 150px;
-    left: 60px;
+    left: 30px;
 
 }
 

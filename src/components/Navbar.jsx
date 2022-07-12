@@ -41,99 +41,99 @@ function Navbar() {
 
   return (
     <>
-       <nav class="sidebar close">
+       <nav className="sidebar close">
         <header>
-            <div class="image-text">
-                <span class="image">
-                <FontAwesomeIcon icon={solid("tower-broadcast")} class="icon"></FontAwesomeIcon>
+            <div className="image-text">
+                <span className="image">
+                <FontAwesomeIcon icon={solid("tower-broadcast")} className="icon"></FontAwesomeIcon>
                 </span>
 
-                <div class="text logo-text">
-                    <span class="name">MyCS</span>
-                    <span class="profession">Welcome !</span>
+                <div className="text logo-text">
+                    <span className="name">MyCS</span>
+                    <span className="profession">Welcome !</span>
                 </div>
             </div>
 
-            <i class='bx bx-chevron-right toggle'></i>
+            <i className='bx bx-chevron-right toggle'></i>
         </header>
 
-        <div class="menu-bar">
-            <div class="menu">
+        <div className="menu-bar">
+            <div className="menu">
 
-                <li class="search-box">
-                  <FontAwesomeIcon icon={solid("magnifying-glass")} class="ficon"></FontAwesomeIcon>
+                <li className="search-box">
+                  <FontAwesomeIcon icon={solid("magnifying-glass")} className="ficon"></FontAwesomeIcon>
                     <input type="text" placeholder="Search..." />
                 </li>
 
-                <ul class="menu-links">
-                    <li class="nav-link">
+                <ul className="menu-links">
+                    <li className="nav-link">
                         <a href="/dashboard">
-                            <FontAwesomeIcon icon={solid("house")} class="ficon"></FontAwesomeIcon>
-                            <span class="text nav-text">Dashboard</span>
+                            <FontAwesomeIcon icon={solid("house")} className="ficon"></FontAwesomeIcon>
+                            <span className="text nav-text">Dashboard</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li className="nav-link">
                         <a href="/network-servers">
-                        <FontAwesomeIcon icon={solid("server")} class="ficon"></FontAwesomeIcon>
-                            <span class="text nav-text">Network Servers</span>
+                        <FontAwesomeIcon icon={solid("server")} className="ficon"></FontAwesomeIcon>
+                            <span className="text nav-text">Network Servers</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li className="nav-link">
                         <a href="/gateways">
-                            <FontAwesomeIcon icon={solid("tower-cell")} class="ficon"></FontAwesomeIcon>
-                            <span class="text nav-text">Gateway Profiles</span>
+                            <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"></FontAwesomeIcon>
+                            <span className="text nav-text">Gateway Profiles</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li className="nav-link">
                         <a href="/organizations">
-                            <FontAwesomeIcon icon={solid("landmark")} class="ficon"/>
-                            <span class="text nav-text">Organizations</span>
+                            <FontAwesomeIcon icon={solid("landmark")} className="ficon"/>
+                            <span className="text nav-text">Organizations</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li className="nav-link">
                         <a href="/users">
-                            <FontAwesomeIcon icon={solid("users")} class="ficon"/>
-                            <span class="text nav-text">All Users</span>
+                            <FontAwesomeIcon icon={solid("users")} className="ficon"/>
+                            <span className="text nav-text">All Users</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
+                    <li className="nav-link">
                         <a href="/api-keys">
-                            <FontAwesomeIcon icon={solid("key")} class="ficon"/>
-                            <span class="text nav-text">API Keys</span>
+                            <FontAwesomeIcon icon={solid("key")} className="ficon"/>
+                            <span className="text nav-text">API Keys</span>
                         </a>
                     </li>
 
                 </ul>
             </div>
 
-            <div class="bottom-content">
-                <li class="">
+            <div className="bottom-content">
+                <li className="">
                     <a href="#">
-                        <FontAwesomeIcon icon={solid("user-pen")} class="ficon"/>
-                        <span class="text nav-text">Account</span>
+                        <FontAwesomeIcon icon={solid("user-pen")} className="ficon"/>
+                        <span className="text nav-text">Account</span>
                     </a>
                 </li>
-                <li class="">
+                <li className="">
                     <a href="#">
-                        <i class='bx bx-log-out icon' ></i>
-                        <span class="text nav-text">Logout</span>
+                        <i className='bx bx-log-out icon' ></i>
+                        <span className="text nav-text">Logout</span>
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
+                <li className="mode">
+                    <div className="sun-moon">
+                        <i className='bx bx-moon icon moon'></i>
+                        <i className='bx bx-sun icon sun'></i>
                     </div>
-                    <span class="mode-text text">Dark mode</span>
+                    <span className="mode-text text">Dark mode</span>
 
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
+                    <div className="toggle-switch">
+                        <span className="switch"></span>
                     </div>
                 </li>
                 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import'../App.css';
-import {Button} from './Button';
+import Button from '@mui/material/Button';
 import './Dashboard.css';
 import './NetworkServers.css'
 import './Navbar.css'
@@ -37,7 +37,7 @@ function ApiKeys(){
              <b>API Keys</b>
         </div>
         <div className="add-button">
-            <Button><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <table className="table">
             <tbody>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import'../App.css';
-import {Button} from './Button';
+import Button from '@mui/material/Button';
 import './Dashboard.css';
 import './NetworkServers.css'
 import './Navbar.css'
@@ -38,7 +38,7 @@ function Users(){
         </div>
         <div className="add-button">
             <form action="/add-user" >
-                <Button><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+                <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
             </form>
         </div>
         <table className="table">

@@ -1,11 +1,11 @@
 /* Google Font Import - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 :root{
@@ -15,7 +15,7 @@
     --primary-color: #695CFE;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
-    --text-color: #707070;
+    --text-color: rgba(0, 0, 0, 0.699);
 
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;

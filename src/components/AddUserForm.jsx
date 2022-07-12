@@ -1,6 +1,6 @@
 import { useState } from "react";
+import Button from '@mui/material/Button';
 import React from 'react';
-import {Button} from "./Button";
 
 function AddUserForm() {
   const [email, setEmail] = useState("");
@@ -50,7 +50,7 @@ function AddUserForm() {
           />
         </label>
       </form>
-      <Button className="add-button"> Create User </Button>
+      <Button variant="contained" className="add-button"> Create User </Button>
     </section>
   )
 }
