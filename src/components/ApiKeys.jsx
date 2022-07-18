@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import'../App.css';
 import Button from '@mui/material/Button';
 import './Dashboard.css';
@@ -57,13 +58,20 @@ function ApiKeys(){
         setPage(0);
     };
 
+    const navigate = useNavigate();
+
+    const navigateToAddApiKey = () => {
+        //  navigate to /add-user
+        navigate('/add-api-key');
+      };
+
     return(
     <section className="home">
         <div className="title text">
              <b>API Keys</b>
         </div>
         <div className="add-button">
-            <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddApiKey}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">

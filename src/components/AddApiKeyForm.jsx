@@ -7,10 +7,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
-import "./AddUserForm.css";
+import "./AddApiKeyForm.css";
 import { useNavigate } from 'react-router-dom';
 
-function AddUserForm() {
+function AddApiKeyForm() {
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
   const [password, setPassword] = useState("");
@@ -44,9 +44,8 @@ function AddUserForm() {
 }, [admin]);
 
 const navigate = useNavigate();
-const navigateToUsers = () => {
-  //  navigate to /users
-  navigate('/users');
+const navigateToApiKeys = () => {
+  navigate('/api-keys');
 };
 
   return (
@@ -124,10 +123,10 @@ const navigateToUsers = () => {
           </Grid>
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={navigateToUsers}> Create User </Button>
+            <Button variant="contained" onClick={navigateToApiKeys}> Create API Key </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
-            <Button variant="contained" onClick={navigateToUsers}> Cancel </Button>
+            <Button variant="contained" onClick={navigateToApiKeys}> Cancel </Button>
           </Grid>
         </Grid>        
       </Paper>
@@ -135,4 +134,4 @@ const navigateToUsers = () => {
   )
 }
 
-export default AddUserForm
+export default AddApiKeyForm

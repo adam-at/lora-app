@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import'../App.css';
 import Button from '@mui/material/Button';
 import './Dashboard.css';
@@ -18,7 +19,6 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 
 function NetworkServers(){
-
     
     const [data, getData] = useState([]);
     const URL = 'https://jsonplaceholder.typicode.com/posts';
@@ -56,13 +56,19 @@ function NetworkServers(){
         setPage(0);
     };
 
+    const navigate = useNavigate();
+
+    const navigateToAddNetworkServer = () => {
+        navigate('/add-network-server');
+      };
+
     return(
     <section className="home">
         <div className="title text">
              <b>Network Servers</b>
         </div>
         <div className="add-button">
-            <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddNetworkServer}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">

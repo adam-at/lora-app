@@ -13,6 +13,10 @@ import AllOrganizations from './components/pages/AllOrganizations';
 import AllUsers from './components/pages/AllUsers';
 import AllApiKeys from './components/pages/AllApiKeys';
 import AddUser from './components/pages/AddUser';
+import AddGateway from './components/pages/AddGateway';
+import AddApiKey from './components/pages/AddApiKey';
+import AddNetworkServer from './components/pages/AddNetworkServer';
+import AddOrganization from './components/pages/AddOrganization';
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
           <Route path="/users" element={<AllUsers/>}/>
           <Route path="/api-keys" element={<AllApiKeys/>}/>
           <Route path="/add-user" element={<AddUser/>}/>
+          <Route path="/add-gateway" element={<AddGateway/>}/>
+          <Route path="/add-api-key" element={<AddApiKey/>}/>
+          <Route path="/add-network-server" element={<AddNetworkServer/>}/>
+          <Route path="/add-organization" element={<AddOrganization/>}/>
         </Routes>
       </Router>
     </div>

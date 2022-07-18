@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import'../App.css';
 import Button from '@mui/material/Button';
 import './Dashboard.css';
@@ -57,13 +58,20 @@ function Gateways(){
         setPage(0);
     };
 
+    const navigate = useNavigate();
+
+    const navigateToAddGateway = () => {
+        navigate('/add-gateway');
+      };
+
+
     return(
     <section className="home">
         <div className="title text">
              <b>Gateways</b>
         </div>
         <div className="add-button">
-            <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddGateway}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
