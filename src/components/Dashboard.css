@@ -35,13 +35,9 @@
 }
 
 body.dark .grid-text{
-  color: #ffff;
+  color: #ccc;
 }
 
-body.dark .grid-item{
-  background-color: #444444;
-  border-radius: 25px;
-}
 
 .header{
   font-size:20px;

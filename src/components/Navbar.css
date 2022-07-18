@@ -317,3 +317,7 @@ body.dark .switch::before{
 body.dark .home .text{
     color: var(--text-color);
 }
+
+body.dark .home .dark-if-needed{
+    background-color: #4f4f4f;
+}

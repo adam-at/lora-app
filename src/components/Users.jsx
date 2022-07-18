@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import'../App.css';
 import Button from '@mui/material/Button';
 import './Dashboard.css';
@@ -19,6 +20,13 @@ import {TablePaginationActions} from './TablePagination.jsx';
 
 
 function Users(){
+
+    const navigate = useNavigate();
+
+    const navigateToAddUser = () => {
+        //  navigate to /add-user
+        navigate('/add-user');
+      };
 
     
     const [data, getData] = useState([]);
@@ -63,10 +71,10 @@ function Users(){
              <b>Users</b>
         </div>
         <div className="add-button">
-            <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddUser}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>

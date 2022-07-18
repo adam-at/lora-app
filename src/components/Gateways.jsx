@@ -66,7 +66,7 @@ function Gateways(){
             <Button variant="contained"><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
