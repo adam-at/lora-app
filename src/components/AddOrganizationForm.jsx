@@ -11,7 +11,18 @@ function AddOrganizationForm() {
   const [name, setName] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [canHaveGateways, setCanHaveGateways] = useState(false);
-  const [maxDevices, setMaxDevices]= useState(0);
+  const [maxDevices, setMaxDevices] = useState(0);
+  const [maxGateways, setMaxGateways] = useState(0);
+  const [organization, setOrganization] = useState({
+    "organization": {
+      "canHaveGateways": false,
+      "displayName": "",
+      "id": "0",
+      "maxDeviceCount": 0,
+      "maxGatewayCount": 0,
+      "name": ""
+    }
+  });
 
 
 
@@ -27,6 +38,23 @@ const navigate = useNavigate();
 const navigateToOrganizations = () => {
   navigate('/organizations');
 };
+
+const handleGatewaySubmit= () => {
+  const new_organization = organization;
+  new_organization["organization"]["canHaveGateways"]= canHaveGateways;
+  new_organization["organization"]["name"]=name;
+  new_organization["organization"]["displayName"]=displayName;
+  new_organization["organization"]["maxDeviceCount"]=maxDevices;
+  new_organization["organization"]["maxGatewayCount"]=maxGateways;
+  setOrganization(new_organization);
+  console.log(organization);
+
+  /* if error 400 stay on the same page with an error alert, else go go to /organizations*/ 
+}
+useEffect( () => {
+  console.log(organization);
+}, [organization]);
+
 
   return (
     <section className="home">
@@ -69,6 +97,24 @@ const navigateToOrganizations = () => {
               <FormControl sx={{ ml: 4, width: '95%'}}>
                 <FormHelperText variant="standard">When checked, it means that organization administrators are able to add their own gateways to the network. Note that the usage of the gateways is not limited to this organization.</FormHelperText>
               </FormControl>
+
+              {canHaveGateways && (
+                <Grid item xs={12}>
+                <FormControl sx={{ m: 1, width: '95%'}}>
+                  <InputLabel variant="standard" required>Maximum number of gateways</InputLabel>
+                  <Input
+                    required
+                    id="max-gateways"
+                    type="number"
+                    value={maxGateways}
+                    fullWidth
+                    onChange={(e) => setMaxGateways(e.target.value)}
+                  />
+                  <FormHelperText variant="standard">The maximum number of gateways that can be added to this organization (0 = unlimited).</FormHelperText>
+                </FormControl>
+              </Grid>
+              )}
+
           <Grid item xs={12}>
             <label className="subtitle-text">Devices:</label>
           </Grid>
@@ -88,7 +134,7 @@ const navigateToOrganizations = () => {
           </Grid>
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={navigateToOrganizations}> Create Organization </Button>
+            <Button variant="contained" onClick={handleGatewaySubmit}> Create Organization </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToOrganizations}> Cancel </Button>
