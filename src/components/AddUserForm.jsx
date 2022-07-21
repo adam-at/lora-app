@@ -56,7 +56,7 @@ const navigateToUsers = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Email Address*</InputLabel>
+              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Email Address</InputLabel>
               <Input
                 required
                 id="email-address"
@@ -83,7 +83,7 @@ const navigateToUsers = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Password*</InputLabel>
+              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Password</InputLabel>
               <Input
                 required
                 id="password"
