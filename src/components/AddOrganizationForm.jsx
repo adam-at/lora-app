@@ -2,46 +2,26 @@ import { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import "./AddOrganizationForm.css";
 import { useNavigate } from 'react-router-dom';
+import FormHelperText from '@mui/material/FormHelperText';
 
 function AddOrganizationForm() {
-  const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword]= useState(false);
-  const [active, setActive] = useState(false);
-  const [admin, setAdmin] = useState(false);
+  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [canHaveGateways, setCanHaveGateways] = useState(false);
+  const [maxDevices, setMaxDevices]= useState(0);
 
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const changeActive = () => {
-    setActive(!active);
-  }
-
-  const changeAdmin = () => {
-    setAdmin(!admin);
+  const changeCanHaveGateways = () => {
+    setCanHaveGateways(!canHaveGateways);
   }
 
   useEffect( () => {
-    console.log(active);
-}, [active]);
-
-  useEffect( () => {
-    console.log(admin);
-}, [admin]);
+    console.log(canHaveGateways);
+}, [canHaveGateways]);
 
 const navigate = useNavigate();
 const navigateToOrganizations = () => {
@@ -50,76 +30,61 @@ const navigateToOrganizations = () => {
 
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new user </b></div>
+      <div className="title text"> <b> Add a new organization </b></div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Email Address*</InputLabel>
+              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Organization name</InputLabel>
               <Input
                 required
-                id="email-address"
+                id="name"
                 type="text"
-                value={email}
+                value={name}
                 fullWidth
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
+              <FormHelperText variant="standard">Characters allowed: letters, numbers, dashes.</FormHelperText>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Additional Notes</InputLabel>
+              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Display Name</InputLabel>
               <Input
-                id="notes"
+                id="display-name"
                 type="text"
-                value={notes}
+                value={displayName}
                 fullWidth
-                multiline
-                rows={2}
-                onChange={(e) => setNotes(e.target.value)}
+                onChange={(e) => setDisplayName(e.target.value)}
               />
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <label className="subtitle-text">Gateways:</label>
+          </Grid>
+            <FormControlLabel
+              control={<Checkbox color="primary" name="canHaveGateways" value={canHaveGateways} onChange={changeCanHaveGateways} />}
+              label="Can have gateways" className="text"
+            />
+              <FormControl sx={{ ml: 4, width: '95%'}}>
+                <FormHelperText variant="standard">When checked, it means that organization administrators are able to add their own gateways to the network. Note that the usage of the gateways is not limited to this organization.</FormHelperText>
+              </FormControl>
+          <Grid item xs={12}>
+            <label className="subtitle-text">Devices:</label>
           </Grid>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Password*</InputLabel>
+              <InputLabel variant="standard" required>Maximum number of devices</InputLabel>
               <Input
                 required
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
+                id="max-devices"
+                type="number"
+                value={maxDevices}
                 fullWidth
-                onChange={(e) => setPassword(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+                onChange={(e) => setMaxDevices(e.target.value)}
               />
+              <FormHelperText variant="standard">The maximum number of devices that can be added to this organization (0 = unlimited).</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <label className="permission-text">Permissions:</label>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="isActive" value={active} onChange={changeActive} />}
-              label="Is active" className="text"
-            />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="isAdmin" value={admin} onChange={changeAdmin} />}
-              label="Is a global admin" className="text"
-            />
           </Grid>
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>

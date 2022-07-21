@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
-import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
+import { Paper, FormControl, InputLabel, Grid } from '@mui/material';
 import Input from '@mui/material/Input';
 import "./AddGatewayForm.css";
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 
 
@@ -53,7 +53,7 @@ function AddGatewayForm() {
   const stringToIntegerList = (s) => {
     const list = s.split(",");
     for(let i = 0; i < list.length; i++){
-      if(list[i]!=''){
+      if(list[i]!==''){
         list[i]=parseInt(list[i]);
       }
     };
@@ -79,7 +79,7 @@ function AddGatewayForm() {
   const handleExtraChannelChange=(name,e,index)=>{
     const value = e.target.value;
     const channels=[...extraChannels];
-    if(name=="spreadingFactors"){
+    if(name==="spreadingFactors"){
       channels[index][name]=stringToIntegerList(value);
     }else{
     channels[index][name]=value;
@@ -225,7 +225,7 @@ const navigateToGateways = () => {
                 </FormControl>
               </Grid>
 
-              {singleExtraChannel.modulation=="LORA" && (
+              {singleExtraChannel.modulation==="LORA" && (
               <Grid item xd={12} sm={6}>
                 <FormControl sx={{ m: 1, width: '95%'}}>
                 <InputLabel variant="standard" required>Spreading-factors</InputLabel>
@@ -243,7 +243,7 @@ const navigateToGateways = () => {
               </Grid>
               )}
 
-              {singleExtraChannel.modulation=="FSK" && (
+              {singleExtraChannel.modulation==="FSK" && (
               <Grid item xd={12} sm={6}>
                 <FormControl sx={{ m: 1, width: '95%'}}>
                 <InputLabel variant="standard" required>Bitrate</InputLabel>
