@@ -17,7 +17,19 @@ function AddUserForm() {
   const [showPassword, setShowPassword]= useState(false);
   const [active, setActive] = useState(false);
   const [admin, setAdmin] = useState(false);
-
+  const [user, setUser] = useState(
+    {"organizations":[],
+  "password": "",
+  "user": {
+    "email": "",
+    "id": "0",
+    "isActive": false,
+    "isAdmin": false,
+    "note": "",
+    "sessionTTL": 0
+  }
+}
+  );
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -49,6 +61,19 @@ const navigateToUsers = () => {
   navigate('/users');
 };
 
+const handleUserSubmit = () => {
+  const new_user = user;
+  new_user["user"]["email"]= email;
+  new_user["user"]["isActive"]= active;
+  new_user["user"]["isAdmin"]=admin;
+  new_user["user"]["note"]=notes;
+  new_user["password"]=password;
+  setUser(new_user);
+  console.log(user);
+
+  /* if error 400 stay on the same page with an error alert, else go go to /users*/ 
+}
+
   return (
     <section className="home">
       <div className="title text"> <b> Add a new user </b></div>
@@ -56,7 +81,7 @@ const navigateToUsers = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Email Address</InputLabel>
+              <InputLabel variant="standard" required>Email Address</InputLabel>
               <Input
                 required
                 id="email-address"
@@ -69,7 +94,7 @@ const navigateToUsers = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Additional Notes</InputLabel>
+              <InputLabel variant="standard">Additional Notes</InputLabel>
               <Input
                 id="notes"
                 type="text"
@@ -124,7 +149,7 @@ const navigateToUsers = () => {
           </Grid>
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={navigateToUsers}> Create User </Button>
+            <Button variant="contained" onClick={handleUserSubmit}> Create User </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToUsers}> Cancel </Button>

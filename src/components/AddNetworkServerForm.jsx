@@ -1,129 +1,276 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import "./AddNetworkServerForm.css";
 import { useNavigate } from 'react-router-dom';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import {TabPanel} from "./Tabs.jsx";
+import FormHelperText from '@mui/material/FormHelperText';
+
 
 function AddNetworkServerForm() {
-  const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword]= useState(false);
-  const [active, setActive] = useState(false);
-  const [admin, setAdmin] = useState(false);
-
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const changeActive = () => {
-    setActive(!active);
+  const [name, setName] = useState("");
+  const [server, setServer] = useState("");
+  const [gatewayDiscovery, setGatewayDiscovery] = useState(false);
+  const [interval, setInterval] = useState(0);
+  const [frequency, setFrequency] = useState(0);
+  const [datarate, setDatarate] = useState(0);
+  const [caCert, setCaCert] = useState("");
+  const [tlsCert, setTlsCert] = useState("");
+  const [tlsKey, setTlsKey] = useState("");
+  const [routingCaCert, setRoutingCaCert] = useState("");
+  const [routingTlsCert, setRoutingTlsCert] = useState("");
+  const [routingTlsKey, setRoutingTlsKey] = useState("");
+  const [networkServer, setNetworkServer] = useState(
+    {
+    "networkServer": {
+      "caCert": "",
+      "gatewayDiscoveryDR": 0,
+      "gatewayDiscoveryEnabled": false,
+      "gatewayDiscoveryInterval": 0,
+      "gatewayDiscoveryTXFrequency": 0,
+      "id": "0",
+      "name": "",
+      "routingProfileCACert": "",
+      "routingProfileTLSCert": "",
+      "routingProfileTLSKey": "",
+      "server": "",
+      "tlsCert": "",
+      "tlsKey": ""
+    }
   }
+  );
 
-  const changeAdmin = () => {
-    setAdmin(!admin);
+
+  const changeGatewayDiscovery = () => {
+    setGatewayDiscovery(!gatewayDiscovery);
   }
-
-  useEffect( () => {
-    console.log(active);
-}, [active]);
-
-  useEffect( () => {
-    console.log(admin);
-}, [admin]);
 
 const navigate = useNavigate();
 const navigateToNetworkServers = () => {
   navigate('/network-servers');
 };
 
+const handleNetworkServerSubmit = () => {
+  const new_networkServer = networkServer;
+  new_networkServer["networkServer"]["caCert"]= caCert;
+  new_networkServer["networkServer"]["gatewayDiscoveryDR"]= datarate;
+  new_networkServer["networkServer"]["gatewayDiscoveryEnabled"]=gatewayDiscovery;
+  new_networkServer["networkServer"]["gatewayDiscoveryInterval"]=interval;
+  new_networkServer["networkServer"]["gatewayDiscoveryTXFrequency"]=frequency;
+  new_networkServer["networkServer"]["name"]=name;
+  new_networkServer["networkServer"]["routingProfileCACert"]=routingCaCert;
+  new_networkServer["networkServer"]["routingProfileTLSCert"]=routingTlsCert;
+  new_networkServer["networkServer"]["routingProfileTLSKey"]=routingTlsKey;
+  new_networkServer["networkServer"]["server"]=server;
+  new_networkServer["networkServer"]["tlsCert"]=tlsCert;
+  new_networkServer["networkServer"]["tlsKey"]=tlsKey;
+  setNetworkServer(new_networkServer);
+  console.log(networkServer);
+
+  /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
+}
+
+
+//Handling tabs
+const [value, setValue] = React.useState(0);
+const handleChange = (event, newValue) => {
+  setValue(newValue);
+};
+
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new user </b></div>
+      <div className="title text"> <b> Add a new network server </b></div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+        <Box sx={{ width: '100%' }}>
+      <Tabs
+        onChange={handleChange}
+        value={value}
+        aria-label="Tabs where each tab needs to be selected manually"
+      >
+        <Tab label="General" />
+        <Tab label="Gateway Discovery" />
+        <Tab label="TLS Certificates" />
+      </Tabs>
+      <TabPanel value={value} index={0}>
+
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Email Address*</InputLabel>
+              <InputLabel variant="standard" required>Network Server name</InputLabel>
               <Input
                 required
-                id="email-address"
+                id="network-server-name"
                 type="text"
-                value={email}
+                value={name}
                 fullWidth
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
+              <FormHelperText variant="standard">A name to identify the network-server.</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
+  
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Additional Notes</InputLabel>
+              <InputLabel variant="standard" required>Network Server server</InputLabel>
               <Input
-                id="notes"
+                id="network-server-server"
                 type="text"
-                value={notes}
+                value={server}
+                fullWidth
+                onChange={(e) => setServer(e.target.value)}
+              />
+              <FormHelperText variant="standard">The 'hostname:port' of the network-server, for instance: 'localhost:8000'.</FormHelperText>
+            </FormControl>
+
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+      <FormControlLabel
+              control={<Checkbox color="primary" name="canDiscoverGateways" checked={gatewayDiscovery} value={gatewayDiscovery} onChange={changeGatewayDiscovery} />}
+              label="Enable gateway discovery" className="text"
+            />
+              <FormControl sx={{ ml: 4, width: '95%'}}>
+                <FormHelperText variant="standard">When checked, the gateway discovery feature is enabled for this network server.</FormHelperText>
+              </FormControl>
+
+              {gatewayDiscovery && (
+                <>
+
+                <FormControl sx={{ m: 1, width: '95%'}}>
+                  <InputLabel variant="standard" required>Interval per day</InputLabel>
+                  <Input
+                    required
+                    id="interval"
+                    type="number"
+                    value={interval}
+                    fullWidth
+                    onChange={(e) => setInterval(e.target.value)}
+                  />
+                  <FormHelperText variant="standard">The number of gateway discovery 'pings' per day that ChirpStack Application Server will broadcast through each gateway.</FormHelperText>
+                </FormControl>
+          
+         
+              <FormControl sx={{ m: 1, width: '95%'}}>
+                <InputLabel variant="standard" required>TX Frequency (Hz)</InputLabel>
+                <Input
+                  required
+                  id="frequency"
+                  type="number"
+                  value={frequency}
+                  fullWidth
+                  onChange={(e) => setFrequency(e.target.value)}
+                />
+                <FormHelperText variant="standard">The frequency (Hz) used for transmitting the gateway discovery 'pings'. Please consult the LoRaWAN Regional Parameters specification for the channels valid for each region.</FormHelperText>
+              </FormControl>
+ 
+              <FormControl sx={{ m: 1, width: '95%'}}>
+                <InputLabel variant="standard" required>TX data-rate (Hz)</InputLabel>
+                <Input
+                  required
+                  id="datarate"
+                  type="number"
+                  value={datarate}
+                  fullWidth
+                  onChange={(e) => setDatarate(e.target.value)}
+                />
+                <FormHelperText variant="standard">The data-rate used for transmitting the gateway discovery 'pings'. Please consult the LoRaWAN Regional Parameters specification for the data-rates valid for each region.</FormHelperText>
+              </FormControl>
+       
+            </>
+              )}
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <label className="subtitle-text">Certificates for ChirpStack Application Server to ChirpStack Network Server connection:</label>
+            <FormControl sx={{ m: 1, width: '95%'}}>
+              <InputLabel variant="standard">CA Certificate</InputLabel>
+              <Input
+                id="ca-certificate"
+                type="text"
+                value={caCert}
                 fullWidth
                 multiline
                 rows={2}
-                onChange={(e) => setNotes(e.target.value)}
+                onChange={(e) => setCaCert(e.target.value)}
               />
+              <FormHelperText variant="standard">Paste the content of the CA certificate (PEM) file in the above textbox. Leave blank to disable TLS.</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard">Password*</InputLabel>
+              <InputLabel variant="standard">TLS Certificate</InputLabel>
               <Input
-                required
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
+                id="tls-certificate"
+                type="text"
+                value={tlsCert}
                 fullWidth
-                onChange={(e) => setPassword(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+                multiline
+                rows={2}
+                onChange={(e) => setTlsCert(e.target.value)}
               />
+              <FormHelperText variant="standard">Paste the content of the TLS certificate (PEM) file in the above textbox. Leave blank to disable TLS.</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <label className="permission-text">Permissions:</label>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="isActive" value={active} onChange={changeActive} />}
-              label="Is active" className="text"
-            />
+            <FormControl sx={{ m: 1, width: '95%'}}>
+              <InputLabel variant="standard">TLS Key</InputLabel>
+              <Input
+                id="tls-key"
+                type="text"
+                value={tlsKey}
+                fullWidth
+                multiline
+                rows={2}
+                onChange={(e) => setTlsKey(e.target.value)}
+              />
+              <FormHelperText variant="standard">Paste the content of the TLS key (PEM) file in the above textbox. Leave blank to disable TLS. Note: for security reasons, the TLS key can't be retrieved after being submitted (the field is left blank). When re-submitting the form with an empty TLS key field (but populated TLS certificate field), the key won't be overwritten.</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="isAdmin" value={admin} onChange={changeAdmin} />}
-              label="Is a global admin" className="text"
-            />
-          </Grid>
+
+            <label className="subtitle-text">Certificates for ChirpStack Network Server to ChirpStack Application Server connection:</label>
+            <FormControl sx={{ m: 1, width: '95%'}}>
+              <InputLabel variant="standard">CA Certificate</InputLabel>
+              <Input
+                id="ca-certificate"
+                type="text"
+                value={routingCaCert}
+                fullWidth
+                multiline
+                rows={2}
+                onChange={(e) => setRoutingCaCert(e.target.value)}
+              />
+              <FormHelperText variant="standard">Paste the content of the CA certificate (PEM) file in the above textbox. Leave blank to disable TLS.</FormHelperText>
+            </FormControl>
+            <FormControl sx={{ m: 1, width: '95%'}}>
+              <InputLabel variant="standard">TLS Certificate</InputLabel>
+              <Input
+                id="tls-certificate"
+                type="text"
+                value={routingTlsCert}
+                fullWidth
+                multiline
+                rows={2}
+                onChange={(e) => setRoutingTlsCert(e.target.value)}
+              />
+              <FormHelperText variant="standard">Paste the content of the TLS certificate (PEM) file in the above textbox. Leave blank to disable TLS.</FormHelperText>
+            </FormControl>
+            <FormControl sx={{ m: 1, width: '95%'}}>
+              <InputLabel variant="standard">TLS Key</InputLabel>
+              <Input
+                id="tls-key"
+                type="text"
+                value={routingTlsKey}
+                fullWidth
+                multiline
+                rows={2}
+                onChange={(e) => setRoutingTlsKey(e.target.value)}
+              />
+              <FormHelperText variant="standard">Paste the content of the TLS key (PEM) file in the above textbox. Leave blank to disable TLS. Note: for security reasons, the TLS key can't be retrieved after being submitted (the field is left blank). When re-submitting the form with an empty TLS key field (but populated TLS certificate field), the key won't be overwritten.</FormHelperText>
+            </FormControl>
+
+            
+      </TabPanel>
+    </Box>
+          
+          
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={navigateToNetworkServers}> Create Network Server </Button>
+            <Button variant="contained" onClick={handleNetworkServerSubmit}> Create Network Server </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToNetworkServers}> Cancel </Button>
