@@ -6,19 +6,63 @@ import Input from '@mui/material/Input';
 import "./AddApiKeyForm.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
+import {key} from "./jwt";
+import { SettingsInputHdmiTwoTone } from "@mui/icons-material";
 
 function AddApiKeyForm() {
   const [name, setName] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
 
-  const [id] = useState("id");
-  const [token] = useState("token");
+  const [id, setId] = useState("");
+  const [token, setToken] = useState("");
+
+  const [apiKey, setApiKey] = useState({
+    "apiKey": {
+      "applicationID": "0",
+      "isAdmin": true,
+      "name": "",
+      "organizationID": "0"
+    }
+  });
+
+  const URL = "http://203.162.235.53:8080/api/internal/api-keys";
+    
+ 
+ 
+  const postData = (apiKey) => {
+    const strKey = JSON.stringify(apiKey);
+    const header ={
+      body: strKey,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Grpc-Metadata-Authorization": key
+      },
+      method: "POST"
+    };
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              if(response.error){
+                alert(response.error);
+              }else{
+                setId(response.id);
+                setToken(response.jwtToken);
+              }
+          })
+
+  };
 
   const handleSubmitApiKey = () => {
-    //TODO: POST request, retrieve result and check errors
+    const new_key = apiKey;
+    new_key["apiKey"]["name"]=name;
+    setApiKey(new_key);
+    console.log(apiKey);
 
-
-    //if there's no error, show the infos on the key:
+    postData(apiKey);
     setShowApiKey(!showApiKey);
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
@@ -11,9 +11,11 @@ import Box from '@mui/material/Box';
 import {TabPanel} from "./Tabs.jsx";
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import "./UpdateUserForm.css"
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 
-function AddNetworkServerForm() {
+function UpdateNetworkServerForm() {
   const [name, setName] = useState("");
   const [server, setServer] = useState("");
   const [gatewayDiscovery, setGatewayDiscovery] = useState(false);
@@ -55,56 +57,120 @@ const navigate = useNavigate();
 const navigateToNetworkServers = () => {
   navigate('/network-servers');
 };
-
-const URL = "http://203.162.235.53:8080/api/network-servers";
+ 
+ 
+const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  
-const postData = (server) => {
-    const strServer = JSON.stringify(server);
-    const header ={
-      body: strServer,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Grpc-Metadata-Authorization": key
-      },
-      method: "POST"
+  const fetchData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        },
+        method: "GET"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                  const res = response.networkServer;
+                  setName(res.name);
+                  setServer(res.server);
+                  setGatewayDiscovery(res.gatewayDiscoveryEnabled);
+                  setCaCert(res.caCert);
+                  setDatarate(res.gatewayDiscoveryDR);
+                  setFrequency(res.gatewayDiscoveryTXFrequency);
+                  setInterval(res.gatewayDiscoveryInterval);
+                  setRoutingCaCert(res.routingProfileCACert);
+                  setRoutingTlsCert(res.routingProfileTLSCert);
+                  setRoutingTlsKey(res.routingProfileTLSKey);
+                  setTlsCert(res.tlsCert);
+                  setTlsKey(res.tlsKey);
+                }
+            })
+ 
     };
-      fetch(URL, header)
-          .then((res) =>
-              res.json())
 
-          .then((response) => {
-              console.log(response);
-              /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
-              if(response.error){
-                alert(response.error);
-              }else{
-              navigateToNetworkServers();
-              }
-          })
+  useEffect(() => {
+    fetchData();}, []
+  );
 
-  };
+  const updateData= (server) => {
+    const strServer = JSON.stringify(server);
+      const header ={
+        body: strServer,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "PUT"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToNetworkServers();
+                }
+            })
+ 
+    };
 
-const handleNetworkServerSubmit = () => {
-  const new_networkServer = networkServer;
-  new_networkServer["networkServer"]["caCert"]= caCert;
-  new_networkServer["networkServer"]["gatewayDiscoveryDR"]= datarate;
-  new_networkServer["networkServer"]["gatewayDiscoveryEnabled"]=gatewayDiscovery;
-  new_networkServer["networkServer"]["gatewayDiscoveryInterval"]=interval;
-  new_networkServer["networkServer"]["gatewayDiscoveryTXFrequency"]=frequency;
-  new_networkServer["networkServer"]["name"]=name;
-  new_networkServer["networkServer"]["routingProfileCACert"]=routingCaCert;
-  new_networkServer["networkServer"]["routingProfileTLSCert"]=routingTlsCert;
-  new_networkServer["networkServer"]["routingProfileTLSKey"]=routingTlsKey;
-  new_networkServer["networkServer"]["server"]=server;
-  new_networkServer["networkServer"]["tlsCert"]=tlsCert;
-  new_networkServer["networkServer"]["tlsKey"]=tlsKey;
-  setNetworkServer(new_networkServer);
+    const deleteData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "DELETE"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToNetworkServers();
+                alert("Network Server deleted !")
+                }
+            })
+    };
+
+
+
+const handleNetworkServerUpdate = () => {
+  const updated_networkServer = networkServer;
+  updated_networkServer["networkServer"]["caCert"]= caCert;
+  updated_networkServer["networkServer"]["gatewayDiscoveryDR"]= datarate;
+  updated_networkServer["networkServer"]["gatewayDiscoveryEnabled"]=gatewayDiscovery;
+  updated_networkServer["networkServer"]["gatewayDiscoveryInterval"]=interval;
+  updated_networkServer["networkServer"]["gatewayDiscoveryTXFrequency"]=frequency;
+  updated_networkServer["networkServer"]["name"]=name;
+  updated_networkServer["networkServer"]["routingProfileCACert"]=routingCaCert;
+  updated_networkServer["networkServer"]["routingProfileTLSCert"]=routingTlsCert;
+  updated_networkServer["networkServer"]["routingProfileTLSKey"]=routingTlsKey;
+  updated_networkServer["networkServer"]["server"]=server;
+  updated_networkServer["networkServer"]["tlsCert"]=tlsCert;
+  updated_networkServer["networkServer"]["tlsKey"]=tlsKey;
+  setNetworkServer(updated_networkServer);
   console.log(networkServer);
 
-  postData(networkServer);
+  updateData(networkServer);
 }
 
 
@@ -116,7 +182,10 @@ const handleChange = (event, newValue) => {
 
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new network server </b></div>
+      <div className="title text"> <b> Update a network server </b></div>
+      <div className="delete-button">
+        <DeleteConfirmationDialog fun={deleteData}/>
+      </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
         <Box sx={{ width: '100%' }}>
@@ -302,7 +371,7 @@ const handleChange = (event, newValue) => {
           
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleNetworkServerSubmit}> Create Network Server </Button>
+            <Button variant="contained" onClick={handleNetworkServerUpdate}> Update Network Server </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToNetworkServers}> Cancel </Button>
@@ -313,4 +382,4 @@ const handleChange = (event, newValue) => {
   )
 }
 
-export default AddNetworkServerForm
+export default UpdateNetworkServerForm

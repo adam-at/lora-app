@@ -17,13 +17,20 @@ import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
+import {key} from "./jwt";
 
 
 function Organizations(){
 
     
     const [data, getData] = useState([]);
-    const URL = 'https://jsonplaceholder.typicode.com/posts';
+    const URL = "http://203.162.235.53:8080/api/organizations?limit=1000";
+    const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        }
+      }
  
     useEffect(() => {
         fetchData()
@@ -31,16 +38,16 @@ function Organizations(){
  
  
     const fetchData = () => {
-        fetch(URL)
+        fetch(URL, header)
             .then((res) =>
                 res.json())
  
             .then((response) => {
                 console.log(response);
-                getData(response);
+                getData(response.result);
             })
  
-    }
+    };
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -94,10 +101,10 @@ function Organizations(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.userId}
+                                {item.name}
                             </TableCell>
-                            <TableCell>{item.title}</TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.id ? solid("times") : solid("check")}/></TableCell>
+                            <TableCell>{item.displayName}</TableCell>
+                            <TableCell> <FontAwesomeIcon icon={item.canHaveGateways ? solid("check") : solid("times")}/></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

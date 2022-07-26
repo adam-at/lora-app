@@ -17,11 +17,18 @@ import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
+import {key} from "./jwt";
 
 function NetworkServers(){
     
     const [data, getData] = useState([]);
-    const URL = 'https://jsonplaceholder.typicode.com/posts';
+    const URL = "http://203.162.235.53:8080/api/network-servers?limit=1000";
+    const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        }
+      }
  
     useEffect(() => {
         fetchData()
@@ -29,13 +36,13 @@ function NetworkServers(){
  
  
     const fetchData = () => {
-        fetch(URL)
+        fetch(URL, header)
             .then((res) =>
                 res.json())
  
             .then((response) => {
                 console.log(response);
-                getData(response);
+                getData(response.result);
             })
  
     }
@@ -75,8 +82,9 @@ function NetworkServers(){
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 325 }}>Name</TableCell>
-                            <TableCell sx={{ width: 325 }}>Server</TableCell>
+                            <TableCell sx={{ width: 300 }}>Name</TableCell>
+                            <TableCell sx={{ width: 300 }}>Server</TableCell>
+                            <TableCell sx={{ width: 50 }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -88,9 +96,10 @@ function NetworkServers(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.userId}
+                                {item.name}
                             </TableCell>
-                            <TableCell>{item.title}</TableCell>
+                            <TableCell>{item.server}</TableCell>
+                            <TableCell> <a href={'network-servers/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></a></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

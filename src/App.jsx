@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import Navbar from './components/Navbar';
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -17,6 +17,9 @@ import AddGateway from './components/pages/AddGateway';
 import AddApiKey from './components/pages/AddApiKey';
 import AddNetworkServer from './components/pages/AddNetworkServer';
 import AddOrganization from './components/pages/AddOrganization';
+import UpdatePassword from './components/pages/UpdatePassword';
+import UpdateUser from './components/pages/UpdateUser';
+import UpdateNetworkServer from './components/pages/UpdateNetworkServer';
 
 function App() {
   return (
@@ -25,7 +28,7 @@ function App() {
         <Navbar  />
         <Routes>
           <Route path="/dashboard" exact element={<Home />} />
-          <Route path="/" element={<Navigate replace to="/dashboard" />} />
+          <Route path="*" exact element={<Home />} />
           <Route path="/network-servers" element={<AllNetworkServers/>}/>
           <Route path="/gateways" element={<AllGateways/>}/>
           <Route path="/organizations" element={<AllOrganizations/>}/>
@@ -36,6 +39,9 @@ function App() {
           <Route path="/add-api-key" element={<AddApiKey/>}/>
           <Route path="/add-network-server" element={<AddNetworkServer/>}/>
           <Route path="/add-organization" element={<AddOrganization/>}/>
+          <Route path="/password" element={<UpdatePassword/>}/>
+          <Route path="/users/*" element={<UpdateUser/>}/>
+          <Route path="/network-servers/*" element={<UpdateNetworkServer/>}/>
         </Routes>
       </Router>
     </div>

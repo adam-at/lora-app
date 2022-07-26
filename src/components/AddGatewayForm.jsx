@@ -8,17 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
+import {key} from "./jwt";
 
-
-/* {
-  "bandwidth": 0,
-  "bitrate": 0,
-  "frequency": 0,
-  "modulation": "LORA",
-  "spreadingFactors": [
-    0
-  ]
-} */
 
 
 function AddGatewayForm() {
@@ -49,6 +40,32 @@ function AddGatewayForm() {
       "statsInterval": ""
     }
   });
+  const [data, getData] = useState([]);
+
+  const URL2 = "http://203.162.235.53:8080/api/network-servers?limit=1000";
+    const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        }
+      }
+ 
+    useEffect(() => {
+        fetchData()
+    }, [])
+ 
+ 
+    const fetchData = () => {
+        fetch(URL2, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                getData(response.result);
+            })
+ 
+    }
 
   const stringToIntegerList = (s) => {
     const list = s.split(",");
@@ -92,6 +109,39 @@ function AddGatewayForm() {
 const navigateToGateways = () => {
   navigate('/gateways');
 };
+
+const URL = "http://203.162.235.53:8080/api/gateway-profiles";
+    
+ 
+ 
+const postData = (gateway) => {
+    const strGateway = JSON.stringify(gateway);
+    const header ={
+      body: strGateway,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Grpc-Metadata-Authorization": key
+      },
+      method: "POST"
+    };
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
+              if(response.error){
+                alert(response.error);
+              }else{
+              navigateToGateways();
+              }
+          })
+
+  };
+
+
   const handleGatewaySubmit= () => {
     const new_gateway = gateway;
     new_gateway["gatewayProfile"]["extraChannels"]= extraChannels;
@@ -99,15 +149,14 @@ const navigateToGateways = () => {
     new_gateway["gatewayProfile"]["networkServerID"]=networkServerId;
     new_gateway["gatewayProfile"]["statsInterval"]=statsInterval.toString() +"s";
     new_gateway["gatewayProfile"]["channels"]=stringToIntegerList(enabledChannels);
-    setGateway(new_gateway);
-    console.log(new_gateway);
+    setGateway(gateway);
     console.log(gateway);
+    
+
+    postData(gateway);
 
     /* if error 400 stay on the same page with an error alert, else go go to /gateways*/ 
-  }
-  useEffect( () => {
-    console.log(gateway);
-}, [gateway]);
+    }
 
   return (
     <section className="home">
@@ -165,9 +214,9 @@ const navigateToGateways = () => {
               fullWidth
               onChange={(e) => setNetworkServerId(e.target.value)}
             >
-                <MenuItem value={1}>Server 1</MenuItem>
-                <MenuItem value={2}>Server 2</MenuItem>
-                <MenuItem value={3}>Server 3</MenuItem>
+              {data.map((server,index) => 
+                <MenuItem key={index} value={server.id}>{server.name}</MenuItem>
+              )}
             </Select>
             <FormHelperText variant="standard">Select Network Server</FormHelperText>
             </FormControl>

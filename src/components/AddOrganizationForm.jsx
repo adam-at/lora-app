@@ -6,6 +6,7 @@ import Input from '@mui/material/Input';
 import "./AddOrganizationForm.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
+import {key} from "./jwt";
 
 function AddOrganizationForm() {
   const [name, setName] = useState("");
@@ -39,6 +40,37 @@ const navigateToOrganizations = () => {
   navigate('/organizations');
 };
 
+const URL = "http://203.162.235.53:8080/api/organizations";
+    
+ 
+ 
+const postData = (org) => {
+    const strOrg = JSON.stringify(org);
+    const header ={
+      body: strOrg,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Grpc-Metadata-Authorization": key
+      },
+      method: "POST"
+    };
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
+              if(response.error){
+                alert(response.error);
+              }else{
+              navigateToOrganizations();
+              }
+          })
+
+  };
+
 const handleGatewaySubmit= () => {
   const new_organization = organization;
   new_organization["organization"]["canHaveGateways"]= canHaveGateways;
@@ -48,6 +80,8 @@ const handleGatewaySubmit= () => {
   new_organization["organization"]["maxGatewayCount"]=maxGateways;
   setOrganization(new_organization);
   console.log(organization);
+
+  postData(organization);
 
   /* if error 400 stay on the same page with an error alert, else go go to /organizations*/ 
 }

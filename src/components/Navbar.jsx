@@ -113,9 +113,9 @@ function Navbar() {
 
             <div className="bottom-content">
                 <li className="">
-                    <a href="#">
+                    <a href="/password">
                         <FontAwesomeIcon icon={solid("user-pen")} className="ficon"/>
-                        <span className="text nav-text">Account</span>
+                        <span className="text nav-text">Change Password</span>
                     </a>
                 </li>
                 <li className="">

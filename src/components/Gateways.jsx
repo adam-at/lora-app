@@ -17,13 +17,20 @@ import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
+import {key} from "./jwt";
 
 
 function Gateways(){
 
     
     const [data, getData] = useState([]);
-    const URL = 'https://jsonplaceholder.typicode.com/posts';
+    const URL = "http://203.162.235.53:8080/api/gateway-profiles?limit=1000";
+    const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        }
+      }
  
     useEffect(() => {
         fetchData()
@@ -31,13 +38,13 @@ function Gateways(){
  
  
     const fetchData = () => {
-        fetch(URL)
+        fetch(URL, header)
             .then((res) =>
                 res.json())
  
             .then((response) => {
                 console.log(response);
-                getData(response);
+                getData(response.result);
             })
  
     }
@@ -91,9 +98,9 @@ function Gateways(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.userId}
+                                {item.name}
                             </TableCell>
-                            <TableCell>{item.title}</TableCell>
+                            <TableCell>{item.networkServerName}</TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

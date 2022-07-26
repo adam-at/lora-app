@@ -17,13 +17,20 @@ import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
+import {key} from "./jwt";
 
 
 function ApiKeys(){
 
     
     const [data, getData] = useState([]);
-    const URL = 'https://jsonplaceholder.typicode.com/posts';
+    const URL = "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&isAdmin=true";
+    const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        }
+      }
  
     useEffect(() => {
         fetchData()
@@ -31,13 +38,13 @@ function ApiKeys(){
  
  
     const fetchData = () => {
-        fetch(URL)
+        fetch(URL, header)
             .then((res) =>
                 res.json())
  
             .then((response) => {
                 console.log(response);
-                getData(response);
+                getData(response.result);
             })
  
     }
@@ -78,9 +85,8 @@ function ApiKeys(){
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 216 }}>ID</TableCell>
-                            <TableCell sx={{ width: 216 }}>Name</TableCell>
-                            <TableCell sx={{ width: 216 }}>Admin Key</TableCell>
+                            <TableCell sx={{ width: 325 }}>ID</TableCell>
+                            <TableCell sx={{ width: 325 }}>Name</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -92,10 +98,9 @@ function ApiKeys(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.userId}
+                                {item.id}
                             </TableCell>
-                            <TableCell>{item.title}</TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.id ? solid("times") : solid("check")}/></TableCell>
+                            <TableCell>{item.name}</TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

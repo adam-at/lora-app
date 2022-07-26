@@ -1,0 +1,2 @@
+export const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcyIsImV4cCI6MTY1ODg5OTk4OSwiaWQiOjEsImlzcyI6ImFzIiwibmJmIjoxNjU4ODEzNTg5LCJzdWIiOiJ1c2VyIiwidXNlcm5hbWUiOiJhZG1pbiJ9.m2zdfJN_9FT9fgZ6mgJgBxCn96UF4ebHfBbgcSIawsI";
+export const key = "Bearer " + jwt;

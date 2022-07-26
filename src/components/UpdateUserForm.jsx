@@ -2,25 +2,21 @@ import { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
+import KeyIcon from '@mui/icons-material/Key';
 import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import "./AddUserForm.css";
 import { useNavigate } from 'react-router-dom';
+import "./UpdateUserForm.css"
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 import {key} from "./jwt";
 
 function AddUserForm() {
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword]= useState(false);
   const [active, setActive] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [user, setUser] = useState(
-    {"organizations":[],
-  "password": "",
+    {
   "user": {
     "email": "",
     "id": "0",
@@ -32,12 +28,43 @@ function AddUserForm() {
 }
   );
 
-  const URL = "http://203.162.235.53:8080/api/users";
+  const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  
-    const postData = (user) => {
-      const strUser = JSON.stringify(user);
+  const fetchData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        },
+        method: "GET"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                const res = response.user;
+                setEmail(res.email);
+                setNotes(res.note);
+                setActive(res.isActive);
+                setAdmin(res.isAdmin);
+                }
+            })
+ 
+    };
+
+  useEffect(() => {
+    fetchData();}, []
+  );
+
+  const updateData= (user) => {
+    const strUser = JSON.stringify(user);
       const header ={
         body: strUser,
         headers: {
@@ -45,7 +72,7 @@ function AddUserForm() {
           "Content-Type": "application/json",
           "Grpc-Metadata-Authorization": key
         },
-        method: "POST"
+        method: "PUT"
       };
         fetch(URL, header)
             .then((res) =>
@@ -62,14 +89,29 @@ function AddUserForm() {
  
     };
 
+    const deleteData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "DELETE"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToUsers();
+                alert("User deleted !")
+                }
+            })
+    };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   const changeActive = () => {
     setActive(!active);
@@ -93,24 +135,30 @@ const navigateToUsers = () => {
   navigate('/users');
 };
 
-const handleUserSubmit = () => {
-  const new_user = user;
-  new_user["user"]["email"]= email;
-  new_user["user"]["isActive"]= active;
-  new_user["user"]["isAdmin"]=admin;
-  new_user["user"]["note"]=notes;
-  new_user["password"]=password;
-  setUser(new_user);
-  console.log(user);
+const handleUserUpdate = () => {
+  const updated_user = user;
+  updated_user["user"]["email"]= email;
+  updated_user["user"]["isActive"]= active;
+  updated_user["user"]["isAdmin"]=admin;
+  updated_user["user"]["note"]=notes;
+  updated_user["user"]["id"]=window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+  setUser(updated_user);
+  console.log(updated_user);
 
-  postData(user);
+  updateData(user);
 
   /* if error 400 stay on the same page with an error alert, else go go to /users*/ 
 }
 
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new user </b></div>
+      <div className="title text"> <b> Update a user </b> </div>
+      <div className="delete-button">
+        <DeleteConfirmationDialog fun={deleteData}/>
+        <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<KeyIcon />}>
+         Change Password
+        </Button>
+      </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -141,49 +189,25 @@ const handleUserSubmit = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Password</InputLabel>
-              <Input
-                required
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                fullWidth
-                onChange={(e) => setPassword(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
             <label className="permission-text">Permissions:</label>
           </Grid>
           <Grid item xs={12} sm={6}>
           <FormControl sx={{ m: 1, width: '95%'}}>
             <FormControlLabel
-              control={<Checkbox color="secondary" name="isActive" value={active} onChange={changeActive} />}
+              control={<Checkbox color="secondary" name="isActive" checked={active} value={active} onChange={changeActive} />}
               label="Is active" className="text"
             />
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControlLabel
-              control={<Checkbox color="secondary" name="isAdmin" value={admin} onChange={changeAdmin} />}
+              control={<Checkbox color="secondary" name="isAdmin" checked={admin} value={admin} onChange={changeAdmin} />}
               label="Is a global admin" className="text"
             />
           </Grid>
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleUserSubmit}> Create User </Button>
+            <Button variant="contained" onClick={handleUserUpdate}> Update User </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToUsers}> Cancel </Button>
