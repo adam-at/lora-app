@@ -1,14 +1,14 @@
 .title{
   position:absolute;
-  top: 0px;
+  top: 10px;
   left: 0px;
 }
 
 .card-grid{
   position:absolute;
-  top: 120px;
-  left: 50px;
-  margin: 50px;
+  right: 20px;
+  top: 110px;
+  left: 30px;
   width: calc(100% - 250px);
   height: 200px;
 
@@ -43,4 +43,13 @@ body.dark .grid-text{
   font-size:20px;
   font-weight: bold;
 
+}
+
+.organization-dashboard{
+  position:absolute;
+  right: 20px;
+  top: 150px;
+  left: 30px;
+  width: calc(100% - 250px);
+  height: 200px;
 }

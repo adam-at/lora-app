@@ -18,6 +18,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
+import Link from '@mui/material/Link';
 
 
 function Users(){
@@ -97,7 +98,7 @@ function Users(){
                         {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data).map((item,i) => (
-                            <TableRow
+                            <TableRow hover
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
@@ -106,7 +107,7 @@ function Users(){
                             </TableCell>
                             <TableCell><FontAwesomeIcon icon={item.isActive ? solid("check") : solid("times")}/></TableCell>
                             <TableCell> <FontAwesomeIcon icon={item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <a href={'users/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></a></TableCell>
+                            <TableCell> <Link href={'users/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

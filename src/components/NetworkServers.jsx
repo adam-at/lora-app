@@ -18,6 +18,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
+import Link from '@mui/material/Link';
 
 function NetworkServers(){
     
@@ -91,7 +92,7 @@ function NetworkServers(){
                         {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data).map((item,i) => (
-                            <TableRow
+                            <TableRow hover
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
@@ -99,7 +100,7 @@ function NetworkServers(){
                                 {item.name}
                             </TableCell>
                             <TableCell>{item.server}</TableCell>
-                            <TableCell> <a href={'network-servers/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></a></TableCell>
+                            <TableCell> <Link href={'network-servers/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

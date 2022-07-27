@@ -9,13 +9,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 
 
-function AddGatewayForm() {
+
+function UpdateGatewayForm() {
   const [name, setName] = useState("");
   const [statsInterval, setStatsInterval] = useState(30); //to convert into string for post method: "30s"
-  const [enabledChannels, setEnableChannels] = useState("");
+  const [enabledChannels, setEnabledChannels] = useState("");
   const [networkServerId, setNetworkServerId] = useState("");
   const [extraChannels, setExtraChannels] = useState([]);
   const [gateway, setGateway] = useState({
@@ -51,11 +53,11 @@ function AddGatewayForm() {
       }
  
     useEffect(() => {
-        fetchData()
+        fetchServerData()
     }, [])
  
  
-    const fetchData = () => {
+    const fetchServerData = () => {
         fetch(URL2, header)
             .then((res) =>
                 res.json())
@@ -65,7 +67,7 @@ function AddGatewayForm() {
                 getData(response.result);
             })
  
-    }
+    };
 
   const stringToIntegerList = (s) => {
     const list = s.split(",");
@@ -75,7 +77,8 @@ function AddGatewayForm() {
       }
     };
     return list;
-  }
+  };
+
 
   const handleExtraChannelAdd= () => {
     setExtraChannels([...extraChannels, {
@@ -107,42 +110,96 @@ function AddGatewayForm() {
 
   const navigate = useNavigate();
 const navigateToGateways = () => {
-  navigate('/gateways');
+  navigate('/gateway-profiles');
 };
 
-const URL = "http://203.162.235.53:8080/api/gateway-profiles";
+const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  
-const postData = (gateway) => {
-    const strGateway = JSON.stringify(gateway);
-    const header ={
-      body: strGateway,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Grpc-Metadata-Authorization": key
-      },
-      method: "POST"
+  const fetchData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        },
+        method: "GET"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                const res = response.gatewayProfile;
+                setName(res.name);
+                setEnabledChannels(res.channels.toString());
+                setExtraChannels(res.extraChannels);
+                setNetworkServerId(res.networkServerID);
+                setStatsInterval(res.statsInterval.slice(0,-1));
+                }
+            })
+ 
     };
-      fetch(URL, header)
-          .then((res) =>
-              res.json())
 
-          .then((response) => {
-              console.log(response);
-              /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
-              if(response.error){
-                alert(response.error);
-              }else{
-              navigateToGateways();
-              }
-          })
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  };
+  const updateData= (gateway) => {
+    const strGateway = JSON.stringify(gateway);
+      const header ={
+        body: strGateway,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "PUT"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToGateways();
+                }
+            })
+ 
+    };
+
+    const deleteData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "DELETE"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToGateways();
+                alert("Gateway deleted !")
+                }
+            })
+    };
 
 
-  const handleGatewaySubmit= () => {
+  const handleGatewayUpdate= () => {
     const new_gateway = gateway;
     new_gateway["gatewayProfile"]["extraChannels"]= extraChannels;
     new_gateway["gatewayProfile"]["name"]=name;
@@ -153,14 +210,20 @@ const postData = (gateway) => {
     console.log(gateway);
     
 
-    postData(gateway);
+    updateData(gateway);
 
-    /* if error 400 stay on the same page with an error alert, else go go to /gateways*/ 
+    /* if error 400 stay on the same page with an error alert, else go go to /gateway-profiles*/ 
     }
+
+
 
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new gateway </b></div>
+      <div className="title text"> <b> Update a gateway </b></div>
+      
+      <div className="delete-button">
+        <DeleteConfirmationDialog fun={deleteData} name="gateway"/>
+      </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -184,6 +247,7 @@ const postData = (gateway) => {
                 id="notes"
                 type="number"
                 value={statsInterval}
+                defaultValue={statsInterval}
                 fullWidth
                 onChange={(e) => setStatsInterval(e.target.value)}
               />
@@ -199,7 +263,7 @@ const postData = (gateway) => {
                 type="text"
                 value={enabledChannels}
                 fullWidth
-                onChange={(e) => setEnableChannels(e.target.value)}
+                onChange={(e) => setEnabledChannels(e.target.value)}
               />
             </FormControl>
           </Grid>
@@ -317,7 +381,7 @@ const postData = (gateway) => {
             <Button variant="outlined" onClick={handleExtraChannelAdd}> Add Extra Channel </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleGatewaySubmit}> Create Gateway </Button>
+            <Button variant="contained" onClick={handleGatewayUpdate}> Update Gateway </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToGateways}> Cancel </Button>
@@ -328,4 +392,4 @@ const postData = (gateway) => {
   )
 }
 
-export default AddGatewayForm
+export default UpdateGatewayForm;

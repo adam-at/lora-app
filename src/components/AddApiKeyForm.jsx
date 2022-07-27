@@ -3,11 +3,10 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid } from '@mui/material';
 import Input from '@mui/material/Input';
-import "./AddApiKeyForm.css";
+import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
-import { SettingsInputHdmiTwoTone } from "@mui/icons-material";
 
 function AddApiKeyForm() {
   const [name, setName] = useState("");

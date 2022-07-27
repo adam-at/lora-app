@@ -18,6 +18,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
+import Link from '@mui/material/Link';
 
 
 function Gateways(){
@@ -85,15 +86,16 @@ function Gateways(){
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 325 }}>Name</TableCell>
-                            <TableCell sx={{ width: 325 }}>Network server</TableCell>
+                            <TableCell sx={{ width: 300 }}>Name</TableCell>
+                            <TableCell sx={{ width: 300 }}>Network server</TableCell>
+                            <TableCell sx={{ width: 50 }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data).map((item,i) => (
-                            <TableRow
+                            <TableRow hover
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
@@ -101,6 +103,7 @@ function Gateways(){
                                 {item.name}
                             </TableCell>
                             <TableCell>{item.networkServerName}</TableCell>
+                            <TableCell> <Link href={'gateway-profiles/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

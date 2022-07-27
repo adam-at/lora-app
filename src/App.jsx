@@ -20,6 +20,8 @@ import AddOrganization from './components/pages/AddOrganization';
 import UpdatePassword from './components/pages/UpdatePassword';
 import UpdateUser from './components/pages/UpdateUser';
 import UpdateNetworkServer from './components/pages/UpdateNetworkServer';
+import UpdateGateway from './components/pages/UpdateGateway';
+import OrganizationDetails from './components/pages/OrganizationDetails';
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
           <Route path="/dashboard" exact element={<Home />} />
           <Route path="*" exact element={<Home />} />
           <Route path="/network-servers" element={<AllNetworkServers/>}/>
-          <Route path="/gateways" element={<AllGateways/>}/>
+          <Route path="/gateway-profiles" element={<AllGateways/>}/>
           <Route path="/organizations" element={<AllOrganizations/>}/>
           <Route path="/users" element={<AllUsers/>}/>
           <Route path="/api-keys" element={<AllApiKeys/>}/>
@@ -42,6 +44,8 @@ function App() {
           <Route path="/password" element={<UpdatePassword/>}/>
           <Route path="/users/*" element={<UpdateUser/>}/>
           <Route path="/network-servers/*" element={<UpdateNetworkServer/>}/>
+          <Route path="/gateway-profiles/*" element={<UpdateGateway/>}/>
+          <Route path="/organizations/*" element={<OrganizationDetails/>}/>
         </Routes>
       </Router>
     </div>

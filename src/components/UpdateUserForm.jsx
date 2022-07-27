@@ -4,9 +4,8 @@ import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 import Input from '@mui/material/Input';
-import "./AddUserForm.css";
+import "./Form.css";
 import { useNavigate } from 'react-router-dom';
-import "./UpdateUserForm.css"
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 import {key} from "./jwt";
 
@@ -154,7 +153,7 @@ const handleUserUpdate = () => {
     <section className="home">
       <div className="title text"> <b> Update a user </b> </div>
       <div className="delete-button">
-        <DeleteConfirmationDialog fun={deleteData}/>
+        <DeleteConfirmationDialog fun={deleteData} name="user"/>
         <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<KeyIcon />}>
          Change Password
         </Button>

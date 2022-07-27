@@ -18,6 +18,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
+import Link from '@mui/material/Link';
 
 
 function Organizations(){
@@ -90,18 +91,19 @@ function Organizations(){
                             <TableCell sx={{ width: 216 }}>Name</TableCell>
                             <TableCell sx={{ width: 216 }}>Display name</TableCell>
                             <TableCell sx={{ width: 216 }}>Can have gateways</TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data).map((item,i) => (
-                            <TableRow
+                            <TableRow hover
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.name}
+                            <Link href={'organizations/'+item.id}>{item.name}</Link>
                             </TableCell>
                             <TableCell>{item.displayName}</TableCell>
                             <TableCell> <FontAwesomeIcon icon={item.canHaveGateways ? solid("check") : solid("times")}/></TableCell>

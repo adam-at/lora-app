@@ -7,9 +7,9 @@ import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
-
-function AddOrganizationForm() {
+function UpdateOrganizationForm() {
   const [name, setName] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [canHaveGateways, setCanHaveGateways] = useState(false);
@@ -41,38 +41,94 @@ const navigateToOrganizations = () => {
   navigate('/organizations');
 };
 
-const URL = "http://203.162.235.53:8080/api/organizations";
+const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  
-const postData = (org) => {
-    const strOrg = JSON.stringify(org);
-    const header ={
-      body: strOrg,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Grpc-Metadata-Authorization": key
-      },
-      method: "POST"
+  const fetchData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        },
+        method: "GET"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                const res = response.organization;
+                setName(res.name);
+                setDisplayName(res.displayName);
+                setCanHaveGateways(res.canHaveGateways);
+                setMaxDevices(res.maxDeviceCount);
+                setMaxGateways(res.maxGatewayCount);
+
+                }
+            })
+ 
     };
-      fetch(URL, header)
-          .then((res) =>
-              res.json())
 
-          .then((response) => {
-              console.log(response);
-              /* if error 400 stay on the same page with an error alert, else go go to /networkServers*/ 
-              if(response.error){
-                alert(response.error);
-              }else{
-              navigateToOrganizations();
-              }
-          })
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  };
+  const updateData= (organization) => {
+    const strOrganization = JSON.stringify(organization);
+      const header ={
+        body: strOrganization,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "PUT"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToOrganizations();
+                }
+            })
+ 
+    };
 
-const handleOrganizationSubmit= () => {
+    const deleteData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "DELETE"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                navigateToOrganizations();
+                alert("Organization deleted !")
+                }
+            })
+    };
+
+
+const handleOrganizationUpdate= () => {
   const new_organization = organization;
   new_organization["organization"]["canHaveGateways"]= canHaveGateways;
   new_organization["organization"]["name"]=name;
@@ -82,7 +138,7 @@ const handleOrganizationSubmit= () => {
   setOrganization(new_organization);
   console.log(organization);
 
-  postData(organization);
+  updateData(organization);
 
   /* if error 400 stay on the same page with an error alert, else go go to /organizations*/ 
 }
@@ -90,11 +146,8 @@ useEffect( () => {
   console.log(organization);
 }, [organization]);
 
-
   return (
-    <section className="home">
-      <div className="title text"> <b> Add a new organization </b></div>
-      <Paper elevation={6} className="form dark-if-needed">
+      <Paper elevation={6} className="form-with-tabs dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
@@ -126,7 +179,7 @@ useEffect( () => {
             <label className="subtitle-text">Gateways:</label>
           </Grid>
             <FormControlLabel
-              control={<Checkbox color="primary" name="canHaveGateways" value={canHaveGateways} onChange={changeCanHaveGateways} />}
+              control={<Checkbox color="primary" name="canHaveGateways" checked={canHaveGateways} value={canHaveGateways} onChange={changeCanHaveGateways} />}
               label="Can have gateways" className="text"
             />
               <FormControl sx={{ ml: 4, width: '95%'}}>
@@ -167,17 +220,16 @@ useEffect( () => {
               <FormHelperText variant="standard">The maximum number of devices that can be added to this organization (0 = unlimited).</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={5}></Grid>
+          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="organization"/></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleOrganizationSubmit}> Create Organization </Button>
+            <Button variant="contained" onClick={handleOrganizationUpdate}> Update Organization </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToOrganizations}> Cancel </Button>
           </Grid>
         </Grid>        
       </Paper>
-    </section>
   )
 }
 
-export default AddOrganizationForm
+export default UpdateOrganizationForm

@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import Input from '@mui/material/Input';
-import "./AddNetworkServerForm.css";
+import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import {TabPanel} from "./Tabs.jsx";
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
-import "./UpdateUserForm.css"
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 
@@ -184,7 +183,7 @@ const handleChange = (event, newValue) => {
     <section className="home">
       <div className="title text"> <b> Update a network server </b></div>
       <div className="delete-button">
-        <DeleteConfirmationDialog fun={deleteData}/>
+        <DeleteConfirmationDialog fun={deleteData} name="network server"/>
       </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>

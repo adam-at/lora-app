@@ -18,6 +18,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
+import QuickDeleteConfirmationDialog from './QuickDeleteConfirmationDialog';
 
 
 function ApiKeys(){
@@ -68,9 +69,36 @@ function ApiKeys(){
     const navigate = useNavigate();
 
     const navigateToAddApiKey = () => {
-        //  navigate to /add-user
+        //  navigate to /add-api-key
         navigate('/add-api-key');
       };
+
+    
+    const URLdel = "http://203.162.235.53:8080/api/internal/api-keys/"
+
+      const deleteData = (id) => {
+        const header ={
+          headers: {
+            Accept: "application/json",
+            "Grpc-Metadata-Authorization": key
+          },
+          method: "DELETE"
+        };
+          fetch(URLdel+id, header)
+              .then((res) =>
+                  res.json())
+   
+              .then((response) => {
+                  console.log(response);
+                  if(response.error){
+                    alert(response.error);
+                  }else{
+                    window.location.reload(false);
+                    alert("API Key deleted !")
+                  }
+              })
+      };
+
 
     return(
     <section className="home">
@@ -85,15 +113,18 @@ function ApiKeys(){
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 325 }}>ID</TableCell>
-                            <TableCell sx={{ width: 325 }}>Name</TableCell>
+                            <TableCell sx={{ width: 300 }}>ID</TableCell>
+                            <TableCell sx={{ width: 300 }}>Name</TableCell>
+                            <TableCell sx={{ width: 50 }}>
+                            </TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data).map((item,i) => (
-                            <TableRow
+                            <TableRow hover
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
@@ -101,6 +132,9 @@ function ApiKeys(){
                                 {item.id}
                             </TableCell>
                             <TableCell>{item.name}</TableCell>
+                            <TableCell>
+                                <QuickDeleteConfirmationDialog fun={deleteData} name="API Key" id={item.id}/>
+                            </TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

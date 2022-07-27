@@ -1,0 +1,42 @@
+.form{
+    position:absolute;
+    top: 110px;
+    left: 30px;
+    width: calc(100% - 50px);
+    padding: 25px;
+}
+
+.permission-text{
+    font-size: 20px;
+    color: #1565c0;
+    margin: 5px;
+
+}
+
+.subtitle-text{
+    font-size: 20px;
+    color: #1565c0;
+    margin: 5px;
+
+}
+
+.organization-tabs{
+    position:absolute;
+    top: 80px;
+    left: 20px;
+
+}
+
+.form-with-tabs{
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    width: calc(100% - 50px);
+    padding: 50px;
+}
+
+.delete-button{
+    position: absolute;
+    top : 5px;
+    right: 20px;
+}

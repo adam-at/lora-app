@@ -81,7 +81,7 @@ function Navbar() {
                     </li>
 
                     <li className="nav-link">
-                        <a href="/gateways">
+                        <a href="/gateway-profiles">
                             <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"></FontAwesomeIcon>
                             <span className="text nav-text">Gateway Profiles</span>
                         </a>

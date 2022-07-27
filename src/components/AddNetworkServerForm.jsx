@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import Input from '@mui/material/Input';
-import "./AddNetworkServerForm.css";
+import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import {TabPanel} from "./Tabs.jsx";
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import "./Dashboard.css";
 
 
 function AddNetworkServerForm() {

@@ -6,8 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
-function DeleteConfirmationDialog(props) {
+function QuickDeleteConfirmationDialog(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,15 +21,15 @@ function DeleteConfirmationDialog(props) {
 
   const handleConfirmation = () => {
     setOpen(false);
-    props.fun();
+    props.fun(props.id);
   }
 
 
   return (
     <>
-      <Button variant="outlined" sx={{ m:1 }} startIcon={<DeleteIcon />} onClick={handleClickOpen}>
-         Delete
-      </Button>
+      <IconButton aria-label="delete" onClick={handleClickOpen}>
+        <DeleteIcon />
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -54,4 +55,4 @@ function DeleteConfirmationDialog(props) {
   );
 };
 
-export default DeleteConfirmationDialog;
+export default QuickDeleteConfirmationDialog;
