@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './Navbar.css'
+import { useNavigate } from 'react-router-dom';
 
 
 function Navbar() {
@@ -39,6 +40,19 @@ function Navbar() {
   }
 }
 
+const [search, setSearch] = useState("");
+const navigate = useNavigate();
+
+const handleSearch = () => {
+    if(window.location.pathname.startsWith("/search")){
+        navigate('/search?search='+search);
+        window.location.reload();
+    }else{
+    navigate('/search?search='+search);
+}
+}
+
+
   return (
     <>
        <nav className="sidebar close">
@@ -61,8 +75,8 @@ function Navbar() {
             <div className="menu">
 
                 <li className="search-box">
-                  <FontAwesomeIcon icon={solid("magnifying-glass")} className="ficon"></FontAwesomeIcon>
-                    <input type="text" placeholder="Search..." />
+                    <FontAwesomeIcon icon={solid("magnifying-glass")} className="ficon" onClick={handleSearch}></FontAwesomeIcon>
+                    <input id="searchInput" type="search" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)}/>
                 </li>
 
                 <ul className="menu-links">

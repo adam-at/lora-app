@@ -22,6 +22,7 @@ import UpdateUser from './components/pages/UpdateUser';
 import UpdateNetworkServer from './components/pages/UpdateNetworkServer';
 import UpdateGateway from './components/pages/UpdateGateway';
 import OrganizationDetails from './components/pages/OrganizationDetails';
+import Search from './components/pages/Search.jsx';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/network-servers/*" element={<UpdateNetworkServer/>}/>
           <Route path="/gateway-profiles/*" element={<UpdateGateway/>}/>
           <Route path="/organizations/*" element={<OrganizationDetails/>}/>
+          <Route path="/search" element={<Search/>}/>
         </Routes>
       </Router>
     </div>
