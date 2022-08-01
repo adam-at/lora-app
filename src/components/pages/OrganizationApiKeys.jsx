@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import'../App.css';
+import'../../App.css';
 import Button from '@mui/material/Button';
-import './Dashboard.css';
-import './NetworkServers.css';
-import './Navbar.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import '../Dashboard.css';
+import '../NetworkServers.css'
+import '../Navbar.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,31 +16,21 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
-import {TablePaginationActions} from './TablePagination.jsx';
-import {key} from "./jwt";
-import Link from '@mui/material/Link';
+import {TablePaginationActions} from '../TablePagination.jsx';
+import {key} from "../jwt";
+import QuickDeleteConfirmationDialog from '../QuickDeleteConfirmationDialog';
 
 
-function Users(){
+function OrganizationApiKeys(){
 
-    const navigate = useNavigate();
-
-    const navigateToAddUser = () => {
-        //  navigate to /add-user
-        navigate('/add-user');
-      };
-
-
-    
     const [data, getData] = useState([]);
-    const URL = 'http://203.162.235.53:8080/api/users?limit=1000';
-    const header = {
-        method:'GET',
+    const URL = "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
+    const header ={
         headers: {
           Accept: "application/json",
           "Grpc-Metadata-Authorization": key
         }
-      };
+      }
  
     useEffect(() => {
         fetchData()
@@ -59,7 +49,6 @@ function Users(){
  
     }
 
-
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -76,23 +65,58 @@ function Users(){
         setPage(0);
     };
 
+    const navigate = useNavigate();
+
+    const navigateToAddApiKey = () => {
+        //  navigate to /add-api-key
+        navigate('add-api-key');
+      };
+
+    
+    const URLdel = "http://203.162.235.53:8080/api/internal/api-keys/"
+
+      const deleteData = (id) => {
+        const header ={
+          headers: {
+            Accept: "application/json",
+            "Grpc-Metadata-Authorization": key
+          },
+          method: "DELETE"
+        };
+          fetch(URLdel+id, header)
+              .then((res) =>
+                  res.json())
+   
+              .then((response) => {
+                  console.log(response);
+                  if(response.error){
+                    alert(response.error);
+                  }else{
+                    window.location.reload(false);
+                    alert("API Key deleted !")
+                  }
+              })
+      };
+
+
     return(
     <section className="home">
         <div className="title text">
-             <b>Users</b>
+             <b>Organization API Keys</b>
         </div>
         <div className="add-button">
-            <Button variant="contained" onClick={navigateToAddUser}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddApiKey}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 200 }}>Email</TableCell>
-                            <TableCell sx={{ width: 200 }}>Active</TableCell>
-                            <TableCell sx={{ width: 200 }}>Admin</TableCell>
-                            <TableCell sx={{ width: 50 }}></TableCell>
+                            <TableCell sx={{ width: 300 }}>ID</TableCell>
+                            <TableCell sx={{ width: 300 }}>Name</TableCell>
+                            <TableCell sx={{ width: 50 }}>
+                            </TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -104,11 +128,12 @@ function Users(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.email}
+                                {item.id}
                             </TableCell>
-                            <TableCell><FontAwesomeIcon icon={item.isActive ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <Link href={'users/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>
+                                <QuickDeleteConfirmationDialog fun={deleteData} name="API Key" id={item.id}/>
+                            </TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (
@@ -121,7 +146,7 @@ function Users(){
                         <TableRow>
                             <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={4}
+                            colSpan={3}
                             count={data.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
@@ -144,4 +169,4 @@ function Users(){
     );
 }
 
-export default Users;
+export default OrganizationApiKeys;

@@ -69,9 +69,11 @@ body.dark{
     margin-top: 10px;
 }
 
-.sidebar header .image,
-.sidebar .icon,
-.sidebar .ficon{
+.sidebar .nav-link-icon{
+    width: 75px;
+}
+
+.sidebar header .image{
     min-width: 60px;
     border-radius: 6px;
 }
@@ -220,6 +222,10 @@ body.dark .sidebar li a:hover .ficon{
   height: 40%;
 }
 
+.sidebar .icon-grid{
+    margin-left: 7px;
+}
+
 .sidebar .menu-bar{
     height: calc(100% - 55px);
     display: flex;
@@ -321,3 +327,4 @@ body.dark .home .text{
 body.dark .home .dark-if-needed{
     background-color: #4f4f4f;
 }
+

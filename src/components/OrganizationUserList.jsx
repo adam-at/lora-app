@@ -21,19 +21,19 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 
 
-function Users(){
+function OrganizationUserList(){
 
     const navigate = useNavigate();
 
     const navigateToAddUser = () => {
         //  navigate to /add-user
-        navigate('/add-user');
+        navigate('add-user');
       };
 
 
     
     const [data, getData] = useState([]);
-    const URL = 'http://203.162.235.53:8080/api/users?limit=1000';
+    const URL = "http://203.162.235.53:8080/api"+window.location.pathname+"?limit=1000";
     const header = {
         method:'GET',
         headers: {
@@ -44,7 +44,7 @@ function Users(){
  
     useEffect(() => {
         fetchData()
-    }, [])
+    }, []);
  
  
     const fetchData = () => {
@@ -58,7 +58,6 @@ function Users(){
             })
  
     }
-
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -79,7 +78,7 @@ function Users(){
     return(
     <section className="home">
         <div className="title text">
-             <b>Users</b>
+             <b>Organization Users</b>
         </div>
         <div className="add-button">
             <Button variant="contained" onClick={navigateToAddUser}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
@@ -89,9 +88,10 @@ function Users(){
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 200 }}>Email</TableCell>
-                            <TableCell sx={{ width: 200 }}>Active</TableCell>
-                            <TableCell sx={{ width: 200 }}>Admin</TableCell>
+                            <TableCell sx={{ width: 150 }}>Email</TableCell>
+                            <TableCell sx={{ width: 150 }}>Organization Admin</TableCell>
+                            <TableCell sx={{ width: 150 }}>Gateway Admin</TableCell>
+                            <TableCell sx={{ width: 150 }}>Device Admin</TableCell>
                             <TableCell sx={{ width: 50 }}></TableCell>
                         </TableRow>
                     </TableHead>
@@ -106,9 +106,10 @@ function Users(){
                             <TableCell component="th" scope="row">
                                 {item.email}
                             </TableCell>
-                            <TableCell><FontAwesomeIcon icon={item.isActive ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <Link href={'users/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
+                            <TableCell><FontAwesomeIcon icon={item.isAdmin ? solid("check") : solid("times")}/></TableCell>
+                            <TableCell> <FontAwesomeIcon icon={item.isGatewayAdmin || item.isAdmin ? solid("check") : solid("times")}/></TableCell>
+                            <TableCell> <FontAwesomeIcon icon={item.isDeviceAdmin || item.isAdmin ? solid("check") : solid("times")}/></TableCell>
+                            <TableCell> <Link href={window.location.pathname+'/'+item.userID}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (
@@ -121,7 +122,7 @@ function Users(){
                         <TableRow>
                             <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={4}
+                            colSpan={5}
                             count={data.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
@@ -144,4 +145,4 @@ function Users(){
     );
 }
 
-export default Users;
+export default OrganizationUserList;

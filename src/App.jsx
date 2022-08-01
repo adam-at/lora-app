@@ -23,6 +23,14 @@ import UpdateNetworkServer from './components/pages/UpdateNetworkServer';
 import UpdateGateway from './components/pages/UpdateGateway';
 import OrganizationDetails from './components/pages/OrganizationDetails';
 import Search from './components/pages/Search.jsx';
+import OrganizationUsers from './components/pages/OrganizationUsers';
+import OrganizationApiKeys from './components/pages/OrganizationApiKeys';
+import OrganizationServiceProfiles from './components/pages/OrganizationServiceProfiles';
+import OrganizationDeviceProfiles from './components/pages/OrganizationDeviceProfiles';
+import OrganizationGateways from './components/pages/OrganizationGateways';
+import OrganizationApplications from './components/pages/OrganizationApplications';
+import AddOrganizationUser from './components/pages/AddOrganizationUser';
+import AddOrganizationApiKey from './components/pages/AddOrganizationApiKey';
 
 function App() {
   return (
@@ -43,11 +51,19 @@ function App() {
           <Route path="/add-network-server" element={<AddNetworkServer/>}/>
           <Route path="/add-organization" element={<AddOrganization/>}/>
           <Route path="/password" element={<UpdatePassword/>}/>
-          <Route path="/users/*" element={<UpdateUser/>}/>
-          <Route path="/network-servers/*" element={<UpdateNetworkServer/>}/>
-          <Route path="/gateway-profiles/*" element={<UpdateGateway/>}/>
-          <Route path="/organizations/*" element={<OrganizationDetails/>}/>
+          <Route path="/users/:id" element={<UpdateUser/>}/>
+          <Route path="/network-servers/:id" element={<UpdateNetworkServer/>}/>
+          <Route path="/gateway-profiles/:id" element={<UpdateGateway/>}/>
+          <Route path="/organizations/:id" element={<OrganizationDetails/>}/>
           <Route path="/search" element={<Search/>}/>
+          <Route path="/organizations/:id/users" element={<OrganizationUsers/>}/>
+          <Route path="/organizations/:id/api-keys" element={<OrganizationApiKeys/>}/>
+          <Route path="/organizations/:id/service-profiles" element={<OrganizationServiceProfiles/>}/>
+          <Route path="/organizations/:id/device-profiles" element={<OrganizationDeviceProfiles/>}/>
+          <Route path="/organizations/:id/gateways" element={<OrganizationGateways/>}/>
+          <Route path="/organizations/:id/applications" element={<OrganizationApplications/>}/>
+          <Route path="/organizations/:id/users/add-user" element={<AddOrganizationUser/>}/>
+          <Route path="/organizations/:id/api-keys/add-api-key" element={<AddOrganizationApiKey/>}/>
         </Routes>
       </Router>
     </div>

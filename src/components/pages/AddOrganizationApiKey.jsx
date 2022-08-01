@@ -1,14 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
-import React from 'react';
 import { Paper, FormControl, InputLabel, Grid } from '@mui/material';
 import Input from '@mui/material/Input';
-import "./Form.css";
+import "../Form.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
-import {key} from "./jwt";
+import {key} from "../jwt";
 
-function AddApiKeyForm() {
+function AddOrganizationApiKey() {
   const [name, setName] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
 
@@ -18,9 +17,9 @@ function AddApiKeyForm() {
   const [apiKey, setApiKey] = useState({
     "apiKey": {
       "applicationID": "0",
-      "isAdmin": true,
+      "isAdmin": false,
       "name": "",
-      "organizationID": "1"
+      "organizationID": "0"
     }
   });
 
@@ -58,6 +57,7 @@ function AddApiKeyForm() {
   const handleSubmitApiKey = () => {
     const new_key = apiKey;
     new_key["apiKey"]["name"]=name;
+    new_key["apiKey"]["organizationID"]=window.location.pathname.substring(15,window.location.pathname.length-21);
     setApiKey(new_key);
     console.log(apiKey);
 
@@ -67,7 +67,7 @@ function AddApiKeyForm() {
 
   const navigate = useNavigate();
   const navigateToApiKeys = () => {
-    navigate('/api-keys');
+    navigate(window.location.pathname.substring(0,window.location.pathname.length-12));
   };
 
   return (
@@ -151,4 +151,4 @@ function AddApiKeyForm() {
   )
 }
 
-export default AddApiKeyForm
+export default AddOrganizationApiKey;

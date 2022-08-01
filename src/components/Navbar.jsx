@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './Navbar.css'
 import { useNavigate } from 'react-router-dom';
+import OrganizationSelect from './OrganizationSelect';
 
 
 function Navbar() {
@@ -55,7 +56,7 @@ const handleSearch = () => {
 
   return (
     <>
-       <nav className="sidebar close">
+       <nav className="sidebar">
         <header>
             <div className="image-text">
                 <span className="image">
@@ -122,6 +123,8 @@ const handleSearch = () => {
                         </a>
                     </li>
 
+                    <OrganizationSelect/>
+                
                 </ul>
             </div>
 
