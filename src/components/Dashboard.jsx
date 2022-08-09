@@ -4,8 +4,11 @@ import './Dashboard.css';
 import './Navbar.css';
 import Grid from '@mui/material/Grid';
 import DashboardLayout from './DashboardLayout';
+import UserProfile from './UserProfile';
 
 function Dashboard() {
+
+  console.log(JSON.parse(localStorage.getItem("user")));
   return (
     <section className='home'>
         <div className="title text">

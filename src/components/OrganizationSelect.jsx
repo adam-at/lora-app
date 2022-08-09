@@ -8,6 +8,8 @@ import {key} from "./jwt";
 import "./Navbar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { Logout } from '@mui/icons-material';
+
 
 function OrganizationSelect(){
     const [organization, setOrganization] = React.useState(0);
@@ -49,9 +51,12 @@ function OrganizationSelect(){
    
               .then((response) => {
                   console.log(response.result);
-                  setData(response.result);
-                  setFirstData(response.result[0]);
-                  
+                  if(response.error){
+                    alert(response.error);
+                  }else{
+                    setData(response.result);
+                    setFirstData(response.result[0]);
+                  }
               })
    
       };

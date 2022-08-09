@@ -31,15 +31,25 @@ import OrganizationGateways from './components/pages/OrganizationGateways';
 import OrganizationApplications from './components/pages/OrganizationApplications';
 import AddOrganizationUser from './components/pages/AddOrganizationUser';
 import AddOrganizationApiKey from './components/pages/AddOrganizationApiKey';
+import Login from './components/pages/Login';
+import UserProfile from "./components/UserProfile";
 
 function App() {
+
+  const user = UserProfile.getUser();
+  if(!user){
+    return(
+    <Login/>
+    )
+  }
+
+
   return (
-    <div className='App'>
-      <Router>
-        <Navbar  />
+    <>
+        <Navbar/>
         <Routes>
-          <Route path="/dashboard" exact element={<Home />} />
-          <Route path="*" exact element={<Home />} />
+          <Route exact path="/dashboard" element={<Home/>} />
+          <Route path="*" element={<Home />} />
           <Route path="/network-servers" element={<AllNetworkServers/>}/>
           <Route path="/gateway-profiles" element={<AllGateways/>}/>
           <Route path="/organizations" element={<AllOrganizations/>}/>
@@ -64,9 +74,9 @@ function App() {
           <Route path="/organizations/:id/applications" element={<OrganizationApplications/>}/>
           <Route path="/organizations/:id/users/add-user" element={<AddOrganizationUser/>}/>
           <Route path="/organizations/:id/api-keys/add-api-key" element={<AddOrganizationApiKey/>}/>
+          <Route path="/login" element={<Login/>}/>
         </Routes>
-      </Router>
-    </div>
+        </>
   );
 }
 

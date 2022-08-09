@@ -4,6 +4,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import './Navbar.css'
 import { useNavigate } from 'react-router-dom';
 import OrganizationSelect from './OrganizationSelect';
+import Link from '@mui/material/Link';
 
 
 function Navbar() {
@@ -53,6 +54,36 @@ const handleSearch = () => {
 }
 }
 
+const handleLogOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("organizations");
+    localStorage.removeItem("jwt");
+};
+
+const navigateToDashboard = () => {
+    navigate("/dashboard")
+}
+
+const navigateToNetworkServers = () => {
+    navigate("/network-servers")
+}
+
+const navigateToGateways = () => {
+    navigate("/gateway-profiles")
+}
+
+const navigateToOrganizations = () => {
+    navigate("/organizations")
+}
+
+const navigateToUsers = () => {
+    navigate("/users")
+}
+
+const navigateToApiKeys = () => {
+    navigate("/api-keys")
+}
+
 
   return (
     <>
@@ -82,45 +113,45 @@ const handleSearch = () => {
 
                 <ul className="menu-links">
                     <li className="nav-link">
-                        <a href="/dashboard">
+                        <Link onClick={navigateToDashboard}>
                             <FontAwesomeIcon icon={solid("house")} className="ficon"></FontAwesomeIcon>
                             <span className="text nav-text">Dashboard</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <li className="nav-link">
-                        <a href="/network-servers">
+                        <Link onClick={navigateToNetworkServers}>
                         <FontAwesomeIcon icon={solid("server")} className="ficon"></FontAwesomeIcon>
                             <span className="text nav-text">Network Servers</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <li className="nav-link">
-                        <a href="/gateway-profiles">
+                        <Link onClick={navigateToGateways}>
                             <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"></FontAwesomeIcon>
                             <span className="text nav-text">Gateway Profiles</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <li className="nav-link">
-                        <a href="/organizations">
+                        <Link onClick={navigateToOrganizations}>
                             <FontAwesomeIcon icon={solid("landmark")} className="ficon"/>
                             <span className="text nav-text">Organizations</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <li className="nav-link">
-                        <a href="/users">
+                        <Link onClick={navigateToUsers}>
                             <FontAwesomeIcon icon={solid("users")} className="ficon"/>
                             <span className="text nav-text">All Users</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <li className="nav-link">
-                        <a href="/api-keys">
+                        <Link onClick={navigateToApiKeys}>
                             <FontAwesomeIcon icon={solid("key")} className="ficon"/>
                             <span className="text nav-text">API Keys</span>
-                        </a>
+                        </Link>
                     </li>
 
                     <OrganizationSelect/>
@@ -136,7 +167,7 @@ const handleSearch = () => {
                     </a>
                 </li>
                 <li className="">
-                    <a href="#">
+                    <a href="/login" onClick={handleLogOut}>
                         <i className='bx bx-log-out icon' ></i>
                         <span className="text nav-text">Logout</span>
                     </a>
