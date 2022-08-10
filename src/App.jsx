@@ -33,6 +33,10 @@ import AddOrganizationUser from './components/pages/AddOrganizationUser';
 import AddOrganizationApiKey from './components/pages/AddOrganizationApiKey';
 import Login from './components/pages/Login';
 import UserProfile from "./components/UserProfile";
+import UpdateOrganizationUser from './components/pages/UpdateOrganizationUser';
+import AddOrganizationServiceProfile from './components/pages/AddOrganizationServiceProfile';
+import UpdateOrganizationServiceProfile from './components/pages/UpdateOrganizationServiceProfile';
+import AddOrganizationApplication from './components/pages/AddOrganizationApplication';
 
 function App() {
 
@@ -74,7 +78,10 @@ function App() {
           <Route path="/organizations/:id/applications" element={<OrganizationApplications/>}/>
           <Route path="/organizations/:id/users/add-user" element={<AddOrganizationUser/>}/>
           <Route path="/organizations/:id/api-keys/add-api-key" element={<AddOrganizationApiKey/>}/>
-          <Route path="/login" element={<Login/>}/>
+          <Route path="/organizations/:id/users/:id" element={<UpdateOrganizationUser/>}/>
+          <Route path="/organizations/:id/service-profiles/add" element={<AddOrganizationServiceProfile/>}/>
+          <Route path="/organizations/:id/service-profiles/:id" element={<UpdateOrganizationServiceProfile/>}/>
+          <Route path="/organizations/:id/applications/add" element={<AddOrganizationApplication/>}/>
         </Routes>
         </>
   );

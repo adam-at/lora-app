@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
-import KeyIcon from '@mui/icons-material/Key';
 import Input from '@mui/material/Input';
 import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
+import KeyIcon from '@mui/icons-material/Key';
 import {key} from "./jwt";
 
 function AddUserForm() {

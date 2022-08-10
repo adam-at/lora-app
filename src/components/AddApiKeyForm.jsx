@@ -17,10 +17,10 @@ function AddApiKeyForm() {
 
   const [apiKey, setApiKey] = useState({
     "apiKey": {
-      "applicationID": "0",
+      "applicationID": 0,
       "isAdmin": true,
       "name": "",
-      "organizationID": "1"
+      "organizationID": 0
     }
   });
 

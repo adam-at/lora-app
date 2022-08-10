@@ -74,6 +74,10 @@ function Organizations(){
         navigate('/add-organization');
       };
 
+    const navigateToOrganization = (e) =>{
+        navigate("/organizations/"+e)
+    }
+
 
     return(
     <section className="home">
@@ -103,7 +107,7 @@ function Organizations(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                            <Link href={'organizations/'+item.id}>{item.name}</Link>
+                            <Link onClick={() => navigateToOrganization(item.id)}>{item.name}</Link>
                             </TableCell>
                             <TableCell>{item.displayName}</TableCell>
                             <TableCell> <FontAwesomeIcon icon={item.canHaveGateways ? solid("check") : solid("times")}/></TableCell>

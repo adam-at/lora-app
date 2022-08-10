@@ -78,6 +78,11 @@ const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     fetchData();
   }, []);
 
+  const org = localStorage.getItem("selectedOrganization");
+    useEffect(() => {
+        fetchData()
+    }, [org]);
+
   const updateData= (organization) => {
     const strOrganization = JSON.stringify(organization);
       const header ={

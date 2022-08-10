@@ -247,6 +247,10 @@ body.dark .sidebar li a:hover .ficon{
     transition: var(--tran-05);
 }
 
+body.dark .sidebar .select-organization{
+    color: var(--text-color);
+}
+
 .menu-bar .mode .sun-moon{
     height: 50px;
     width: 60px;

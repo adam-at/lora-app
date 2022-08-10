@@ -35,7 +35,12 @@ function OrganizationServiceProfiles(){
  
     useEffect(() => {
         fetchData()
-    }, [])
+    }, []);
+
+    const org = localStorage.getItem("selectedOrganization");
+    useEffect(() => {
+        fetchData()
+    }, [org]);
  
  
     const fetchData = () => {
@@ -69,7 +74,7 @@ function OrganizationServiceProfiles(){
     const navigate = useNavigate();
 
     const navigateToAddServiceProfile = () => {
-        navigate('/add-service-profile');
+        navigate('add');
       };
 
 

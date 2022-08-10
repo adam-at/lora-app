@@ -23,6 +23,9 @@ import QuickDeleteConfirmationDialog from '../QuickDeleteConfirmationDialog';
 
 function OrganizationApiKeys(){
 
+    const org = localStorage.getItem("selectedOrganization");
+    
+
     const [data, getData] = useState([]);
     const URL = "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
     const header ={
@@ -34,7 +37,11 @@ function OrganizationApiKeys(){
  
     useEffect(() => {
         fetchData()
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        fetchData()
+    }, [org]);
  
  
     const fetchData = () => {
@@ -102,7 +109,7 @@ function OrganizationApiKeys(){
     return(
     <section className="home">
         <div className="title text">
-             <b>Organization API Keys</b>
+             <b>Organization API Keys </b>
         </div>
         <div className="add-button">
             <Button variant="contained" onClick={navigateToAddApiKey}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>

@@ -35,7 +35,12 @@ function OrganizationApplications(){
  
     useEffect(() => {
         fetchData()
-    }, [])
+    }, []);
+
+    const org = localStorage.getItem("selectedOrganization");
+    useEffect(() => {
+        fetchData()
+    }, [org]);
  
  
     const fetchData = () => {
@@ -68,8 +73,8 @@ function OrganizationApplications(){
 
     const navigate = useNavigate();
 
-    const navigateToAddDeviceProfile = () => {
-        navigate('/add-device-profile');
+    const navigateToAddApplications = () => {
+        navigate('add');
       };
 
 
@@ -79,7 +84,7 @@ function OrganizationApplications(){
              <b>Organization Applications</b>
         </div>
         <div className="add-button">
-            <Button variant="contained" onClick={navigateToAddDeviceProfile}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddApplications}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
@@ -106,7 +111,9 @@ function OrganizationApplications(){
                             <TableCell>
                                 <Link href={'applications/'+item.id}>{item.name}</Link>
                             </TableCell>
-                            <TableCell>{item.serviceProfileId}</TableCell>
+                            <TableCell>
+                                <Link href={'service-profiles/'+item.serviceProfileID}>{item.serviceProfileName}</Link>
+                            </TableCell>
                             <TableCell>{item.description}</TableCell>
                             </TableRow>
                         ))}

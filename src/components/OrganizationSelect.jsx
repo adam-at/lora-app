@@ -8,23 +8,14 @@ import {key} from "./jwt";
 import "./Navbar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { Logout } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 
 function OrganizationSelect(){
     const [organization, setOrganization] = React.useState(0);
 
     const [data, setData] = useState([]);
-    const [firstData, setFirstData] = useState(
-      {
-        "id": "",
-        "name": "",
-        "displayName": "",
-        "canHaveGateways": true,
-        "createdAt": "",
-        "updatedAt": ""
-    }
-);
 
     const URL = "http://203.162.235.53:8080/api/organizations?limit=1000";
       const header ={
@@ -39,9 +30,9 @@ function OrganizationSelect(){
       }, [])
 
       useEffect(() => {
-        setOrganization(firstData.id);
+        setOrganization(localStorage.getItem("selectedOrganization"));
         console.log(organization);
-    }, [firstData])
+    }, [localStorage.getItem("selectedOrganization")])
    
    
       const fetchServerData = () => {
@@ -55,24 +46,62 @@ function OrganizationSelect(){
                     alert(response.error);
                   }else{
                     setData(response.result);
-                    setFirstData(response.result[0]);
+                    const firstData = response.result[0];
+                    localStorage.setItem("selectedOrganization", firstData.id);
                   }
               })
    
       };
 
 
+    const handleOrganizationChange = (e) => {
+        setOrganization(e.target.value);
+        localStorage.setItem("selectedOrganization", organization);
+        console.log(localStorage.getItem("selectedOrganization"));
+        navigate("/organizations/"+e.target.value);
+    }
+
+    const navigate = useNavigate();
+    
+      const navigateToOrganizationDashboard = () => {
+        navigate("/organizations/"+organization);
+    }
+    
+    const navigateToOrganizationUsers = () => {
+        navigate("/organizations/"+organization+"/users");
+    }
+    
+    const navigateToOrganizationGateways = () => {
+        navigate("/organizations/"+organization+"/gateways")
+    }
+    
+    const navigateToOrganizationServices = () => {
+        navigate("/organizations/"+organization+"/service-profiles")
+    }
+    
+    const navigateToOrganizationDevices = () => {
+        navigate("/organizations/"+organization+"/device-profiles")
+    }
+    
+    const navigateToOrganizationApiKeys = () => {
+        navigate("/organizations/"+organization+"/api-keys")
+    }
+
+    const navigateToOrganizationApplications = () => {
+      navigate("/organizations/"+organization+"/applications")
+  }
     
 
     return(
       <>
       <li className="nav-link">
         <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Organization</InputLabel>
+        <InputLabel id="demo-simple-select-label" className="select-organization">Organization</InputLabel>
         <Select
           value={organization}
           label="Organization"
-          onChange={(e)=>setOrganization(e.target.value)}
+          onChange={(e)=>handleOrganizationChange(e)}
+          className="select-organization"
         >
             {data.map((server,index) => 
                 <MenuItem key={index} value={server.id}>{server.name}</MenuItem>
@@ -82,33 +111,33 @@ function OrganizationSelect(){
       </li>
 
       <li className="nav-link">
-        <a href={`/organizations/${organization}`}>
+        <Link onClick={navigateToOrganizationDashboard}>
             <FontAwesomeIcon icon={solid("house")} className="ficon icon-grid"></FontAwesomeIcon>
-        </a>
-        <a href={`/organizations/${organization}/users`}>
+        </Link>
+        <Link onClick={navigateToOrganizationUsers}>
             <FontAwesomeIcon icon={solid("user")} className="ficon icon-grid"/>
-        </a>
-        <a href={`/organizations/${organization}/api-keys`}>
+        </Link>
+        <Link onClick={navigateToOrganizationApiKeys}>
             <FontAwesomeIcon icon={solid("key")} className="ficon icon-grid"/>
-        </a>
+        </Link>
       </li>
 
       <li className="nav-link">
-        <a href={`/organizations/${organization}/service-profiles`}>
+        <Link onClick={navigateToOrganizationServices}>
             <FontAwesomeIcon icon={solid("address-card")} className="ficon icon-grid"></FontAwesomeIcon>
-        </a>
-        <a href={`/organizations/${organization}/device-profiles`}>
+        </Link>
+        <Link onClick={navigateToOrganizationDevices}>
         <FontAwesomeIcon icon={solid("sliders")} className="ficon icon-grid"/>
-        </a>
-        <a href={`/organizations/${organization}/gateways`}>
+        </Link>
+        <Link onClick={navigateToOrganizationGateways}>
         <FontAwesomeIcon icon={solid("tower-cell")} className="ficon icon-grid"/>
-        </a>
+        </Link>
       </li>
       
-      <li className="nav-link-icon">
-        <a href={`/organizations/${organization}/applications`}>
+      <li className="nav-link nav-link-icon">
+        <Link onClick={navigateToOrganizationApplications}>
             <FontAwesomeIcon icon={solid("shapes")} className="ficon icon-grid"></FontAwesomeIcon>
-        </a>
+        </Link>
       </li>
       </>
     );

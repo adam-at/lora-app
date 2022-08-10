@@ -6,12 +6,16 @@ import "../Form.css";
 import { useNavigate } from 'react-router-dom';
 import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
+import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
+import PersonIcon from '@mui/icons-material/Person';
 
-function AddOrganizationUser() {
+function UpdateOrganizationUser() {
   const [email, setEmail] = useState("");
   const [isDeviceAdmin, setDeviceAdmin] = useState(false);
   const [isGatewayAdmin, setGatewayAdmin] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [organizationId, setOrganizationId] = useState("");
 
   const [organizationUser, setOrganizationUser] = useState(
     {
@@ -19,16 +23,53 @@ function AddOrganizationUser() {
         "email": "",
         "isDeviceAdmin": false,
         "isGatewayAdmin": false,
-        "isAdmin": false
+        "isAdmin": false,
+        "organizationID": "",
+        "userID": ""
       }
     }
   );
+    
+ 
+  const fetchData = () => {
+      const header ={
+        headers: {
+          Accept: "application/json",
+          "Grpc-Metadata-Authorization": key 
+        },
+        method: "GET"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                const res = response.organizationUser;
+                setEmail(res.email);
+                setAdmin(res.isAdmin);
+                setDeviceAdmin(res.isDeviceAdmin);
+                setGatewayAdmin(res.isGatewayAdmin);
+                setUserId(res.userID);
+                setOrganizationId(res.organizationID);
+                }
+            })
+ 
+    };
 
-  const URL = "http://203.162.235.53:8080/api"+window.location.pathname.substring(0,window.location.pathname.length-9);
+  useEffect(() => {
+    fetchData();}, []
+  );
+
+
+  const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  
-    const postData = (user) => {
+    const updateData = (user) => {
       const strUser = JSON.stringify(user);
       const header ={
         body: strUser,
@@ -37,7 +78,7 @@ function AddOrganizationUser() {
           "Content-Type": "application/json",
           "Grpc-Metadata-Authorization": key
         },
-        method: "POST"
+        method: "PUT"
       };
         fetch(URL, header)
             .then((res) =>
@@ -71,38 +112,73 @@ function AddOrganizationUser() {
 const navigate = useNavigate();
 const navigateToUsers = () => {
   //  navigate to /users
-  navigate(window.location.pathname.substring(0,window.location.pathname.length-9));
+  navigate("/organizations/"+organizationId+"/users");
 };
 
-const handleUserSubmit = () => {
-  const new_user = organizationUser;
-  new_user["organizationUser"]["email"] = email;
-  new_user["organizationUser"]["isAdmin"] = isAdmin;
-  new_user["organizationUser"]["isGatewayAdmin"] = isGatewayAdmin;
-  new_user["organizationUser"]["isDeviceAdmin"] = isDeviceAdmin;
-  setOrganizationUser(new_user);
+const navigateToUser = () => {
+  navigate("/users/"+userId);
+}
+
+const handleUserUpdate = () => {
+  const updated_user = organizationUser;
+  updated_user["organizationUser"]["email"] = email;
+  updated_user["organizationUser"]["isAdmin"] = isAdmin;
+  updated_user["organizationUser"]["isGatewayAdmin"] = isGatewayAdmin;
+  updated_user["organizationUser"]["isDeviceAdmin"] = isDeviceAdmin;
+  updated_user["organizationUser"]["organizationID"] = organizationId;
+  updated_user["organizationUser"]["userID"] = userId;
+
+  setOrganizationUser(updated_user);
   console.log(organizationUser);
 
-  postData(organizationUser);
+  updateData(organizationUser);
 
   /* if error 400 stay on the same page with an error alert, else go go to /users*/ 
 }
 
+const deleteData = () => {
+  const header ={
+    headers: {
+      Accept: "application/json",
+      "Grpc-Metadata-Authorization": key
+    },
+    method: "DELETE"
+  };
+    fetch(URL, header)
+        .then((res) =>
+            res.json())
+
+        .then((response) => {
+            console.log(response);
+            if(response.error){
+              alert(response.error);
+            }else{
+            navigateToUsers();
+            alert("User deleted from organization !")
+            }
+        })
+};
+
   return (
     <section className="home">
-      <div className="title text"> <b> Add a new user to the organization</b></div>
+      <div className="title text"> <b> Update a user of the organization</b></div>
+      <div className="delete-button">
+        <DeleteConfirmationDialog fun={deleteData} name="organization user"/>
+        <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<PersonIcon />} onClick={navigateToUser}>
+         Go to user
+        </Button>
+      </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: '95%'}}>
-              <InputLabel variant="standard" required>Email Address</InputLabel>
+              <InputLabel variant="standard" required >Email Address</InputLabel>
               <Input
-                required
+                disabled
                 id="email-address"
                 type="text"
                 value={email}
                 fullWidth
-                onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
           </Grid>
@@ -140,7 +216,7 @@ const handleUserSubmit = () => {
           
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleUserSubmit}> Add user </Button>
+            <Button variant="contained" onClick={handleUserUpdate}> Update user </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToUsers}> Cancel </Button>
@@ -151,4 +227,4 @@ const handleUserSubmit = () => {
   )
 }
 
-export default AddOrganizationUser;
+export default UpdateOrganizationUser;
