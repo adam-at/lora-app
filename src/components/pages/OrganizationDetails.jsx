@@ -10,6 +10,18 @@ import '../Navbar.css';
 import Grid from '@mui/material/Grid';
 import DashboardLayout from '../DashboardLayout';
 
+function LinkTab(props) {
+  return (
+    <Tab
+      component="a"
+      onClick={(event) => {
+        event.preventDefault();
+      }}
+      {...props}
+    />
+  );
+}
+
 function UpdateOrganization() {
 
 //Handling tabs
@@ -27,8 +39,8 @@ const handleChange = (event, newValue) => {
         value={value}
         aria-label="Tabs where each tab needs to be selected manually"
       >
-        <Tab label="Dashboard" />
-        <Tab label="Configuration" />
+        <LinkTab label="Dashboard" />
+        <LinkTab label="Configuration" href="/edit"/>
       </Tabs>
       </div>
       <TabPanel value={value} index={0}>

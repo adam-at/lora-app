@@ -24,6 +24,7 @@ var UserProfile = (function() {
   var setOrganizations = function(organizationList) {
     organizations = organizationList;
     localStorage.setItem("organizations", JSON.stringify(organizationList));
+    localStorage.setItem("selectedOrganization", JSON.stringify(organizationList[0]));
   }
 
   var getJwt = function() {

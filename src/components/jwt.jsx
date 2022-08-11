@@ -1,2 +1,4 @@
-export const jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcyIsImV4cCI6MTY2MDE4NjQwMywiaWQiOjEsImlzcyI6ImFzIiwibmJmIjoxNjYwMTAwMDAzLCJzdWIiOiJ1c2VyIiwidXNlcm5hbWUiOiJhZG1pbiJ9.CUcQePkV0L5oLkLLr9AC0kxJa5aAVw3qcgJGmRxAUHo";
+import React from 'react';
+
+export const jwt = localStorage.getItem("jwt");
 export const key = "Bearer " + jwt;

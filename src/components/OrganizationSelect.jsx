@@ -13,7 +13,7 @@ import Link from '@mui/material/Link';
 
 
 function OrganizationSelect(){
-    const [organization, setOrganization] = React.useState(0);
+    const [organization, setOrganization] = React.useState(JSON.parse(localStorage.getItem("selectedOrganization")));
 
     const [data, setData] = useState([]);
 
@@ -29,10 +29,6 @@ function OrganizationSelect(){
           fetchServerData();
       }, [])
 
-      useEffect(() => {
-        setOrganization(localStorage.getItem("selectedOrganization"));
-        console.log(organization);
-    }, [localStorage.getItem("selectedOrganization")])
    
    
       const fetchServerData = () => {
@@ -46,8 +42,6 @@ function OrganizationSelect(){
                     alert(response.error);
                   }else{
                     setData(response.result);
-                    const firstData = response.result[0];
-                    localStorage.setItem("selectedOrganization", firstData.id);
                   }
               })
    
@@ -58,8 +52,11 @@ function OrganizationSelect(){
         setOrganization(e.target.value);
         localStorage.setItem("selectedOrganization", organization);
         console.log(localStorage.getItem("selectedOrganization"));
-        navigate("/organizations/"+e.target.value);
     }
+
+    useEffect(() => {
+      navigate("/organizations/"+organization);;
+  }, [organization])
 
     const navigate = useNavigate();
     
