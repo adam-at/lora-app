@@ -74,7 +74,7 @@ function OrganizationDeviceProfiles(){
     const navigate = useNavigate();
 
     const navigateToAddDeviceProfile = () => {
-        navigate('/add-device-profile');
+        navigate('add');
       };
 
 

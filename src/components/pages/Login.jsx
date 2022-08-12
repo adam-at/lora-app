@@ -104,6 +104,7 @@ export default function Login() {
               }else{
                 UserProfile.setUser(response.user);
                 UserProfile.setOrganizations(response.organizations);
+                console.log(response.organizations);
                 setLoggedIn(true);
               }
           })

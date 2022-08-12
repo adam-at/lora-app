@@ -37,6 +37,7 @@ import UpdateOrganizationUser from './components/pages/UpdateOrganizationUser';
 import AddOrganizationServiceProfile from './components/pages/AddOrganizationServiceProfile';
 import UpdateOrganizationServiceProfile from './components/pages/UpdateOrganizationServiceProfile';
 import AddOrganizationApplication from './components/pages/AddOrganizationApplication';
+import AddOrganizationDeviceProfile from './components/pages/AddOrganizationDeviceProfile';
 
 function App() {
 
@@ -64,7 +65,7 @@ function App() {
           <Route path="/add-api-key" element={<AddApiKey/>}/>
           <Route path="/add-network-server" element={<AddNetworkServer/>}/>
           <Route path="/add-organization" element={<AddOrganization/>}/>
-          <Route path="/password" element={<UpdatePassword/>}/>
+          <Route path="/users/:id/password" element={<UpdatePassword/>}/>
           <Route path="/users/:id" element={<UpdateUser/>}/>
           <Route path="/network-servers/:id" element={<UpdateNetworkServer/>}/>
           <Route path="/gateway-profiles/:id" element={<UpdateGateway/>}/>
@@ -82,6 +83,7 @@ function App() {
           <Route path="/organizations/:id/service-profiles/add" element={<AddOrganizationServiceProfile/>}/>
           <Route path="/organizations/:id/service-profiles/:id" element={<UpdateOrganizationServiceProfile/>}/>
           <Route path="/organizations/:id/applications/add" element={<AddOrganizationApplication/>}/>
+          <Route path="/organizations/:id/device-profiles/add" element={<AddOrganizationDeviceProfile/>}/>
         </Routes>
         </>
   );

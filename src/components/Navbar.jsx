@@ -84,6 +84,9 @@ const navigateToApiKeys = () => {
     navigate("/api-keys")
 }
 
+const user = JSON.parse(localStorage.getItem("user"));
+const userId = user.id;
+
 
   return (
     <>
@@ -161,7 +164,7 @@ const navigateToApiKeys = () => {
 
             <div className="bottom-content">
                 <li className="">
-                    <a href="/password">
+                    <a href={"/users/"+userId+"/password"}>
                         <FontAwesomeIcon icon={solid("user-pen")} className="ficon"/>
                         <span className="text nav-text">Change Password</span>
                     </a>

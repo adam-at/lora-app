@@ -83,31 +83,31 @@ const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
         fetchData()
     }, [org]);
 
-  const updateData= (organization) => {
-    const strOrganization = JSON.stringify(organization);
-      const header ={
-        body: strOrganization,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Grpc-Metadata-Authorization": key
-        },
-        method: "PUT"
+    const updateData= (organization) => {
+      const strOrganization = JSON.stringify(organization);
+        const header ={
+          body: strOrganization,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Grpc-Metadata-Authorization": key
+          },
+          method: "PUT"
+        };
+          fetch(URL, header)
+              .then((res) =>
+                  res.json())
+   
+              .then((response) => {
+                  console.log(response);
+                  if(response.error){
+                    alert(response.error);
+                  }else{
+                  navigateToOrganizations();
+                  }
+              })
+   
       };
-        fetch(URL, header)
-            .then((res) =>
-                res.json())
- 
-            .then((response) => {
-                console.log(response);
-                if(response.error){
-                  alert(response.error);
-                }else{
-                navigateToOrganizations();
-                }
-            })
- 
-    };
 
     const deleteData = () => {
       const header ={

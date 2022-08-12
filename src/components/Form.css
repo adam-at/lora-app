@@ -46,3 +46,8 @@
     top : 5px;
     right: 20px;
 }
+
+.delete-icon{
+    position: absolute;
+    top: 25px;
+}

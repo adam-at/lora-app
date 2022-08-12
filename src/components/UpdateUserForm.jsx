@@ -134,6 +134,11 @@ const navigateToUsers = () => {
   navigate('/users');
 };
 
+const navigateToPassword = () => {
+  //  navigate to /users
+  navigate('password');
+};
+
 const handleUserUpdate = () => {
   const updated_user = user;
   updated_user["user"]["email"]= email;
@@ -154,7 +159,7 @@ const handleUserUpdate = () => {
       <div className="title text"> <b> Update a user </b> </div>
       <div className="delete-button">
         <DeleteConfirmationDialog fun={deleteData} name="user"/>
-        <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<KeyIcon />}>
+        <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<KeyIcon />} onClick={navigateToPassword}>
          Change Password
         </Button>
       </div>

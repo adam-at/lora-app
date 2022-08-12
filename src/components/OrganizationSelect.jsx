@@ -13,7 +13,7 @@ import Link from '@mui/material/Link';
 
 
 function OrganizationSelect(){
-    const [organization, setOrganization] = React.useState(JSON.parse(localStorage.getItem("selectedOrganization")));
+    const [organization, setOrganization] = useState(localStorage.getItem("selectedOrganization"));
 
     const [data, setData] = useState([]);
 

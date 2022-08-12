@@ -9,9 +9,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import "./Form.css";
+import {key} from "./jwt.jsx"
 
 function UpdatePasswordForm() {
   const [password, setPassword] = useState("");
+  const [passwordUpdate, setPasswordUpdate] = useState(
+    {
+      "password": "",
+      "userId": ""
+    }
+  );
   const [showPassword, setShowPassword]= useState(false);
 
   const handleClickShowPassword = () => {
@@ -27,11 +34,46 @@ function UpdatePasswordForm() {
     navigate('/dashboard');
   };
   
-  const handleUpdatePassword = () => {
-    //TODO: PUT request, retrieve result and check errors
+  const path = window.location.pathname.split("/");
+  const URL = "http://203.162.235.53:8080/api/users/"+path[2]+"/password";
 
-    //go back to home:
-    navigateToDashboard();
+
+  const updateData= (pw) => {
+    const strPw = JSON.stringify(pw);
+      const header ={
+        body: strPw,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Grpc-Metadata-Authorization": key
+        },
+        method: "PUT"
+      };
+        fetch(URL, header)
+            .then((res) =>
+                res.json())
+ 
+            .then((response) => {
+                console.log(response);
+                if(response.error){
+                  alert(response.error);
+                }else{
+                  alert("Password updated !");
+                  navigateToDashboard();
+                }
+            })
+ 
+    };
+
+  
+  const handleUpdatePassword = () => {
+    const new_password = passwordUpdate;
+    new_password["password"]= password;
+    new_password["userId"]= path[2];
+    setPasswordUpdate(new_password);
+    console.log(passwordUpdate);
+  
+    updateData(passwordUpdate);
   };
 
 
@@ -66,7 +108,7 @@ function UpdatePasswordForm() {
             </Grid>
             <Grid item xs={12} sm={5}></Grid>
             <Grid item xs={12} sm={5}>
-              <Button variant="contained" onClick={handleUpdatePassword}> Create User </Button>
+              <Button variant="contained" onClick={handleUpdatePassword}> Update password </Button>
             </Grid>
             <Grid item xs={12} sm={1}>
               <Button variant="contained" onClick={navigateToDashboard}> Cancel </Button>
