@@ -21,6 +21,16 @@ var UserProfile = (function() {
     return organizations; 
   }
 
+  var getOrganizationFromId = function(id){
+    const organizations = JSON.parse(localStorage.getItem("organizations"));
+    for(let i = 0; i<organizations.length; i++){
+      const org = organizations[i];
+      if(org.organizationID==id){
+        return org;
+      }
+    }
+  }
+
   var setOrganizations = function(organizationList) {
     organizations = organizationList;
     localStorage.setItem("organizations", JSON.stringify(organizationList));

@@ -6,11 +6,12 @@ import "../Form.css";
 import { useNavigate } from 'react-router-dom';
 import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
 
 function UpdateOrganizationServiceProfile() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const admin = user.isAdmin;
+
   const [name, setName] = useState("");
   const [networkServerId, setNetworkServerId] = useState("");
   const [addGWMetaData, setAddGWMetaData] = useState(false);
@@ -40,8 +41,6 @@ function UpdateOrganizationServiceProfile() {
       }
   );
 
-  const [data, getData] = useState([]);
-  const URL2 = "http://203.162.235.53:8080/api/network-servers?limit=1000";
   const header ={
       headers: {
         Accept: "application/json",
@@ -51,7 +50,6 @@ function UpdateOrganizationServiceProfile() {
 
   useEffect(() => {
       fetchData();
-      fetchNetworkData();
       setOrganizationId(path[2])
   }, [])
 
@@ -82,17 +80,6 @@ function UpdateOrganizationServiceProfile() {
           })
   }
 
-  const fetchNetworkData = () => {
-      fetch(URL2, header)
-          .then((res) =>
-              res.json())
-
-          .then((response) => {
-              console.log(response);
-              getData(response.result);
-          })
-
-  }
      
  
     const updateData = (service) => {
@@ -176,13 +163,17 @@ const deleteData = () => {
   return (
     <section className="home">
       <div className="title text"> <b> Update a service profile</b></div>
-      <div className="delete-button">
+      {admin && (
+        <div className="delete-button">
         <DeleteConfirmationDialog fun={deleteData} name="service profile"/>
       </div>
+      )}
+      
       <Paper elevation={6} className="form dark-if-needed">
+
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!admin}>
               <InputLabel variant="standard" required>Name</InputLabel>
               <Input
                 required
@@ -195,27 +186,9 @@ const deleteData = () => {
             <FormHelperText variant="standard">A name to identify the service profile.</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
-            <InputLabel variant="standard" required>Network Server</InputLabel>
-            <Select
-              required
-              id="network-server"
-              variant="standard"
-              value={networkServerId}
-              fullWidth
-              onChange={(e) => setNetworkServerId(e.target.value)}
-            >
-              {data.map((server,index) => 
-                <MenuItem key={index} value={server.id}>{server.name}</MenuItem>
-              )}
-            </Select>
-            <FormHelperText variant="standard">The network server on which this service profile will be provisioned. After creating the service profile, this value can't be changed.</FormHelperText>
-            </FormControl>
-          </Grid>
 
           <Grid item xs={12} sm={12}>
-            <FormControlLabel
+            <FormControlLabel disabled={!admin}
               control={<Checkbox color="primary" name="gwMetaData" checked={addGWMetaData} value={addGWMetaData} onChange={()=>setAddGWMetaData(!addGWMetaData)} />}
               label="Add gateway meta-data" className="text"
             />
@@ -223,7 +196,7 @@ const deleteData = () => {
           </Grid>
 
           <Grid item xs={12} sm={12}>
-            <FormControlLabel
+            <FormControlLabel disabled={!admin}
               control={<Checkbox color="primary" name="network-geolocation" checked={nwkGeoLoc} value={nwkGeoLoc} onChange={()=>setNwkGeoLoc(!nwkGeoLoc)} />}
               label="Enable network geolocation" className="text"
             />
@@ -231,7 +204,7 @@ const deleteData = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!admin}>
               <InputLabel variant="standard" required>Device status request frequency</InputLabel>
               <Input
                 required
@@ -248,14 +221,14 @@ const deleteData = () => {
           {devStatusReqFreq!=0 && (
           <>
           <Grid item xs={12} sm={12}>
-            <FormControlLabel
+            <FormControlLabel disabled={!admin}
               control={<Checkbox color="primary" name="gwMetaData" checked={reportDevStatusMargin} value={reportDevStatusMargin} onChange={()=>setReportDevStatusMargin(!reportDevStatusMargin)} />}
               label="Report device link margin to application-server" className="text"
             />
           </Grid>
 
           <Grid item xs={12} sm={12}>
-            <FormControlLabel
+            <FormControlLabel disabled={!admin}
               control={<Checkbox color="primary" name="network-geolocation" checked={reportDevStatusBattery} value={reportDevStatusBattery} onChange={()=>setReportDevStatusBattery(!reportDevStatusBattery)} />}
               label="Report device battery level to application-server" className="text"
             />
@@ -264,7 +237,7 @@ const deleteData = () => {
           )}
 
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!admin}>
               <InputLabel variant="standard" required>Minimum allowed data-rate</InputLabel>
               <Input
                 required
@@ -272,6 +245,7 @@ const deleteData = () => {
                 type="number"
                 value={drMin}
                 fullWidth
+                disabled={!admin}
                 onChange={(e) => setDrMin(e.target.value)}
               />
               <FormHelperText variant="standard">Minimum allowed data rate. Used for ADR.</FormHelperText>
@@ -279,7 +253,7 @@ const deleteData = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!admin}>
               <InputLabel variant="standard" required>Maximum allowed data-rate</InputLabel>
               <Input
                 required
@@ -294,7 +268,7 @@ const deleteData = () => {
           </Grid>
 
           <Grid item xs={12} sm={12}>
-            <FormControlLabel
+            <FormControlLabel disabled={!admin}
               control={<Checkbox color="primary" name="network-geolocation" checked={gwsPrivate} value={gwsPrivate} onChange={()=>setGwsPrivate(!gwsPrivate)} />}
               label="Private gateways" className="text"
             />
@@ -303,12 +277,13 @@ const deleteData = () => {
           
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleUpdate}> Update Service Profile </Button>
+            <Button variant="contained" disabled={!admin} onClick={handleUpdate}> Update Service Profile </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
-            <Button variant="contained" onClick={navigateToServiceProfiles}> Cancel </Button>
+            <Button variant="contained" disabled={!admin} onClick={navigateToServiceProfiles}> Cancel </Button>
           </Grid>
-        </Grid>        
+        </Grid>
+     
       </Paper>
     </section>
   )

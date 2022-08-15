@@ -110,7 +110,7 @@ function OrganizationDeviceProfiles(){
                             </TableCell>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.networkServerName}</TableCell>
-                            <TableCell> <Link href={'service-profiles/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
+                            <TableCell> <Link href={'device-profiles/'+item.id}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

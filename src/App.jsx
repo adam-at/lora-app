@@ -38,8 +38,22 @@ import AddOrganizationServiceProfile from './components/pages/AddOrganizationSer
 import UpdateOrganizationServiceProfile from './components/pages/UpdateOrganizationServiceProfile';
 import AddOrganizationApplication from './components/pages/AddOrganizationApplication';
 import AddOrganizationDeviceProfile from './components/pages/AddOrganizationDeviceProfile';
+import UpdateOrganizationDeviceProfile from './components/pages/UpdateOrganizationDeviceProfile';
 
 function App() {
+
+  //reset the session after 1 hour
+  var hours = 1;
+  var now = new Date().getTime();
+  var setupTime = localStorage.getItem('setupTime');
+  if (setupTime == null) {
+      localStorage.setItem('setupTime', now)
+  } else {
+      if(now-setupTime > hours*60*60*1000) {
+          localStorage.clear()
+          localStorage.setItem('setupTime', now);
+      }
+  }
 
   const user = UserProfile.getUser();
   if(!user){
@@ -47,6 +61,7 @@ function App() {
     <Login/>
     )
   }
+
 
 
   return (
@@ -84,6 +99,7 @@ function App() {
           <Route path="/organizations/:id/service-profiles/:id" element={<UpdateOrganizationServiceProfile/>}/>
           <Route path="/organizations/:id/applications/add" element={<AddOrganizationApplication/>}/>
           <Route path="/organizations/:id/device-profiles/add" element={<AddOrganizationDeviceProfile/>}/>
+          <Route path="/organizations/:id/device-profiles/:id" element={<UpdateOrganizationDeviceProfile/>}/>
         </Routes>
         </>
   );

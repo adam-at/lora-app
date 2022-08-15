@@ -10,6 +10,9 @@ import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
 import PersonIcon from '@mui/icons-material/Person';
 
 function UpdateOrganizationUser() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const admin = user.isAdmin;
+
   const [email, setEmail] = useState("");
   const [isDeviceAdmin, setDeviceAdmin] = useState(false);
   const [isGatewayAdmin, setGatewayAdmin] = useState(false);
@@ -162,11 +165,14 @@ const deleteData = () => {
   return (
     <section className="home">
       <div className="title text"> <b> Update a user of the organization</b></div>
+
       <div className="delete-button">
         <DeleteConfirmationDialog fun={deleteData} name="organization user"/>
+        {admin && (
         <Button variant="outlined" sx={{ m:1 }} color="secondary" startIcon={<PersonIcon />} onClick={navigateToUser}>
-         Go to user
-        </Button>
+        Go to user
+       </Button>
+        )}    
       </div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>

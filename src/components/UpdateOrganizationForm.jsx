@@ -10,6 +10,9 @@ import {key} from "./jwt";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 function UpdateOrganizationForm() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const admin = user.isAdmin;
+
   const [name, setName] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [canHaveGateways, setCanHaveGateways] = useState(false);
@@ -180,7 +183,10 @@ useEffect( () => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
+
+          {admin  && (
+            <>
+                      <Grid item xs={12}>
             <label className="subtitle-text">Gateways:</label>
           </Grid>
             <FormControlLabel
@@ -225,6 +231,9 @@ useEffect( () => {
               <FormHelperText variant="standard">The maximum number of devices that can be added to this organization (0 = unlimited).</FormHelperText>
             </FormControl>
           </Grid>
+            </>
+          )}
+
           <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="organization"/></Grid>
           <Grid item xs={12} sm={6}>
             <Button variant="contained" onClick={handleOrganizationUpdate}> Update Organization </Button>

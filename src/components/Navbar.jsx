@@ -5,6 +5,7 @@ import './Navbar.css'
 import { useNavigate } from 'react-router-dom';
 import OrganizationSelect from './OrganizationSelect';
 import Link from '@mui/material/Link';
+import UserProfile from "./UserProfile"
 
 
 function Navbar() {
@@ -86,6 +87,10 @@ const navigateToApiKeys = () => {
 
 const user = JSON.parse(localStorage.getItem("user"));
 const userId = user.id;
+const admin = user.isAdmin;
+
+console.log(UserProfile.getUser());
+console.log(UserProfile.getOrganizations());
 
 
   return (
@@ -113,49 +118,53 @@ const userId = user.id;
                     <FontAwesomeIcon icon={solid("magnifying-glass")} className="ficon" onClick={handleSearch}></FontAwesomeIcon>
                     <input id="searchInput" type="search" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)}/>
                 </li>
-
                 <ul className="menu-links">
-                    <li className="nav-link">
-                        <Link onClick={navigateToDashboard}>
-                            <FontAwesomeIcon icon={solid("house")} className="ficon"></FontAwesomeIcon>
-                            <span className="text nav-text">Dashboard</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-link">
-                        <Link onClick={navigateToNetworkServers}>
-                        <FontAwesomeIcon icon={solid("server")} className="ficon"></FontAwesomeIcon>
-                            <span className="text nav-text">Network Servers</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-link">
-                        <Link onClick={navigateToGateways}>
-                            <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"></FontAwesomeIcon>
-                            <span className="text nav-text">Gateway Profiles</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-link">
-                        <Link onClick={navigateToOrganizations}>
-                            <FontAwesomeIcon icon={solid("landmark")} className="ficon"/>
-                            <span className="text nav-text">Organizations</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-link">
-                        <Link onClick={navigateToUsers}>
-                            <FontAwesomeIcon icon={solid("users")} className="ficon"/>
-                            <span className="text nav-text">All Users</span>
-                        </Link>
-                    </li>
-
-                    <li className="nav-link">
-                        <Link onClick={navigateToApiKeys}>
-                            <FontAwesomeIcon icon={solid("key")} className="ficon"/>
-                            <span className="text nav-text">API Keys</span>
-                        </Link>
-                    </li>
+                {admin && (
+                     <>
+                     <li className="nav-link">
+                         <Link onClick={navigateToDashboard}>
+                             <FontAwesomeIcon icon={solid("house")} className="ficon"></FontAwesomeIcon>
+                             <span className="text nav-text">Dashboard</span>
+                         </Link>
+                     </li>
+ 
+                     <li className="nav-link">
+                         <Link onClick={navigateToNetworkServers}>
+                         <FontAwesomeIcon icon={solid("server")} className="ficon"></FontAwesomeIcon>
+                             <span className="text nav-text">Network Servers</span>
+                         </Link>
+                     </li>
+ 
+                     <li className="nav-link">
+                         <Link onClick={navigateToGateways}>
+                             <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"></FontAwesomeIcon>
+                             <span className="text nav-text">Gateway Profiles</span>
+                         </Link>
+                     </li>
+ 
+                     <li className="nav-link">
+                         <Link onClick={navigateToOrganizations}>
+                             <FontAwesomeIcon icon={solid("landmark")} className="ficon"/>
+                             <span className="text nav-text">Organizations</span>
+                         </Link>
+                     </li>
+ 
+                     <li className="nav-link">
+                         <Link onClick={navigateToUsers}>
+                             <FontAwesomeIcon icon={solid("users")} className="ficon"/>
+                             <span className="text nav-text">All Users</span>
+                         </Link>
+                     </li>
+ 
+                     <li className="nav-link">
+                         <Link onClick={navigateToApiKeys}>
+                             <FontAwesomeIcon icon={solid("key")} className="ficon"/>
+                             <span className="text nav-text">API Keys</span>
+                         </Link>
+                     </li>
+                     </>
+                )}
+               
 
                     <OrganizationSelect/>
                 

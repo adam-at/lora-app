@@ -22,6 +22,8 @@ import Link from '@mui/material/Link';
 
 
 function OrganizationServiceProfiles(){
+    const user = JSON.parse(localStorage.getItem("user"));
+    const admin = user.isAdmin;
 
     
     const [data, getData] = useState([]);
@@ -83,9 +85,12 @@ function OrganizationServiceProfiles(){
         <div className="title text">
              <b>Organization Service Profiles</b>
         </div>
-        <div className="add-button">
+        {admin && (
+            <div className="add-button">
             <Button variant="contained" onClick={navigateToAddServiceProfile}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
+        )}
+        
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">

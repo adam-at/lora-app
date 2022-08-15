@@ -87,6 +87,9 @@ function OrganizationSelect(){
     const navigateToOrganizationApplications = () => {
       navigate("/organizations/"+organization+"/applications")
   }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const admin = user.isAdmin;
     
 
     return(
@@ -107,7 +110,9 @@ function OrganizationSelect(){
       </FormControl>
       </li>
 
-      <li className="nav-link">
+      {admin && (
+        <>
+        <li className="nav-link">
         <Link onClick={navigateToOrganizationDashboard}>
             <FontAwesomeIcon icon={solid("house")} className="ficon icon-grid"></FontAwesomeIcon>
         </Link>
@@ -136,6 +141,63 @@ function OrganizationSelect(){
             <FontAwesomeIcon icon={solid("shapes")} className="ficon icon-grid"></FontAwesomeIcon>
         </Link>
       </li>
+      </>
+      )}
+
+      {!admin && (
+                <>
+
+
+                <li className="nav-link">
+                <Link onClick={navigateToOrganizationDashboard}>
+                    <FontAwesomeIcon icon={solid("house")} className="ficon"></FontAwesomeIcon>
+                    <span className="text nav-text">Org. Dashboard</span>
+                </Link>
+                </li>
+
+                <li className="nav-link">
+                <Link onClick={navigateToOrganizationUsers}>
+                    <FontAwesomeIcon icon={solid("user")} className="ficon"/>
+                    <span className="text nav-text">Org. Users</span>
+                </Link>
+                </li>
+
+                <li className="nav-link">
+                <Link onClick={navigateToOrganizationApiKeys}>
+                    <FontAwesomeIcon icon={solid("key")} className="ficon"/>
+                    <span className="text nav-text">Org. API Keys</span>
+                </Link>
+              </li>
+        
+              <li className="nav-link">
+                <Link onClick={navigateToOrganizationServices}>
+                    <FontAwesomeIcon icon={solid("address-card")} className="ficon"></FontAwesomeIcon>
+                    <span className="text nav-text">Service Profiles</span>
+                </Link>
+                </li>
+
+                <li className="nav-link">
+                <Link onClick={navigateToOrganizationDevices}>
+                <FontAwesomeIcon icon={solid("sliders")} className="ficon"/>
+                <span className="text nav-text">Device Profiles</span>
+                </Link>
+                </li>
+
+                <li className="nav-link">
+                <Link onClick={navigateToOrganizationGateways}>
+                <FontAwesomeIcon icon={solid("tower-cell")} className="ficon"/>
+                <span className="text nav-text">Org. Gateways</span>
+                </Link>
+              </li>
+              
+              <li className="nav-link">
+                <Link onClick={navigateToOrganizationApplications}>
+                    <FontAwesomeIcon icon={solid("shapes")} className="ficon"></FontAwesomeIcon>
+                    <span className="text nav-text">Org. Applications</span>
+                </Link>
+              </li>
+              </>
+      )}
       </>
     );
 }
