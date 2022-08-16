@@ -41,6 +41,7 @@ import AddOrganizationApplication from './components/pages/AddOrganizationApplic
 import AddOrganizationDeviceProfile from './components/pages/AddOrganizationDeviceProfile';
 import UpdateOrganizationDeviceProfile from './components/pages/UpdateOrganizationDeviceProfile';
 import AddOrganizationGateway from './components/pages/AddOrganizationGateway';
+import OrganizationGatewayDetails from './components/pages/OrganizationGatewayDetails';
 
 function App() {
 
@@ -104,6 +105,8 @@ function App() {
           <Route path="/organizations/:id/device-profiles/add" element={<AddOrganizationDeviceProfile/>}/>
           <Route path="/organizations/:id/device-profiles/:id" element={<UpdateOrganizationDeviceProfile/>}/>
           <Route path="/organizations/:id/gateways/add" element={<AddOrganizationGateway/>}/>
+          <Route path="/organizations/:id/gateways/:id" element={<OrganizationGatewayDetails/>}/>
+          
         </Routes>
         </>
   );
