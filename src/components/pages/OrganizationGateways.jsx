@@ -19,13 +19,15 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from '../TablePagination.jsx';
 import {key} from "../jwt";
 import Link from '@mui/material/Link';
+import moment from "moment";
+import {proxy} from "../Proxy";
 
 
 function OrganizationGateways(){
 
     
     const [data, getData] = useState([]);
-    const URL = "http://203.162.235.53:8080/api/gateways?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
+    const URL = proxy + "http://203.162.235.53:8080/api/gateways?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
     const header ={
         headers: {
           Accept: "application/json",
@@ -77,6 +79,20 @@ function OrganizationGateways(){
         navigate('/add-device-profile');
       };
 
+    const LastSeen = (props) =>{
+      let lastseen = "Never";
+      if (props.gateway.lastSeenAt !== null) {
+        lastseen = moment(props.gateway.lastSeenAt).fromNow();
+      }
+      return(
+        <>
+        <TableCell component="th" scope="row">
+            {lastseen}
+        </TableCell>
+        </>
+      ) ;
+    };
+      
 
     return(
     <section className="home">
@@ -106,9 +122,7 @@ function OrganizationGateways(){
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                            <TableCell component="th" scope="row">
-                                {item.lastSeenAt}
-                            </TableCell>
+                            <LastSeen gateway={item}/>
                             <TableCell>
                                 <Link href={'gateways/'+item.id}>{item.name}</Link>
                             </TableCell>

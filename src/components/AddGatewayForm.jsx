@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import {proxy} from "./Proxy";
 
 
 
@@ -42,7 +43,7 @@ function AddGatewayForm() {
   });
   const [data, getData] = useState([]);
 
-  const URL2 = "http://203.162.235.53:8080/api/network-servers?limit=1000";
+  const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
     const header ={
         headers: {
           Accept: "application/json",
@@ -110,7 +111,7 @@ const navigateToGateways = () => {
   navigate('/gateways');
 };
 
-const URL = "http://203.162.235.53:8080/api/gateway-profiles";
+const URL = proxy + "http://203.162.235.53:8080/api/gateway-profiles";
     
  
  

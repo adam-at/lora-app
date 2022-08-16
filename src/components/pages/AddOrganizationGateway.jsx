@@ -16,19 +16,18 @@ import {key} from "../jwt";
 import "../Dashboard.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
 import {proxy} from "../Proxy";
 
 
-function UpdateOrganizationDeviceProfile() {
+function AddOrganizationGateway() {
   const user = JSON.parse(localStorage.getItem("user"));
   const admin = user.isAdmin;
 
   const [adrAlgorithmID, setAdrAlgorithmID] = useState("");
-  const [classBTimeout, setClassBTimeout] = useState(0);
+  const [classBTimeout, setClassBTimeOut] = useState(0);
   const [classCTimeout, setClassCTimeout] = useState(0);
   const [factoryPresetFreqs, setFactoryPresetFreqs] = useState("");
-  const [geolocBufferTTL, setGeolocBufferTTL] = useState(0);
+  const [geolocBufferTTl, setGeolocBufferTTL] = useState(0);
   const [geolocMinBufferSize, setGeolocMinBufferSize] = useState(0);
   const [id, setId] = useState("");
   const [macVersion, setMacVersion] = useState("");
@@ -177,11 +176,6 @@ function UpdateOrganizationDeviceProfile() {
     return tags;
   };
 
-  const namesValuesFromTags = (tags) => {
-    return Object.entries(tags);
-
-  }
-
   const path = window.location.pathname.split("/");
   const [serverData, setServerData] = useState([]);
   const [adrData, setAdrData] = useState([]);
@@ -200,7 +194,6 @@ function UpdateOrganizationDeviceProfile() {
       }else{
         fetchData("&organizationID="+path[2]);
       }
-        fetchDeviceData();
         setOrganizationID(path[2]);
     }, [])
  
@@ -241,68 +234,11 @@ const navigateToDeviceProfiles = () => {
   navigate(-1);
 };
 
-const URL = proxy + "http://203.162.235.53:8080/api/device-profiles/"+path[4];
-
-const fetchDeviceData = () => {
-  const header ={
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Grpc-Metadata-Authorization": key
-    }
-  };
-    fetch(URL, header)
-        .then((res) =>
-            res.json())
-
-        .then((response) => {
-            console.log(response);
-            /* if error 400 stay on the same page with an error alert, else go go to /device-profiles*/ 
-            if(response.error){
-              alert(response.error);
-            }else{
-              const res = response.deviceProfile;
-              setName(res["name"]);
-              setAdrAlgorithmID(res["adrAlgorithmID"]);
-              setClassBTimeout(res["classBTimeout"]);
-              setClassCTimeout(res["classCTimeout"]);
-              setFactoryPresetFreqs(res["factoryPresetFreqs"].toString());
-              setGeolocBufferTTL(res["geolocBufferTTL"]);
-              setGeolocMinBufferSize(res["geolocMinBufferSize"]);
-              setId(res["id"]);
-              setMacVersion(res["macVersion"]);
-              setMaxDutyCycle(res["maxDutyCycle"]);
-              setMaxEIRP(res["maxEIRP"]);
-              setNetworkServerID(res["networkServerID"]);
-              setOrganizationID(res["organizationID"]);
-              setPayloadCodec(res["payloadCodec"]);
-              setPayloadDecoderScript(res["payloadDecoderScript"]);
-              setPayloadEncoderScript(res["payloadEncoderScript"]);
-              setPingSlotDR(res["pingSlotDR"]);
-              setPingSlotFreq(res["pingSlotFreq"]);
-              setPingSlotPeriod(res["pingSlotPeriod"]);
-              setRegParamsRevision(res["regParamsRevision"]);
-              setRfRegion(res["rfRegion"]);
-              setRxDROffset1(res["rxDROffset1"]);
-              setRxDataRate2(res["rxDataRate2"]);
-              setRxDelay1(res["rxDelay1"]);
-              setRxFreq2(res["rxFreq2"]);
-              setSupports32BitFCnt(res["supports32BitFCnt"]);
-              setSupportsClassB(res["supportsClassB"]);
-              setSupportsClassC(res["supportsClassC"]);
-              setSupportsJoin(res["supportsJoin"]);
-              setTags(namesValuesFromTags(res["tags"]));
-              setUplinkInterval(res["uplinkInterval"].slice(0,-1));
-
-            
-            }
-        })
-
-};
+const URL = proxy + "http://203.162.235.53:8080/api/device-profiles";
     
  
  
-const updateData = (device) => {
+const postData = (device) => {
     const strDevice = JSON.stringify(device);
     const header ={
       body: strDevice,
@@ -311,7 +247,7 @@ const updateData = (device) => {
         "Content-Type": "application/json",
         "Grpc-Metadata-Authorization": key
       },
-      method: "PUT"
+      method: "POST"
     };
       fetch(URL, header)
           .then((res) =>
@@ -329,14 +265,14 @@ const updateData = (device) => {
 
   };
 
-const handleDeviceProfileUpdate = () => {
+const handleDeviceProfileSubmit = () => {
   const new_deviceProfile = deviceProfile;
   new_deviceProfile["deviceProfile"]["name"]=name;
   new_deviceProfile["deviceProfile"]["adrAlgorithmID"]= adrAlgorithmID;
   new_deviceProfile["deviceProfile"]["classBTimeout"]= classBTimeout;
   new_deviceProfile["deviceProfile"]["classCTimeout"]= classCTimeout;
   new_deviceProfile["deviceProfile"]["factoryPresetFreqs"]=stringToIntegerList(factoryPresetFreqs);
-  new_deviceProfile["deviceProfile"]["geolocBufferTTL"]=geolocBufferTTL;
+  new_deviceProfile["deviceProfile"]["geolocBufferTTl"]=geolocBufferTTl;
   new_deviceProfile["deviceProfile"]["geolocMinBufferSize"]=geolocMinBufferSize;
   new_deviceProfile["deviceProfile"]["id"]=id;
   new_deviceProfile["deviceProfile"]["macVersion"]=macVersion;
@@ -365,31 +301,8 @@ const handleDeviceProfileUpdate = () => {
   setDeviceProfile(new_deviceProfile);
   console.log(deviceProfile);
 
-  updateData(deviceProfile);
+  postData(deviceProfile);
 }
-
-const deleteData = () => {
-  const header ={
-    headers: {
-      Accept: "application/json",
-      "Grpc-Metadata-Authorization": key
-    },
-    method: "DELETE"
-  };
-    fetch(URL, header)
-        .then((res) =>
-            res.json())
-
-        .then((response) => {
-            console.log(response);
-            if(response.error){
-              alert(response.error);
-            }else{
-            navigateToDeviceProfiles();
-            alert("Device profile deleted !")
-            }
-        })
-};
 
 
 //Handling tabs
@@ -401,10 +314,7 @@ const handleChange = (event, newValue) => {
 
   return (
     <section className="home">
-      <div className="title text"> <b> Update a device profile </b></div>
-      <div className="delete-button">
-        <DeleteConfirmationDialog fun={deleteData} name="device profile"/>
-      </div>
+      <div className="title text"> <b> Add a new device profile </b></div>
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
         <Box sx={{ width: '100%' }}>
@@ -636,7 +546,7 @@ const handleChange = (event, newValue) => {
                     type="number"
                     value={classBTimeout}
                     fullWidth
-                    onChange={(e) => setClassBTimeout(e.target.value)}
+                    onChange={(e) => setClassBTimeOut(e.target.value)}
                   />
                   <FormHelperText variant="standard">Class-B timeout (in seconds) for confirmed downlink transmissions.</FormHelperText>
                 </FormControl>
@@ -787,7 +697,7 @@ const handleChange = (event, newValue) => {
           
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleDeviceProfileUpdate}> Update Device Profile </Button>
+            <Button variant="contained" onClick={handleDeviceProfileSubmit}> Create Device Profile </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToDeviceProfiles}> Cancel </Button>
@@ -798,4 +708,4 @@ const handleChange = (event, newValue) => {
   )
 }
 
-export default UpdateOrganizationDeviceProfile;
+export default AddOrganizationGateway;

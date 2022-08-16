@@ -19,13 +19,14 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from '../TablePagination.jsx';
 import {key} from "../jwt";
 import Link from '@mui/material/Link';
+import {proxy} from "../Proxy";
 
 
 function OrganizationDeviceProfiles(){
 
     
     const [data, getData] = useState([]);
-    const URL = "http://203.162.235.53:8080/api/device-profiles?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-16);
+    const URL = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-16);
     const header ={
         headers: {
           Accept: "application/json",

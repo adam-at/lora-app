@@ -7,6 +7,7 @@ import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
+import {proxy} from "./Proxy";
 
 
 function AddOrganizationForm() {
@@ -41,7 +42,7 @@ const navigateToOrganizations = () => {
   navigate('/organizations');
 };
 
-const URL = "http://203.162.235.53:8080/api/organizations";
+const URL = proxy + "http://203.162.235.53:8080/api/organizations";
     
  
  

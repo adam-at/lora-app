@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UserProfile from "../UserProfile";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {proxy} from "../Proxy";
 
 
 const theme = createTheme();
@@ -20,7 +21,7 @@ export default function Login() {
   const [loggedIn, setLoggedIn] = useState(false);
 
 
-  const URL = "http://203.162.235.53:8080/api/internal/login";
+  const URL = proxy + "http://203.162.235.53:8080/api/internal/login";
  
     const postData = (user) => {
       const strUser = JSON.stringify(user);
@@ -85,7 +86,7 @@ export default function Login() {
 
   
 
-  const URLprofile = "http://203.162.235.53:8080/api/internal/profile";
+  const URLprofile = proxy + "http://203.162.235.53:8080/api/internal/profile";
   const getData = () => {
     const header ={
         headers: {

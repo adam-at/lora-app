@@ -19,6 +19,7 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
 import Link from '@mui/material/Link';
+import {proxy} from "./Proxy";
 
 
 function Users(){
@@ -33,7 +34,7 @@ function Users(){
 
     
     const [data, getData] = useState([]);
-    const URL = 'http://203.162.235.53:8080/api/users?limit=1000';
+    const URL = proxy + "http://203.162.235.53:8080/api/users?limit=1000";
     const header = {
         method:'GET',
         headers: {

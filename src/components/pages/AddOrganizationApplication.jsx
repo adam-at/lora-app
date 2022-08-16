@@ -8,6 +8,7 @@ import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import {proxy} from "../Proxy";
 
 function AddOrganizationApplication() {
   const [name, setName] = useState("");
@@ -53,7 +54,7 @@ function AddOrganizationApplication() {
  
     }
 
-  const URL = "http://203.162.235.53:8080/api/applications";
+  const URL = proxy + "http://203.162.235.53:8080/api/applications";
   
     
  

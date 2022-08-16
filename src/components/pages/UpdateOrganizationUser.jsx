@@ -8,6 +8,7 @@ import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
 import PersonIcon from '@mui/icons-material/Person';
+import {proxy} from "../Proxy";
 
 function UpdateOrganizationUser() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -68,7 +69,7 @@ function UpdateOrganizationUser() {
   );
 
 
-  const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
+  const URL = proxy + "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  

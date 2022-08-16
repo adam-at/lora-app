@@ -6,6 +6,7 @@ import "../Form.css";
 import { useNavigate } from 'react-router-dom';
 import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
+import {proxy} from "../Proxy";
 
 function AddOrganizationUser() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ function AddOrganizationUser() {
     }
   );
 
-  const URL = "http://203.162.235.53:8080/api"+window.location.pathname.substring(0,window.location.pathname.length-9);
+  const URL = proxy + "http://203.162.235.53:8080/api"+window.location.pathname.substring(0,window.location.pathname.length-9);
     
  
  

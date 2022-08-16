@@ -8,6 +8,7 @@ import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import {proxy} from "../Proxy";
 
 function AddOrganizationServiceProfile() {
   const [name, setName] = useState("");
@@ -40,7 +41,7 @@ function AddOrganizationServiceProfile() {
   );
 
   const [data, getData] = useState([]);
-  const URL2 = "http://203.162.235.53:8080/api/network-servers?limit=1000";
+  const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
   const header ={
       headers: {
         Accept: "application/json",
@@ -66,7 +67,7 @@ function AddOrganizationServiceProfile() {
 
   }
 
-  const URL = "http://203.162.235.53:8080/api/service-profiles";
+  const URL = proxy + "http://203.162.235.53:8080/api/service-profiles";
     
  
  

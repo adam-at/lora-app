@@ -42,6 +42,7 @@ import UpdateOrganizationDeviceProfile from './components/pages/UpdateOrganizati
 
 function App() {
 
+
   //reset the session after 1 hour
   var hours = 1;
   var now = new Date().getTime();

@@ -12,6 +12,7 @@ import {TabPanel} from "./Tabs.jsx";
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
 import "./Dashboard.css";
+import {proxy} from "./Proxy";
 
 
 function AddNetworkServerForm() {
@@ -57,7 +58,7 @@ const navigateToNetworkServers = () => {
   navigate('/network-servers');
 };
 
-const URL = "http://203.162.235.53:8080/api/network-servers";
+const URL = proxy + "http://203.162.235.53:8080/api/network-servers";
     
  
  

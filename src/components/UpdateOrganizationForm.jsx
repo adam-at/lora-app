@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import FormHelperText from '@mui/material/FormHelperText';
 import {key} from "./jwt";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
+import {proxy} from "./Proxy";
 
 function UpdateOrganizationForm() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -44,7 +45,7 @@ const navigateToOrganizations = () => {
   navigate('/organizations');
 };
 
-const URL = "http://203.162.235.53:8080/api"+window.location.pathname;
+const URL = proxy + "http://203.162.235.53:8080/api"+window.location.pathname;
     
  
  

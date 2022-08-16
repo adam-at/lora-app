@@ -9,7 +9,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import "./Form.css";
-import {key} from "./jwt.jsx"
+import {key} from "./jwt.jsx";
+import {proxy} from "./Proxy";
 
 function UpdatePasswordForm() {
   const [password, setPassword] = useState("");
@@ -35,7 +36,7 @@ function UpdatePasswordForm() {
   };
   
   const path = window.location.pathname.split("/");
-  const URL = "http://203.162.235.53:8080/api/users/"+path[2]+"/password";
+  const URL = proxy + "http://203.162.235.53:8080/api/users/"+path[2]+"/password";
 
 
   const updateData= (pw) => {

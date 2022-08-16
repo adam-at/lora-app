@@ -16,6 +16,7 @@ import {key} from "../jwt";
 import "../Dashboard.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import {proxy} from "../Proxy";
 
 
 function AddOrganizationDeviceProfile() {
@@ -178,7 +179,7 @@ function AddOrganizationDeviceProfile() {
   const path = window.location.pathname.split("/");
   const [serverData, setServerData] = useState([]);
   const [adrData, setAdrData] = useState([]);
-  const URL2 = "http://203.162.235.53:8080/api/network-servers?limit=1000";
+  const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
 
     const header ={
         headers: {
@@ -211,7 +212,7 @@ function AddOrganizationDeviceProfile() {
 
 
     const fetchAdrData = () => {
-      const URL3 = "http://203.162.235.53:8080/api/network-servers/" + networkServerID + "/adr-algorithms"; 
+      const URL3 = proxy + "http://203.162.235.53:8080/api/network-servers/" + networkServerID + "/adr-algorithms"; 
       fetch(URL3, header)
             .then((res) =>
                 res.json())
@@ -233,7 +234,7 @@ const navigateToDeviceProfiles = () => {
   navigate(-1);
 };
 
-const URL = "http://203.162.235.53:8080/api/device-profiles";
+const URL = proxy + "http://203.162.235.53:8080/api/device-profiles";
     
  
  

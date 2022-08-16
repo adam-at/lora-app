@@ -19,6 +19,7 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from '../TablePagination.jsx';
 import {key} from "../jwt";
 import QuickDeleteConfirmationDialog from '../QuickDeleteConfirmationDialog';
+import {proxy} from "../Proxy";
 
 
 function OrganizationApiKeys(){
@@ -27,7 +28,7 @@ function OrganizationApiKeys(){
     
 
     const [data, getData] = useState([]);
-    const URL = "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
+    const URL = proxy + "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
     const header ={
         headers: {
           Accept: "application/json",
@@ -80,7 +81,7 @@ function OrganizationApiKeys(){
       };
 
     
-    const URLdel = "http://203.162.235.53:8080/api/internal/api-keys/"
+    const URLdel = proxy + "http://203.162.235.53:8080/api/internal/api-keys/"
 
       const deleteData = (id) => {
         const header ={

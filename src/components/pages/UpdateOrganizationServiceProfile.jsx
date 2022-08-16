@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import {key} from "../jwt";
 import FormHelperText from '@mui/material/FormHelperText';
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
+import {proxy} from "../Proxy";
 
 function UpdateOrganizationServiceProfile() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -54,7 +55,7 @@ function UpdateOrganizationServiceProfile() {
   }, [])
 
   const path = window.location.pathname.split("/");
-  const URL = "http://203.162.235.53:8080/api/service-profiles/"+path[path.length-1];
+  const URL = proxy + "http://203.162.235.53:8080/api/service-profiles/"+path[path.length-1];
   const fetchData = () => {
     fetch(URL, header)
           .then((res) =>

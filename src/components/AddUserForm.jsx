@@ -10,6 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import {key} from "./jwt";
+import {proxy} from "./Proxy";
 
 function AddUserForm() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ function AddUserForm() {
 }
   );
 
-  const URL = "http://203.162.235.53:8080/api/users";
+  const URL = proxy + "http://203.162.235.53:8080/api/users";
     
  
  

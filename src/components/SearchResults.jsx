@@ -13,7 +13,7 @@ function SearchResults(props) {
           return(
             <>
               <TableCell >application</TableCell>
-              <TableCell><Link  to={`/organizations/${props.resultorganizationID}/applications/${props.result.applicationID}`}>{props.result.applicationName}</Link></TableCell>
+              <TableCell><Link  to={`/organizations/${props.result.organizationID}/applications/${props.result.applicationID}`}>{props.result.applicationName}</Link></TableCell>
               <TableCell>organization: <Link  to={`/organizations/${props.result.organizationID}`}>{props.result.organizationName}</Link></TableCell>
               <TableCell>{props.result.applicationID}</TableCell>
             </>

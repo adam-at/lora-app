@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import {proxy} from "./Proxy";
 
 
 function OrganizationSelect(){
@@ -17,7 +18,7 @@ function OrganizationSelect(){
 
     const [data, setData] = useState([]);
 
-    const URL = "http://203.162.235.53:8080/api/organizations?limit=1000";
+    const URL = proxy + "http://203.162.235.53:8080/api/organizations?limit=1000";
       const header ={
           headers: {
             Accept: "application/json",
