@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Button from "@material-ui/core/Button";
-import Tooltip from '@material-ui/core/Tooltip';
+import TextField from "@mui/material/TextField";
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Button from "@mui/material/Button";
+import Tooltip from '@mui/material/Tooltip';
 
 import Refresh from "mdi-material-ui/Refresh";
-
 import MaskedInput from "react-text-mask";
+import { Buffer } from 'buffer';
 
 
 class EUI64HEXMask extends Component {
@@ -18,9 +18,6 @@ class EUI64HEXMask extends Component {
     return(
       <MaskedInput
         {...other}
-        ref={(ref) => {
-          inputRef(ref ? ref.inputElement : null);
-        }}
         mask={[
           /[A-Fa-f0-9]/,
           /[A-Fa-f0-9]/,

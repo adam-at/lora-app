@@ -75,8 +75,8 @@ function OrganizationGateways(){
 
     const navigate = useNavigate();
 
-    const navigateToAddDeviceProfile = () => {
-        navigate('/add-device-profile');
+    const navigateToAddGateway = () => {
+        navigate('add');
       };
 
     const LastSeen = (props) =>{
@@ -100,7 +100,7 @@ function OrganizationGateways(){
              <b>Organization Gateways</b>
         </div>
         <div className="add-button">
-            <Button variant="contained" onClick={navigateToAddDeviceProfile}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
+            <Button variant="contained" onClick={navigateToAddGateway}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
@@ -128,7 +128,7 @@ function OrganizationGateways(){
                             </TableCell>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.networkServerName}</TableCell>
-                            <TableCell> o_o </TableCell>
+                            <TableCell> No data </TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (

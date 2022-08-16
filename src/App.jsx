@@ -6,6 +6,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import "leaflet/dist/leaflet.css";
 import Home from'./components/pages/Home';
 import AllNetworkServers from './components/pages/AllNetworkServers';
 import AllGateways from './components/pages/AllGateways';
@@ -39,6 +40,7 @@ import UpdateOrganizationServiceProfile from './components/pages/UpdateOrganizat
 import AddOrganizationApplication from './components/pages/AddOrganizationApplication';
 import AddOrganizationDeviceProfile from './components/pages/AddOrganizationDeviceProfile';
 import UpdateOrganizationDeviceProfile from './components/pages/UpdateOrganizationDeviceProfile';
+import AddOrganizationGateway from './components/pages/AddOrganizationGateway';
 
 function App() {
 
@@ -101,6 +103,7 @@ function App() {
           <Route path="/organizations/:id/applications/add" element={<AddOrganizationApplication/>}/>
           <Route path="/organizations/:id/device-profiles/add" element={<AddOrganizationDeviceProfile/>}/>
           <Route path="/organizations/:id/device-profiles/:id" element={<UpdateOrganizationDeviceProfile/>}/>
+          <Route path="/organizations/:id/gateways/add" element={<AddOrganizationGateway/>}/>
         </Routes>
         </>
   );

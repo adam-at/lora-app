@@ -417,7 +417,7 @@ const handleChange = (event, newValue) => {
                 <MenuItem key={index} value={adr.id}>{adr.name}</MenuItem>
               )}
             </Select>
-            <FormHelperText variant="standard">The ADR algorithm that will be used for controlling the device data-rate. {adrData.length==0 && (<p>(Select a network server first)</p>)}</FormHelperText>
+            <FormHelperText variant="standard">The ADR algorithm that will be used for controlling the device data-rate. {adrData.length==0 && (<>(Select a network server first)</>)}</FormHelperText>
             </FormControl>
           </Grid>
 
