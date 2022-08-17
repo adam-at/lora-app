@@ -446,6 +446,7 @@ const handleChange = (event, newValue) => {
 
           <Grid item xs={12}>
           <FormControl sx={{ m: 1, width: '95%'}}>
+          <InputLabel variant="standard" required>Gateway location</InputLabel> <br/> <br/>
           <MapContainer className="map" center={position} zoom={12} scrollWheelZoom={false}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

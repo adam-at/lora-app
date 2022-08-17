@@ -54,6 +54,7 @@ var UserProfile = (function() {
       setUser: setUser,
       getOrganizations: getOrganizations,
       setOrganizations: setOrganizations,
+      getOrganizationFromId: getOrganizationFromId,
       getJwt: getJwt,
       setJwt: setJwt     
     }

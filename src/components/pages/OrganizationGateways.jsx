@@ -19,8 +19,8 @@ import TablePagination from '@mui/material/TablePagination';
 import {TablePaginationActions} from '../TablePagination.jsx';
 import {key} from "../jwt";
 import Link from '@mui/material/Link';
-import moment from "moment";
 import {proxy} from "../Proxy";
+import LastSeen from "../LastSeen";
 
 
 function OrganizationGateways(){
@@ -35,9 +35,6 @@ function OrganizationGateways(){
         }
       }
  
-    useEffect(() => {
-        fetchData()
-    }, []);
 
     const org = localStorage.getItem("selectedOrganization");
     useEffect(() => {
@@ -79,19 +76,6 @@ function OrganizationGateways(){
         navigate('add');
       };
 
-    const LastSeen = (props) =>{
-      let lastseen = "Never";
-      if (props.gateway.lastSeenAt !== null) {
-        lastseen = moment(props.gateway.lastSeenAt).fromNow();
-      }
-      return(
-        <>
-        <TableCell component="th" scope="row">
-            {lastseen}
-        </TableCell>
-        </>
-      ) ;
-    };
       
 
     return(
@@ -122,7 +106,9 @@ function OrganizationGateways(){
                             key={i}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                            <LastSeen gateway={item}/>
+                            <TableCell component="th" scope="row">
+                                <LastSeen gateway={item}/>
+                            </TableCell>
                             <TableCell>
                                 <Link href={'gateways/'+item.id}>{item.name}</Link>
                             </TableCell>

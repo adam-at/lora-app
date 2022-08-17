@@ -132,6 +132,7 @@ class EUI64Field extends Component {
     return(
       <TextField
         type="text"
+        variant="standard"
         InputProps={{
           inputComponent: EUI64HEXMask,
           endAdornment: <InputAdornment position="end">

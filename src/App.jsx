@@ -88,7 +88,7 @@ function App() {
           <Route path="/users/:id" element={<UpdateUser/>}/>
           <Route path="/network-servers/:id" element={<UpdateNetworkServer/>}/>
           <Route path="/gateway-profiles/:id" element={<UpdateGateway/>}/>
-          <Route path="/organizations/:id" element={<OrganizationDetails/>}/>
+          <Route path="/organizations/:id" forceRefresh={true} element={<OrganizationDetails/>}/>
           <Route path="/search" element={<Search/>}/>
           <Route path="/organizations/:id/users" element={<OrganizationUsers/>}/>
           <Route path="/organizations/:id/api-keys" element={<OrganizationApiKeys/>}/>

@@ -14,9 +14,12 @@ import {proxy} from "./Proxy";
 
 
 function OrganizationSelect(){
+
     const [organization, setOrganization] = useState(localStorage.getItem("selectedOrganization"));
 
     const [data, setData] = useState([]);
+
+    const [reload, setReload] = useState(false);
 
     const URL = proxy + "http://203.162.235.53:8080/api/organizations?limit=1000";
       const header ={
@@ -50,14 +53,23 @@ function OrganizationSelect(){
 
 
     const handleOrganizationChange = (e) => {
+        localStorage.setItem("selectedOrganization", e.target.value);
         setOrganization(e.target.value);
-        localStorage.setItem("selectedOrganization", organization);
         console.log(localStorage.getItem("selectedOrganization"));
+        setReload(true);
     }
 
     useEffect(() => {
-      navigate("/organizations/"+organization);;
-  }, [organization])
+      navigate("/organizations/"+organization);
+  }, [organization]);
+
+  useEffect(() => {
+    if(reload){
+      setReload(false);
+      window.location.reload(false);
+    }
+}, [reload]);
+
 
     const navigate = useNavigate();
     

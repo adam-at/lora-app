@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import '../../App.css';
 import UpdateOrganizationForm from '../UpdateOrganizationForm';
 import "../Form.css"
@@ -9,6 +9,9 @@ import '../Dashboard.css';
 import '../Navbar.css';
 import Grid from '@mui/material/Grid';
 import DashboardLayout from '../DashboardLayout';
+
+import {proxy} from "../Proxy";
+import {key} from "../jwt";
 
 
 function LinkTab(props) {
@@ -23,7 +26,35 @@ function LinkTab(props) {
   );
 }
 
-function UpdateOrganization() {
+function OrganizationDetails() {
+
+  const [data, getData] = useState([]);
+  const path = window.location.pathname.split('/');
+  const URL = proxy + "http://203.162.235.53:8080/api/gateways?limit=1000&organizationID="+path[2];
+  const header ={
+      headers: {
+        Accept: "application/json",
+        "Grpc-Metadata-Authorization": key
+      }
+    }
+
+  useEffect(() => {
+      fetchData();
+  }, []);
+
+
+
+  const fetchData = () => {
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              getData(response.result);
+          })
+
+  }
 
 //Handling tabs
 const [value, setValue] = React.useState(0);
@@ -47,7 +78,7 @@ const handleChange = (event, newValue) => {
       <TabPanel value={value} index={0}>
         <div className="organization-dashboard">
         <Grid container spacing={3}>
-          <DashboardLayout/>
+          <DashboardLayout gateways={data}/>
         </Grid>
         </div>
       </TabPanel>
@@ -59,4 +90,4 @@ const handleChange = (event, newValue) => {
   )
 }
 
-export default UpdateOrganization
+export default OrganizationDetails;
