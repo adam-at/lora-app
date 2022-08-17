@@ -6,6 +6,8 @@ import './Dashboard.css';
 import './Navbar.css';
 import Grid from '@mui/material/Grid';
 import GatewaysLocations from './GatewaysLocations';
+import GatewaysActivity from './GatewaysActivity';
+import DevicesActivity from './DevicesActivity';
 
 
 function DashboardLayout(props){
@@ -15,7 +17,7 @@ function DashboardLayout(props){
             <Card sx={{ minWidth: 275 }} className="dark-if-needed">
               <CardContent>
                 <div className="header grid-text">Active devices</div><hr/>
-                <div className="devies-content grid-text"> No data available</div>
+                <DevicesActivity summary={props.deviceSummary}/>
               </CardContent>
             </Card>
           </Grid>
@@ -23,7 +25,7 @@ function DashboardLayout(props){
             <Card sx={{ minWidth: 275 } } className="dark-if-needed">
               <CardContent>
               <div className="header grid-text"> Active gateways</div><hr/>
-              <div className="gatewayscontent grid-text"> No data available</div>
+              <GatewaysActivity summary={props.gatewaySummary}/>
               </CardContent>
             </Card>
           </Grid>

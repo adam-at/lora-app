@@ -18,7 +18,7 @@ export default function GatewaysLocations (props){
     useEffect(() => {
         setInterval(() => {
           setNoData(true);
-        }, 1200);
+        }, 1400);
       }, []);
 
 

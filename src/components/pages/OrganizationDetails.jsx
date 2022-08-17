@@ -40,6 +40,8 @@ function OrganizationDetails() {
 
   useEffect(() => {
       fetchData();
+      fetchSummaryDv();
+      fetchSummaryGw();
   }, []);
 
 
@@ -52,6 +54,40 @@ function OrganizationDetails() {
           .then((response) => {
               console.log(response);
               getData(response.result);
+          })
+
+  }
+
+  const [summaryGw, setSummaryGw] = useState([]);
+  const URLSummary = proxy + "http://203.162.235.53:8080/api/internal/gateways/summary?organizationID="+path[2];
+
+
+
+  const fetchSummaryGw = () => {
+      fetch(URLSummary, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              setSummaryGw(response);
+          })
+
+  }
+
+  const [summaryDv, setSummaryDv] = useState([]);
+  const URLSummary2 = proxy + "http://203.162.235.53:8080/api/internal/devices/summary?organizationID="+path[2];
+
+
+
+  const fetchSummaryDv = () => {
+      fetch(URLSummary2, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              setSummaryDv(response);
           })
 
   }
@@ -78,7 +114,7 @@ const handleChange = (event, newValue) => {
       <TabPanel value={value} index={0}>
         <div className="organization-dashboard">
         <Grid container spacing={3}>
-          <DashboardLayout gateways={data}/>
+          <DashboardLayout gateways={data} gatewaySummary={summaryGw} deviceSummary={summaryDv}/>
         </Grid>
         </div>
       </TabPanel>
