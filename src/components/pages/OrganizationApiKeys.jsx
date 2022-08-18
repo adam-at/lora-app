@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import'../../App.css';
 import Button from '@mui/material/Button';
 import '../Dashboard.css';
-import '../NetworkServers.css'
+import '../Table.css'
 import '../Navbar.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'

@@ -1,0 +1,15 @@
+.details-grid{
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    max-width: calc(100% - 20px);
+}
+
+.details-map{
+
+    height: 400px;
+}
+
+.line-chart{
+    min-height: 300px;
+}

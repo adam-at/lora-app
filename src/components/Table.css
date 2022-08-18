@@ -4,6 +4,12 @@
     right: 60px;
 }
 
+.add-button-device{
+    position: absolute;
+    top:140px;
+    right: 20px;
+}
+
 .table{
     position: absolute;
     right: 20px;
@@ -15,4 +21,10 @@
 .table .ttext{
     font-size: 20px;
     text-align: center;
+}
+
+.table-devices{
+    position: absolute;
+    top: 50px;
+    left: 10px;
 }

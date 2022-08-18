@@ -17,7 +17,6 @@ import "./Dashboard.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import {proxy} from "./Proxy";
-import EUI64Field from "./EUI64";
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import "./Map.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";

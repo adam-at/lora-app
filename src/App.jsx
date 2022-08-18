@@ -42,6 +42,8 @@ import AddOrganizationDeviceProfile from './components/pages/AddOrganizationDevi
 import UpdateOrganizationDeviceProfile from './components/pages/UpdateOrganizationDeviceProfile';
 import AddOrganizationGateway from './components/pages/AddOrganizationGateway';
 import OrganizationGatewayDetails from './components/pages/OrganizationGatewayDetails';
+import OrganizationApplicationDetails from './components/pages/OrganizationApplicationDetails';
+import AddDevice from './components/pages/AddDevice';
 
 function App() {
 
@@ -96,6 +98,7 @@ function App() {
           <Route path="/organizations/:id/device-profiles" element={<OrganizationDeviceProfiles/>}/>
           <Route path="/organizations/:id/gateways" element={<OrganizationGateways/>}/>
           <Route path="/organizations/:id/applications" element={<OrganizationApplications/>}/>
+          <Route path="/organizations/:id/applications/:id" element={<OrganizationApplicationDetails/>}/>
           <Route path="/organizations/:id/users/add-user" element={<AddOrganizationUser/>}/>
           <Route path="/organizations/:id/api-keys/add-api-key" element={<AddOrganizationApiKey/>}/>
           <Route path="/organizations/:id/users/:id" element={<UpdateOrganizationUser/>}/>
@@ -106,6 +109,7 @@ function App() {
           <Route path="/organizations/:id/device-profiles/:id" element={<UpdateOrganizationDeviceProfile/>}/>
           <Route path="/organizations/:id/gateways/add" element={<AddOrganizationGateway/>}/>
           <Route path="/organizations/:id/gateways/:id" element={<OrganizationGatewayDetails/>}/>
+          <Route path="/organizations/:id/applications/:id/devices/add" element={<AddDevice/>}/>
           
         </Routes>
         </>

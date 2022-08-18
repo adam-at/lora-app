@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import'../App.css';
 import Button from '@mui/material/Button';
+
 import './Dashboard.css';
 import './Table.css';
 import './Navbar.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import "./Form.css";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,41 +19,31 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
+import PowerPlug from "mdi-material-ui/PowerPlug";
+
 import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
-
-function OrganizationUserList(){
-
-    const navigate = useNavigate();
-
-    const navigateToAddUser = () => {
-        //  navigate to /add-user
-        navigate('add-user');
-      };
+import moment from "moment";
 
 
-    
+function ApplicationDevices(){
+
+    const path = window.location.pathname.split('/');
     const [data, getData] = useState([]);
-    const URL = proxy + "http://203.162.235.53:8080/api"+window.location.pathname+"?limit=1000";
-    const header = {
-        method:'GET',
+    const URL = proxy + "http://203.162.235.53:8080/api/devices?limit=1000&applicationID="+path[path.length-1];
+    const header ={
         headers: {
           Accept: "application/json",
           "Grpc-Metadata-Authorization": key
         }
-      };
+      }
  
     useEffect(() => {
         fetchData()
-    }, []);
-
-    const org = localStorage.getItem("selectedOrganization");
-    useEffect(() => {
-        fetchData()
-    }, [org]);
+    }, [])
  
  
     const fetchData = () => {
@@ -81,24 +74,57 @@ function OrganizationUserList(){
         setPage(0);
     };
 
+    const navigate = useNavigate();
+
+    const navigateToAddDevice = () => {
+        navigate('devices/add');
+      };
+
+    const lastSeen = (date) =>{
+        let lastSeenDate = "Never";
+        if (date !== null) {
+            lastSeenDate = moment(data.lastSeenAt).format("lll");
+        };
+        return lastSeenDate;
+    }
+
+    const margin = (obj) => {
+        let margin = "n/a";
+        if (obj.deviceStatusMargin !== undefined && obj.deviceStatusMargin !== 256) {
+            margin = `${obj.deviceStatusMargin} dB`;
+          };
+        return margin;
+
+    }
+
+    const battery = (obj) => {
+        let battery = "n/a";
+        if (!obj.deviceStatusExternalPowerSource && !obj.deviceStatusBatteryLevelUnavailable) {
+            battery = `${obj.deviceStatusBatteryLevel}%`
+          }
+      
+          if (obj.deviceStatusExternalPowerSource) {
+            battery = <PowerPlug />;
+          }
+        return battery;
+    }
+
     return(
-    <section className="home">
-        <div className="title text">
-             <b>Organization Users</b>
+        <> 
+        <div className="add-button-device">
+        <Button variant="contained" onClick={navigateToAddDevice}><FontAwesomeIcon icon={solid("plus")}/>Add device</Button>
         </div>
-        <div className="add-button">
-            <Button variant="contained" onClick={navigateToAddUser}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
-        </div>
-        <div className="table">
-            <TableContainer component={Paper} className="dark-if-needed">
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <div className="form-with-tabs">
+            <TableContainer component={Paper} className="table-devices dark-if-needed">
+                <Table sx={{ minWidth: 1000 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 150 }}>Email</TableCell>
-                            <TableCell sx={{ width: 150 }}>Organization Admin</TableCell>
-                            <TableCell sx={{ width: 150 }}>Gateway Admin</TableCell>
-                            <TableCell sx={{ width: 150 }}>Device Admin</TableCell>
-                            <TableCell sx={{ width: 50 }}></TableCell>
+                            <TableCell sx={{ width: 300 }}>Last seen</TableCell>
+                            <TableCell sx={{ width: 300 }}>Device name</TableCell>
+                            <TableCell sx={{ width: 300 }}>Device EUI</TableCell>
+                            <TableCell sx={{ width: 300 }}>Device profile</TableCell>
+                            <TableCell sx={{ width: 300 }}>Link margin</TableCell>
+                            <TableCell sx={{ width: 300 }}>Battery</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -110,12 +136,17 @@ function OrganizationUserList(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                             <TableCell component="th" scope="row">
-                                {item.email}
+                                {lastSeen(item.lastSeenAt)}
                             </TableCell>
-                            <TableCell><FontAwesomeIcon icon={item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.isGatewayAdmin || item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <FontAwesomeIcon icon={item.isDeviceAdmin || item.isAdmin ? solid("check") : solid("times")}/></TableCell>
-                            <TableCell> <Link href={window.location.pathname+'/'+item.userID}><FontAwesomeIcon icon={solid("pen-to-square")}/></Link></TableCell>
+                            <TableCell>
+                            <Link href={item.applicationID+'/devices/'+item.devEUI}>{item.name}</Link>    
+                            </TableCell>
+                            <TableCell>{item.devEUI}</TableCell>
+                            <TableCell>
+                            <Link href={"/organizations/"+path[2]+"/device-profiles/"+item.deviceProfileID}>{item.deviceProfileName}</Link>    
+                            </TableCell>
+                            <TableCell>{margin(item)}</TableCell>
+                            <TableCell>{battery(item)}</TableCell>
                             </TableRow>
                         ))}
                         {emptyRows > 0 && (
@@ -128,7 +159,7 @@ function OrganizationUserList(){
                         <TableRow>
                             <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={5}
+                            colSpan={6}
                             count={data.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
@@ -147,8 +178,8 @@ function OrganizationUserList(){
                 </Table>
             </TableContainer>
         </div>
-    </section>
+        </>
     );
 }
 
-export default OrganizationUserList;
+export default ApplicationDevices;
