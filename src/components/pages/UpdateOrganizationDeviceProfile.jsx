@@ -19,6 +19,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteConfirmationDialog from "../DeleteConfirmationDialog.jsx";
 import {proxy} from "../Proxy";
 
+import {Controlled as CodeMirror} from "react-codemirror2";
+import "codemirror/mode/javascript/javascript";
+import 'codemirror/lib/codemirror.css';
+
 
 function UpdateOrganizationDeviceProfile() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -131,6 +135,12 @@ function UpdateOrganizationDeviceProfile() {
     {value: "CAYENNE_LPP", label: "Cayenne LPP"},
     {value: "CUSTOM_JS", label: "Custom JavaScript codec functions"},
   ];
+
+  const codeMirrorOptions = {
+    lineNumbers: true,
+    mode: "javascript",
+    theme: "default",
+  };
 
   const stringToIntegerList = (s) => {
     if(s.length==0){
@@ -330,39 +340,44 @@ const updateData = (device) => {
   };
 
 const handleDeviceProfileUpdate = () => {
-  const new_deviceProfile = deviceProfile;
-  new_deviceProfile["deviceProfile"]["name"]=name;
-  new_deviceProfile["deviceProfile"]["adrAlgorithmID"]= adrAlgorithmID;
-  new_deviceProfile["deviceProfile"]["classBTimeout"]= classBTimeout;
-  new_deviceProfile["deviceProfile"]["classCTimeout"]= classCTimeout;
-  new_deviceProfile["deviceProfile"]["factoryPresetFreqs"]=stringToIntegerList(factoryPresetFreqs);
-  new_deviceProfile["deviceProfile"]["geolocBufferTTL"]=geolocBufferTTL;
-  new_deviceProfile["deviceProfile"]["geolocMinBufferSize"]=geolocMinBufferSize;
-  new_deviceProfile["deviceProfile"]["id"]=id;
-  new_deviceProfile["deviceProfile"]["macVersion"]=macVersion;
-  new_deviceProfile["deviceProfile"]["maxDutyCycle"]=maxDutyCycle;
-  new_deviceProfile["deviceProfile"]["maxEIRP"]=maxEIRP;
-  new_deviceProfile["deviceProfile"]["networkServerID"]=networkServerID;
-  new_deviceProfile["deviceProfile"]["organizationID"]=organizationID;
-  new_deviceProfile["deviceProfile"]["payloadCodec"]=payloadCodec;
-  new_deviceProfile["deviceProfile"]["payloadDecoderScript"]=payloadDecoderScript;
-  new_deviceProfile["deviceProfile"]["payloadEncoderScript"]=payloadEncoderScript;
-  new_deviceProfile["deviceProfile"]["pingSlotDR"]=pingSlotDR;
-  new_deviceProfile["deviceProfile"]["pingSlotFreq"]=pingSlotFreq;
-  new_deviceProfile["deviceProfile"]["pingSlotPeriod"]=pingSlotPeriod;
-  new_deviceProfile["deviceProfile"]["regParamsRevision"]=regParamsRevision;
-  new_deviceProfile["deviceProfile"]["rfRegion"]=rfRegion;
-  new_deviceProfile["deviceProfile"]["rxDROffset1"]=rxDROffset1;
-  new_deviceProfile["deviceProfile"]["rxDataRate2"]=rxDataRate2;
-  new_deviceProfile["deviceProfile"]["rxDelay1"]=rxDelay1;
-  new_deviceProfile["deviceProfile"]["rxFreq2"]=rxFreq2;
-  new_deviceProfile["deviceProfile"]["supports32BitFCnt"]=supports32BitFCnt;
-  new_deviceProfile["deviceProfile"]["supportsClassB"]=supportsClassB;
-  new_deviceProfile["deviceProfile"]["supportsClassC"]=supportsClassC;
-  new_deviceProfile["deviceProfile"]["supportsJoin"]=supportsJoin;
-  new_deviceProfile["deviceProfile"]["tags"]=tagsFromNamesValues(tags);
-  new_deviceProfile["deviceProfile"]["uplinkInterval"]=uplinkInterval+"s";
-  setDeviceProfile(new_deviceProfile);
+  const updated_deviceProfile = deviceProfile;
+  updated_deviceProfile["deviceProfile"]["name"]=name;
+  updated_deviceProfile["deviceProfile"]["adrAlgorithmID"]= adrAlgorithmID;
+  updated_deviceProfile["deviceProfile"]["classBTimeout"]= classBTimeout;
+  updated_deviceProfile["deviceProfile"]["classCTimeout"]= classCTimeout;
+  updated_deviceProfile["deviceProfile"]["factoryPresetFreqs"]=stringToIntegerList(factoryPresetFreqs);
+  updated_deviceProfile["deviceProfile"]["geolocBufferTTL"]=geolocBufferTTL;
+  updated_deviceProfile["deviceProfile"]["geolocMinBufferSize"]=geolocMinBufferSize;
+  updated_deviceProfile["deviceProfile"]["id"]=id;
+  updated_deviceProfile["deviceProfile"]["macVersion"]=macVersion;
+  updated_deviceProfile["deviceProfile"]["maxDutyCycle"]=maxDutyCycle;
+  updated_deviceProfile["deviceProfile"]["maxEIRP"]=maxEIRP;
+  updated_deviceProfile["deviceProfile"]["networkServerID"]=networkServerID;
+  updated_deviceProfile["deviceProfile"]["organizationID"]=organizationID;
+  updated_deviceProfile["deviceProfile"]["payloadCodec"]=payloadCodec;
+  if(payloadCodec === "CUSTOM_JS"){
+    updated_deviceProfile["deviceProfile"]["payloadDecoderScript"]=payloadDecoderScript;
+    updated_deviceProfile["deviceProfile"]["payloadEncoderScript"]=payloadEncoderScript;
+  }else{
+    updated_deviceProfile["deviceProfile"]["payloadDecoderScript"]="";
+    updated_deviceProfile["deviceProfile"]["payloadEncoderScript"]="";
+  }
+  updated_deviceProfile["deviceProfile"]["pingSlotDR"]=pingSlotDR;
+  updated_deviceProfile["deviceProfile"]["pingSlotFreq"]=pingSlotFreq;
+  updated_deviceProfile["deviceProfile"]["pingSlotPeriod"]=pingSlotPeriod;
+  updated_deviceProfile["deviceProfile"]["regParamsRevision"]=regParamsRevision;
+  updated_deviceProfile["deviceProfile"]["rfRegion"]=rfRegion;
+  updated_deviceProfile["deviceProfile"]["rxDROffset1"]=rxDROffset1;
+  updated_deviceProfile["deviceProfile"]["rxDataRate2"]=rxDataRate2;
+  updated_deviceProfile["deviceProfile"]["rxDelay1"]=rxDelay1;
+  updated_deviceProfile["deviceProfile"]["rxFreq2"]=rxFreq2;
+  updated_deviceProfile["deviceProfile"]["supports32BitFCnt"]=supports32BitFCnt;
+  updated_deviceProfile["deviceProfile"]["supportsClassB"]=supportsClassB;
+  updated_deviceProfile["deviceProfile"]["supportsClassC"]=supportsClassC;
+  updated_deviceProfile["deviceProfile"]["supportsJoin"]=supportsJoin;
+  updated_deviceProfile["deviceProfile"]["tags"]=tagsFromNamesValues(tags);
+  updated_deviceProfile["deviceProfile"]["uplinkInterval"]=uplinkInterval+"s";
+  setDeviceProfile(updated_deviceProfile);
   console.log(deviceProfile);
 
   updateData(deviceProfile);
@@ -732,6 +747,33 @@ const handleChange = (event, newValue) => {
                   <FormHelperText variant="standard">By defining a payload codec, ChirpStack Application Server can encode and decode the binary device payload for you.</FormHelperText>
                  </FormControl>
                 </Grid>
+
+                {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}}>
+            <CodeMirror
+              value={payloadDecoderScript}
+              options={codeMirrorOptions}
+              onBeforeChange={(editor, data, value) => {
+                setPayloadDecoderScript(value);
+              }}
+            />
+            <FormHelperText>
+              The function must have the signature <strong>function Decode(fPort, bytes)</strong> and must return an object.
+              ChirpStack Application Server will convert this object to JSON.
+            </FormHelperText>
+          </FormControl>}
+          {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}}>
+            <CodeMirror
+              value={payloadEncoderScript}
+              options={codeMirrorOptions}
+              onBeforeChange={(editor, data, value) => {
+                setPayloadEncoderScript(value);
+              }}
+            />
+            <FormHelperText>
+              The function must have the signature <strong>function Encode(fPort, obj)</strong> and must return an array
+              of bytes.
+            </FormHelperText>
+          </FormControl>}
               </TabPanel>
 
               <TabPanel value={value} index={5}>

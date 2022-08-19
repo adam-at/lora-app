@@ -18,6 +18,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import {proxy} from "../Proxy";
 
+import {Controlled as CodeMirror} from "react-codemirror2";
+import "codemirror/mode/javascript/javascript";
+import 'codemirror/lib/codemirror.css';
+
 
 function AddOrganizationDeviceProfile() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -37,8 +41,22 @@ function AddOrganizationDeviceProfile() {
   const [networkServerID, setNetworkServerID] = useState("");
   const [organizationID, setOrganizationID] = useState("");
   const [payloadCodec, setPayloadCodec] = useState("");
-  const [payloadDecoderScript, setPayloadDecoderScript] = useState("");
-  const [payloadEncoderScript, setPayloadEncoderScript] = useState("");
+  const [payloadDecoderScript, setPayloadDecoderScript] = useState(`// Decode decodes an array of bytes into an object.
+  //  - fPort contains the LoRaWAN fPort number
+  //  - bytes is an array of bytes, e.g. [225, 230, 255, 0]
+  //  - variables contains the device variables e.g. {"calibration": "3.5"} (both the key / value are of type string)
+  // The function must return an object, e.g. {"temperature": 22.5}
+  function Decode(fPort, bytes, variables) {
+    return {};
+  }`);
+  const [payloadEncoderScript, setPayloadEncoderScript] = useState(`// Encode encodes the given object into an array of bytes.
+  //  - fPort contains the LoRaWAN fPort number
+  //  - obj is an object, e.g. {"temperature": 22.5}
+  //  - variables contains the device variables e.g. {"calibration": "3.5"} (both the key / value are of type string)
+  // The function must return an array of bytes, e.g. [225, 230, 255, 0]
+  function Encode(fPort, obj, variables) {
+    return [];
+  }`);
   const [pingSlotDR, setPingSlotDR] = useState(0);
   const [pingSlotFreq, setPingSlotFreq] = useState(0);
   const [pingSlotPeriod, setPingSlotPeriod] = useState(0);
@@ -130,6 +148,13 @@ function AddOrganizationDeviceProfile() {
     {value: "CAYENNE_LPP", label: "Cayenne LPP"},
     {value: "CUSTOM_JS", label: "Custom JavaScript codec functions"},
   ];
+
+
+  const codeMirrorOptions = {
+    lineNumbers: true,
+    mode: "javascript",
+    theme: "default",
+  };
 
   const stringToIntegerList = (s) => {
     if(s.length==0){
@@ -281,8 +306,13 @@ const handleDeviceProfileSubmit = () => {
   new_deviceProfile["deviceProfile"]["networkServerID"]=networkServerID;
   new_deviceProfile["deviceProfile"]["organizationID"]=organizationID;
   new_deviceProfile["deviceProfile"]["payloadCodec"]=payloadCodec;
-  new_deviceProfile["deviceProfile"]["payloadDecoderScript"]=payloadDecoderScript;
-  new_deviceProfile["deviceProfile"]["payloadEncoderScript"]=payloadEncoderScript;
+  if(payloadCodec === "CUSTOM_JS"){
+    new_deviceProfile["deviceProfile"]["payloadDecoderScript"]=payloadDecoderScript;
+    new_deviceProfile["deviceProfile"]["payloadEncoderScript"]=payloadEncoderScript;
+  }else{
+    new_deviceProfile["deviceProfile"]["payloadDecoderScript"]="";
+    new_deviceProfile["deviceProfile"]["payloadEncoderScript"]="";
+  }
   new_deviceProfile["deviceProfile"]["pingSlotDR"]=pingSlotDR;
   new_deviceProfile["deviceProfile"]["pingSlotFreq"]=pingSlotFreq;
   new_deviceProfile["deviceProfile"]["pingSlotPeriod"]=pingSlotPeriod;
@@ -642,6 +672,33 @@ const handleChange = (event, newValue) => {
                   <FormHelperText variant="standard">By defining a payload codec, ChirpStack Application Server can encode and decode the binary device payload for you.</FormHelperText>
                  </FormControl>
                 </Grid>
+
+                {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}}>
+            <CodeMirror
+              value={payloadDecoderScript}
+              options={codeMirrorOptions}
+              onBeforeChange={(editor, data, value) => {
+                setPayloadDecoderScript(value);
+              }}
+            />
+            <FormHelperText>
+              The function must have the signature <strong>function Decode(fPort, bytes)</strong> and must return an object.
+              ChirpStack Application Server will convert this object to JSON.
+            </FormHelperText>
+          </FormControl>}
+          {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}}>
+            <CodeMirror
+              value={payloadEncoderScript}
+              options={codeMirrorOptions}
+              onBeforeChange={(editor, data, value) => {
+                setPayloadEncoderScript(value);
+              }}
+            />
+            <FormHelperText>
+              The function must have the signature <strong>function Encode(fPort, obj)</strong> and must return an array
+              of bytes.
+            </FormHelperText>
+          </FormControl>}
               </TabPanel>
 
               <TabPanel value={value} index={5}>
