@@ -3,25 +3,26 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import { Paper, FormControl, InputLabel, Grid, FormControlLabel, Checkbox } from '@mui/material';
 import Input from '@mui/material/Input';
-import "../Form.css";
+import "./Form.css";
 import { useNavigate } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import {TabPanel} from "../Tabs.jsx";
+import {TabPanel} from "./Tabs.jsx";
 import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import {key} from "../jwt";
-import "../Dashboard.css";
+import {key} from "./jwt";
+import "./Dashboard.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-import {proxy} from "../Proxy";
-import EUI64Field from "../EUI64";
+import {proxy} from "./Proxy";
+
+import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 
 
-function AddDevice() {
+function UpdateDeviceForm() {
 
   const [applicationID, setApplicationID] = useState([]);
   const [description, setDescription] = useState("");
@@ -86,6 +87,11 @@ function AddDevice() {
     return tags;
   };
 
+  const namesValuesFromTags = (tags) => {
+    return Object.entries(tags);
+
+  }
+
   const handleVariableAdd= () => {
     setVariables([...variables,
     ["",""]]);
@@ -117,6 +123,11 @@ function AddDevice() {
     return variables;
   };
 
+  const namesValuesFromVariables = (variables) => {
+    return Object.entries(variables);
+
+  }
+
   const path = window.location.pathname.split("/");
 
   const URLprofile = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&applicationID="+path[4];
@@ -132,7 +143,7 @@ function AddDevice() {
  
     useEffect(() => {
         fetchDataDeviceProfile();
-        setApplicationID(path[4]);
+        fetchData();
     }, [])
  
  
@@ -154,11 +165,47 @@ const navigateToAppDetails = () => {
   navigate("/organizations/"+path[2]+"/applications/"+path[4]);
 };
 
-const URL = proxy + "http://203.162.235.53:8080/api/devices";
+const URL = proxy + "http://203.162.235.53:8080/api/devices/" + path[6];
+
+
+const fetchData = () =>{
+    const header ={
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Grpc-Metadata-Authorization": key
+      },
+      method: "GET"
+    };
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+
+          .then((response) => {
+              console.log(response);
+              /* if error 400 stay on the same page with an error alert, else go go to previous page*/ 
+              if(response.error){
+                alert(response.error);
+              }else{
+                console.log(response);
+                const dev = response.device;
+                setName(dev.name);
+                setApplicationID(dev.applicationID);
+                setDescription(dev.description);
+                setDevEUI(dev.devEUI);
+                setDeviceProfileID(dev.deviceProfileID);
+                setIsDisabled(dev.isDisabled);
+                setSkipFCntCheck(dev.skipFCntCheck);
+                setTags(namesValuesFromTags(dev.tags));
+                setVariables(namesValuesFromVariables(dev.variables));
+              }
+          })
+
+}
     
  
  
-const postData = (device) => {
+const updateData = (device) => {
     const strDevice = JSON.stringify(device);
     const header ={
       body: strDevice,
@@ -167,7 +214,7 @@ const postData = (device) => {
         "Content-Type": "application/json",
         "Grpc-Metadata-Authorization": key
       },
-      method: "POST"
+      method: "PUT"
     };
       fetch(URL, header)
           .then((res) =>
@@ -185,23 +232,46 @@ const postData = (device) => {
 
   };
 
-const handleDeviceSubmit = () => {
-  const new_device = device;
-  new_device["device"]["applicationID"]=applicationID;
-  new_device["device"]["description"]=description;
-  new_device["device"]["name"]=name;
-  new_device["device"]["devEUI"]=devEUI;
-  new_device["device"]["deviceProfileID"]=deviceProfileID;
-  new_device["device"]["skipFCntCheck"]=skipFCntCheck;
-  new_device["device"]["isDisabled"]=isDisabled;
+  const deleteData = () => {
+    const header ={
+      headers: {
+        Accept: "application/json",
+        "Grpc-Metadata-Authorization": key
+      },
+      method: "DELETE"
+    };
+      fetch(URL, header)
+          .then((res) =>
+              res.json())
+  
+          .then((response) => {
+              console.log(response);
+              if(response.error){
+                alert(response.error);
+              }else{
+              navigateToAppDetails();
+              alert("Device deleted !")
+              }
+          })
+  };
 
-  new_device["device"]["tags"]=tagsFromNamesValues(tags);
-  new_device["device"]["variables"]=VariablesFromNamesValues(variables);
+const handleDeviceUpdate = () => {
+  const updated_device = device;
+  updated_device["device"]["applicationID"]=applicationID;
+  updated_device["device"]["description"]=description;
+  updated_device["device"]["name"]=name;
+  updated_device["device"]["devEUI"]=devEUI;
+  updated_device["device"]["deviceProfileID"]=deviceProfileID;
+  updated_device["device"]["skipFCntCheck"]=skipFCntCheck;
+  updated_device["device"]["isDisabled"]=isDisabled;
 
-  setDevice(new_device);
-  console.log(new_device);
+  updated_device["device"]["tags"]=tagsFromNamesValues(tags);
+  updated_device["device"]["variables"]=VariablesFromNamesValues(variables);
 
-  postData(device);
+  setDevice(updated_device);
+  console.log(updated_device);
+
+  updateData(device);
 }
 
 
@@ -213,9 +283,7 @@ const handleChange = (event, newValue) => {
 
 
   return (
-    <section className="home">
-      <div className="title text"> <b> Add a new device </b></div>
-      <Paper elevation={6} className="form dark-if-needed">
+      <Paper elevation={6} className="form-with-tabs dark-if-needed">
         <Grid container spacing={3}>
         <Box sx={{ width: '100%' }}>
       <Tabs
@@ -255,19 +323,6 @@ const handleChange = (event, newValue) => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </FormControl>
-
-            <FormControl sx={{m:1, width: '95%'}}>
-            <EUI64Field
-            id="dev-eui"
-            label="Device EUI"
-            margin="normal"
-            value={devEUI}
-            onChange={(e)=>setDevEUI(e.target.value)}
-            required
-            fullWidth
-            random="true"
-          />
-          </FormControl>
 
 
             <Grid item xs={12}>
@@ -412,17 +467,16 @@ const handleChange = (event, newValue) => {
     </Box>
           
           
-          <Grid item xs={12} sm={5}></Grid>
+          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="device"/></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleDeviceSubmit}> Add Device </Button>
+            <Button variant="contained" onClick={handleDeviceUpdate}> Update Device </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToAppDetails}> Cancel </Button>
           </Grid>
         </Grid>        
       </Paper>
-    </section>
   )
 }
 
-export default AddDevice;
+export default UpdateDeviceForm;

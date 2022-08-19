@@ -11,9 +11,6 @@ import {proxy} from "./Proxy";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 
 function UpdateOrganizationApplicationForm() {
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  const admin = user.isAdmin;
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -170,7 +167,7 @@ const deleteData = () => {
             </FormControl>
           </Grid>
           
-          <Grid item xs={12} sm={5}>{admin && (<DeleteConfirmationDialog fun={deleteData} name="application"/>)}</Grid>
+          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="application"/></Grid>
           <Grid item xs={12} sm={6}>
             <Button variant="contained" onClick={handleAppUpdate}> Update application </Button>
           </Grid>

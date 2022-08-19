@@ -103,7 +103,6 @@ const [statsDownDr, setStatsDownDr] = useState([]);
 const [statsCompleted, setStatsCompleted] = useState(false);
 
 const statsOptions = {
-    animation: false,
     plugins: {
       legend: {
         display: false,
@@ -124,6 +123,7 @@ const statsOptions = {
       },
     },
   };
+
 
 const fetchStats = () =>{
     const header ={
