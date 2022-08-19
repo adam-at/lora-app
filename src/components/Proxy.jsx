@@ -1,1 +1,1 @@
-export const proxy = "https://mysterious-beach-37221.herokuapp.com/";
+export const proxy = "";
