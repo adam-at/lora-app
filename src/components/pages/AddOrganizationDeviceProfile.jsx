@@ -22,9 +22,14 @@ import {Controlled as CodeMirror} from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 import 'codemirror/lib/codemirror.css';
 
+import UserProfile from "../UserProfile"
+
 
 function AddOrganizationDeviceProfile() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const path = window.location.pathname.split('/');
+  const org = UserProfile.getOrganizationFromId(path[2]);
+
+  const user = UserProfile.getUser();
   const admin = user.isAdmin;
 
   const [adrAlgorithmID, setAdrAlgorithmID] = useState("");
@@ -201,7 +206,6 @@ function AddOrganizationDeviceProfile() {
     return tags;
   };
 
-  const path = window.location.pathname.split("/");
   const [serverData, setServerData] = useState([]);
   const [adrData, setAdrData] = useState([]);
   const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
@@ -217,8 +221,12 @@ function AddOrganizationDeviceProfile() {
       if(admin){
         fetchData("");
       }else{
-        fetchData("&organizationID="+path[2]);
+        if(org){
+        if(org.isAdmin || org.isDeviceAdmin){
+          fetchData("&organizationID="+path[2]);
+        }    
       }
+    }
         setOrganizationID(path[2]);
     }, [])
  
@@ -341,7 +349,7 @@ const handleChange = (event, newValue) => {
   setValue(newValue);
 };
 
-
+  if(org && (org.isAdmin || org.isDeviceAdmin)){
   return (
     <section className="home">
       <div className="title text"> <b> Add a new device profile </b></div>
@@ -763,6 +771,9 @@ const handleChange = (event, newValue) => {
       </Paper>
     </section>
   )
+  }else{
+    return(<></>)
+  }
 }
 
 export default AddOrganizationDeviceProfile;

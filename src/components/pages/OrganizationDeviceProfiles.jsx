@@ -23,12 +23,17 @@ import {key} from "../jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "../Proxy";
 
+import UserProfile from "../UserProfile"
+
 
 function OrganizationDeviceProfiles(){
+    const path = window.location.pathname.split('/');
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    
 
     
     const [data, getData] = useState([]);
-    const URL = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-16);
+    const URL = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&organizationID="+path[2];
     const header ={
         headers: {
           Accept: "application/json",
@@ -81,9 +86,13 @@ function OrganizationDeviceProfiles(){
         <div className="title text">
              <b>Organization Device Profiles</b>
         </div>
-        <div className="add-button">
+        {(org.isAdmin || org.isDeviceAdmin) && (
+            <>
+            <div className="add-button">
             <Button variant="contained" onClick={navigateToAddDeviceProfile}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
-        </div>
+            </div>
+            </>
+        )}
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
