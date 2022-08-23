@@ -23,10 +23,15 @@ import {Controlled as CodeMirror} from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 import 'codemirror/lib/codemirror.css';
 
+import UserProfile from "../UserProfile"
+
 
 function UpdateOrganizationDeviceProfile() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const path = window.location.pathname.split('/');
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const user = UserProfile.getUser();
   const admin = user.isAdmin;
+  const disable = !(admin || org && (org.isAdmin || org.isDeviceAdmin));
 
   const [adrAlgorithmID, setAdrAlgorithmID] = useState("");
   const [classBTimeout, setClassBTimeout] = useState(0);
@@ -192,7 +197,6 @@ function UpdateOrganizationDeviceProfile() {
 
   }
 
-  const path = window.location.pathname.split("/");
   const [serverData, setServerData] = useState([]);
   const [adrData, setAdrData] = useState([]);
   const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
@@ -417,9 +421,12 @@ const handleChange = (event, newValue) => {
   return (
     <section className="home">
       <div className="title text"> <b> Update a device profile </b></div>
+      {!disable && (
       <div className="delete-button">
         <DeleteConfirmationDialog fun={deleteData} name="device profile"/>
       </div>
+      )}
+      
       <Paper elevation={6} className="form dark-if-needed">
         <Grid container spacing={3}>
         <Box sx={{ width: '100%' }}>
@@ -437,7 +444,7 @@ const handleChange = (event, newValue) => {
       </Tabs>
       <TabPanel value={value} index={0}>
 
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
               <InputLabel variant="standard" required>Device-profile name</InputLabel>
               <Input
                 required
@@ -451,7 +458,7 @@ const handleChange = (event, newValue) => {
             </FormControl>
 
             <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
+          <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
             <InputLabel variant="standard" required>Network Server</InputLabel>
             <Select
               required
@@ -470,7 +477,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
             <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
+          <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
             <InputLabel variant="standard" required>LoRaWAN MAC Version</InputLabel>
             <Select
               required
@@ -489,7 +496,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
           <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
+          <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
             <InputLabel variant="standard" required>LoRaWAN regional parameters revision</InputLabel>
             <Select
               required
@@ -508,7 +515,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
           <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}} disabled={adrData.length==0}>
+          <FormControl sx={{ m: 1, width: '95%'}} disabled={adrData.length==0 || disable}>
             <InputLabel variant="standard" required>ADR algorithm</InputLabel>
             <Select
               required
@@ -527,7 +534,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
               <InputLabel variant="standard" required>Max EIRP</InputLabel>
               <Input
                 required
@@ -542,7 +549,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
               <InputLabel variant="standard" required>Uplink interval (seconds)</InputLabel>
               <Input
                 required
@@ -560,14 +567,14 @@ const handleChange = (event, newValue) => {
 
       
       <TabPanel value={value} index={1}>
-      <FormControlLabel
+      <FormControlLabel disabled={disable}
               control={<Checkbox color="primary" name="supports-join" checked={supportsJoin} value={supportsJoin} onChange={()=>setSupportsJoin(!supportsJoin)} />}
               label="Device supports OTAA" className="text"
             />
               {!supportsJoin && (
                 <>
 
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>RX1 delay</InputLabel>
                   <Input
                     required
@@ -581,7 +588,7 @@ const handleChange = (event, newValue) => {
                 </FormControl>
           
          
-              <FormControl sx={{ m: 1, width: '95%'}}>
+              <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                 <InputLabel variant="standard" required>RX1 data-rate offset</InputLabel>
                 <Input
                   required
@@ -594,7 +601,7 @@ const handleChange = (event, newValue) => {
                 <FormHelperText variant="standard">Please refer the LoRaWAN Regional Parameters specification for valid values.</FormHelperText>
               </FormControl>
  
-              <FormControl sx={{ m: 1, width: '95%'}}>
+              <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                 <InputLabel variant="standard" required>RX2 data-rate</InputLabel>
                 <Input
                   required
@@ -607,7 +614,7 @@ const handleChange = (event, newValue) => {
                 <FormHelperText variant="standard">Please refer the LoRaWAN Regional Parameters specification for valid values</FormHelperText>
               </FormControl>
 
-              <FormControl sx={{ m: 1, width: '95%'}}>
+              <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                 <InputLabel variant="standard" required>RX2 channel frequency (Hz)</InputLabel>
                 <Input
                   required
@@ -619,7 +626,7 @@ const handleChange = (event, newValue) => {
                 />
               </FormControl>
 
-              <FormControl sx={{ m: 1, width: '95%'}}>
+              <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
               <InputLabel variant="standard" required>Factory-preset frequencies (Hz)</InputLabel>
               <Input
                 required
@@ -636,14 +643,14 @@ const handleChange = (event, newValue) => {
               )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <FormControlLabel
+        <FormControlLabel disabled={disable}
               control={<Checkbox color="primary" name="supports-classB" checked={supportsClassB} value={supportsClassB} onChange={()=>setSupportsClassB(!supportsClassB)} />}
               label="Device supports Class-B" className="text"
             />
               {supportsClassB && (
                 <>
 
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>Class-B confirmed downlink timeout</InputLabel>
                   <Input
                     required
@@ -657,7 +664,7 @@ const handleChange = (event, newValue) => {
                 </FormControl>
           
          
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>Class-B ping-slot periodicity</InputLabel>
                   <Select
                     required
@@ -674,7 +681,7 @@ const handleChange = (event, newValue) => {
                   <FormHelperText variant="standard">Select Class-B ping-slot periodicity.</FormHelperText>
                 </FormControl>
 
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>Class-B ping-slot data-rate</InputLabel>
                   <Input
                     required
@@ -686,7 +693,7 @@ const handleChange = (event, newValue) => {
                   />
                 </FormControl>
 
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>Class-B ping-slot frequency (Hz)</InputLabel>
                   <Input
                     required
@@ -705,15 +712,15 @@ const handleChange = (event, newValue) => {
       </TabPanel>
 
       <TabPanel value={value} index={3}>
-        <FormControlLabel
+        <FormControlLabel disabled={disable}
               control={<Checkbox color="primary" name="supports-classC" checked={supportsClassC} value={supportsClassC} onChange={()=>setSupportsClassC(!supportsClassC)} />}
               label="Device supports Class-C" className="text"
             />
-            <FormControl sx={{ ml: 4, width: '95%'}}>
+            <FormControl sx={{ ml: 4, width: '95%'}} disabled={disable}>
                 <FormHelperText variant="standard">Select this option when the device will operate as Class-C device immediately after activation. In case it sends a DeviceModeInd mac-command when it changes to Class-C, do not select this option.</FormHelperText>
               </FormControl>
 
-                <FormControl sx={{ m: 1, width: '95%'}}>
+                <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                   <InputLabel variant="standard" required>Class-C confirmed downlink timeout</InputLabel>
                   <Input
                     required
@@ -761,7 +768,7 @@ const handleChange = (event, newValue) => {
               ChirpStack Application Server will convert this object to JSON.
             </FormHelperText>
           </FormControl>}
-          {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}}>
+          {payloadCodec === "CUSTOM_JS" && <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
             <CodeMirror
               value={payloadEncoderScript}
               options={codeMirrorOptions}
@@ -782,13 +789,13 @@ const handleChange = (event, newValue) => {
                  </Grid>
 
                  <Grid item xs={12} sm={5}>
-                  <Button variant="outlined" onClick={handleTagAdd}> Add new tag </Button>
+                  <Button variant="outlined" onClick={handleTagAdd} disabled={disable}> Add new tag </Button>
                 </Grid>
 
                  {tags.map((tag,index) =>(
                   <Grid container key={index} spacing={3}>
                   <Grid item xd={12} sm={6}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                       <InputLabel variant="standard" required>Name</InputLabel>
                       <Input
                         required
@@ -801,7 +808,7 @@ const handleChange = (event, newValue) => {
                     </FormControl>  
                   </Grid>
                   <Grid item xd={12} sm={5}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={disable}>
                       <InputLabel variant="standard" required>Value</InputLabel>
                       <Input
                         required
@@ -814,7 +821,7 @@ const handleChange = (event, newValue) => {
                     </FormControl>  
                   </Grid>
                   <Grid item xd={12} sm={1}>
-                    <IconButton aria-label="delete" onClick={()=>handleTagDelete(index)} className="delete-icon">
+                    <IconButton aria-label="delete" onClick={()=>handleTagDelete(index)} className="delete-icon" disabled={disable}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>
@@ -829,7 +836,7 @@ const handleChange = (event, newValue) => {
           
           <Grid item xs={12} sm={5}></Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleDeviceProfileUpdate}> Update Device Profile </Button>
+            <Button variant="contained" onClick={handleDeviceProfileUpdate} disabled={disable}> Update Device Profile </Button>
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button variant="contained" onClick={navigateToDeviceProfiles}> Cancel </Button>
