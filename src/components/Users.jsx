@@ -21,8 +21,12 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 
 function Users(){
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
 
     const navigate = useNavigate();
 
@@ -77,6 +81,7 @@ function Users(){
         setPage(0);
     };
 
+    if(admin){
     return(
     <section className="home">
         <div className="title text">
@@ -143,6 +148,9 @@ function Users(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default Users;

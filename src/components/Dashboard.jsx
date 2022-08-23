@@ -10,8 +10,13 @@ import DashboardLayout from './DashboardLayout';
 import {key} from "./jwt";
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 
 function Dashboard() {
+  const user = UserProfile.getUser();
+  const admin = user.isAdmin;
+  
   const [dataGw, setDataGw] = useState([]);
   const URL = proxy + "http://203.162.235.53:8080/api/gateways?limit=1000";
   const header ={
@@ -22,9 +27,11 @@ function Dashboard() {
     }
 
   useEffect(() => {
+    if(admin){
       fetchData();
       fetchSummaryGw();
       fetchSummaryDv();
+    }
   }, []);
 
 
@@ -78,6 +85,7 @@ function Dashboard() {
   
   console.log(JSON.parse(localStorage.getItem("user")));
   
+  if(admin){
   return (
     <section className='home'>
         <div className="title text">
@@ -90,6 +98,9 @@ function Dashboard() {
         </div>
     </section>
   )
+  }else{
+    return(<></>)
+  }
 }
 
 export default Dashboard

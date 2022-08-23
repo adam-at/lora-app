@@ -39,11 +39,6 @@ function OrganizationDeviceProfiles(){
     useEffect(() => {
         fetchData()
     }, []);
-
-    const org = localStorage.getItem("selectedOrganization");
-    useEffect(() => {
-        fetchData()
-    }, [org]);
  
  
     const fetchData = () => {

@@ -21,7 +21,11 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile"
+
 function NetworkServers(){
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
     
     const [data, getData] = useState([]);
     const URL = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
@@ -71,6 +75,7 @@ function NetworkServers(){
         navigate('/add-network-server');
       };
 
+    if(admin){  
     return(
     <section className="home">
         <div className="title text">
@@ -135,6 +140,9 @@ function NetworkServers(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default NetworkServers

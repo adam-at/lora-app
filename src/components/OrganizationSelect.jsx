@@ -12,16 +12,22 @@ import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 
 function OrganizationSelect(){
 
-    const [organization, setOrganization] = useState(localStorage.getItem("selectedOrganization"));
+  
 
-    const [data, setData] = useState([]);
+  const [organization, setOrganization] = useState(localStorage.getItem("selectedOrganization"));
+  const [org, setOrg] = useState(UserProfile.getOrganizationFromId(organization));
 
-    const [reload, setReload] = useState(false);
 
-    const URL = proxy + "http://203.162.235.53:8080/api/organizations?limit=1000";
+  const [data, setData] = useState([]);
+
+  const [reload, setReload] = useState(false);
+
+  const URL = proxy + "http://203.162.235.53:8080/api/organizations?limit=1000";
       const header ={
           headers: {
             Accept: "application/json",
@@ -41,7 +47,6 @@ function OrganizationSelect(){
                   res.json())
    
               .then((response) => {
-                  console.log(response.result);
                   if(response.error){
                     alert(response.error);
                   }else{
@@ -55,6 +60,7 @@ function OrganizationSelect(){
     const handleOrganizationChange = (e) => {
         localStorage.setItem("selectedOrganization", e.target.value);
         setOrganization(e.target.value);
+        setOrg(UserProfile.getOrganizationFromId(e.target.value.id));
         console.log(localStorage.getItem("selectedOrganization"));
         setReload(true);
     }
@@ -101,7 +107,7 @@ function OrganizationSelect(){
       navigate("/organizations/"+organization+"/applications")
   }
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = UserProfile.getUser();
   const admin = user.isAdmin;
     
 
@@ -168,6 +174,8 @@ function OrganizationSelect(){
                 </Link>
                 </li>
 
+              {org.isAdmin &&(
+                <>
                 <li className="nav-link">
                 <Link onClick={navigateToOrganizationUsers}>
                     <FontAwesomeIcon icon={solid("user")} className="ficon"/>
@@ -181,7 +189,9 @@ function OrganizationSelect(){
                     <span className="text nav-text">Org. API Keys</span>
                 </Link>
               </li>
-        
+              </>
+              )}
+                
               <li className="nav-link">
                 <Link onClick={navigateToOrganizationServices}>
                     <FontAwesomeIcon icon={solid("address-card")} className="ficon"></FontAwesomeIcon>

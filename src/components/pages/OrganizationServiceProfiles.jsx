@@ -42,11 +42,6 @@ function OrganizationServiceProfiles(){
         fetchData()
     }, []);
 
-    const org = localStorage.getItem("selectedOrganization");
-    useEffect(() => {
-        fetchData()
-    }, [org]);
- 
  
     const fetchData = () => {
         fetch(URL, header)

@@ -21,7 +21,11 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 function Organizations(){
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
 
     
     const [data, getData] = useState([]);
@@ -78,7 +82,7 @@ function Organizations(){
         navigate("/organizations/"+e)
     }
 
-
+    if(admin){
     return(
     <section className="home">
         <div className="title text">
@@ -144,6 +148,9 @@ function Organizations(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default Organizations

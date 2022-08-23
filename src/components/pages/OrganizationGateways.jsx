@@ -38,10 +38,9 @@ function OrganizationGateways(){
       }
  
 
-    const org = localStorage.getItem("selectedOrganization");
     useEffect(() => {
         fetchData()
-    }, [org]);
+    }, []);
  
  
     const fetchData = () => {

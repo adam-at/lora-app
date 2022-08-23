@@ -21,9 +21,12 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile"
+
 
 function Gateways(){
-
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
     
     const [data, getData] = useState([]);
     const URL = proxy + "http://203.162.235.53:8080/api/gateway-profiles?limit=1000";
@@ -46,6 +49,9 @@ function Gateways(){
  
             .then((response) => {
                 console.log(response);
+                if(response.error){
+                    alert(response.error);
+                }
                 getData(response.result);
             })
  
@@ -73,7 +79,7 @@ function Gateways(){
         navigate('/add-gateway');
       };
 
-
+    if(admin){
     return(
     <section className="home">
         <div className="title text">
@@ -138,6 +144,9 @@ function Gateways(){
         </div>
     </section>
     );
+                        }else{
+                            return(<></>)
+                        }
 }
 
 export default Gateways;

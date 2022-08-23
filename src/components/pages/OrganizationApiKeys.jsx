@@ -21,14 +21,18 @@ import {key} from "../jwt";
 import QuickDeleteConfirmationDialog from '../QuickDeleteConfirmationDialog';
 import {proxy} from "../Proxy";
 
+import UserProfile from "../UserProfile"
+
 
 function OrganizationApiKeys(){
+    const path = window.location.pathname.split('/');
 
-    const org = localStorage.getItem("selectedOrganization");
+    const org = UserProfile.getOrganizationFromId(parseInt(path[2]));
+    const orgAdmin = org.isAdmin;
     
 
     const [data, getData] = useState([]);
-    const URL = proxy + "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-9);
+    const URL = proxy + "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&organizationID="+path[2];
     const header ={
         headers: {
           Accept: "application/json",
@@ -37,12 +41,10 @@ function OrganizationApiKeys(){
       }
  
     useEffect(() => {
-        fetchData()
+        if(orgAdmin){
+            fetchData();
+        }
     }, []);
-
-    useEffect(() => {
-        fetchData()
-    }, [org]);
  
  
     const fetchData = () => {
@@ -106,7 +108,7 @@ function OrganizationApiKeys(){
               })
       };
 
-
+    if(orgAdmin){
     return(
     <section className="home">
         <div className="title text">
@@ -175,6 +177,9 @@ function OrganizationApiKeys(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default OrganizationApiKeys;

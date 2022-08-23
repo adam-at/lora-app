@@ -25,7 +25,7 @@ var UserProfile = (function() {
     const organizations = JSON.parse(localStorage.getItem("organizations"));
     for(let i = 0; i<organizations.length; i++){
       const org = organizations[i];
-      if(org.organizationID==id){
+      if(org.organizationID===id){
         return org;
       }
     }

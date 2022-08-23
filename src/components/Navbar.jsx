@@ -9,6 +9,9 @@ import UserProfile from "./UserProfile"
 
 
 function Navbar() {
+  const user = UserProfile.getUser();
+  const userId = user.id;
+  const admin = user.isAdmin;
 
   window.onload=function(){
   const body = document.querySelector('body'),
@@ -85,12 +88,7 @@ const navigateToApiKeys = () => {
     navigate("/api-keys")
 }
 
-const user = JSON.parse(localStorage.getItem("user"));
-const userId = user.id;
-const admin = user.isAdmin;
 
-console.log(UserProfile.getUser());
-console.log(UserProfile.getOrganizations());
 
 
   return (

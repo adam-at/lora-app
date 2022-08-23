@@ -21,9 +21,12 @@ import {key} from "./jwt";
 import QuickDeleteConfirmationDialog from './QuickDeleteConfirmationDialog';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile"
+
 
 function ApiKeys(){
-
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
     
     const [data, getData] = useState([]);
     const URL = proxy + "http://203.162.235.53:8080/api/internal/api-keys?limit=1000&isAdmin=true";
@@ -46,6 +49,9 @@ function ApiKeys(){
  
             .then((response) => {
                 console.log(response);
+                if(response.error){
+                    alert(response.error);
+                }
                 getData(response.result);
             })
  
@@ -100,7 +106,7 @@ function ApiKeys(){
               })
       };
 
-
+    if(admin){
     return(
     <section className="home">
         <div className="title text">
@@ -169,6 +175,9 @@ function ApiKeys(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default ApiKeys;
