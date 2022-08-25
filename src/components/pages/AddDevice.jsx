@@ -19,9 +19,20 @@ import IconButton from '@mui/material/IconButton';
 import {proxy} from "../Proxy";
 import EUI64Field from "../EUI64";
 
+import UserProfile from "../UserProfile";
+
 
 
 function AddDevice() {
+  const path = window.location.pathname.split('/');
+
+  const user = UserProfile.getUser();
+  const admin = user.isAdmin;
+
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
+  const devAdmin = org && org.isDeviceAdmin;
+  const permitted = admin || orgAdmin || devAdmin;
 
   const [applicationID, setApplicationID] = useState([]);
   const [description, setDescription] = useState("");
@@ -117,8 +128,6 @@ function AddDevice() {
     return variables;
   };
 
-  const path = window.location.pathname.split("/");
-
   const URLprofile = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&applicationID="+path[4];
 
   const [deviceProfileData, setDeviceProfileData] = useState([]);
@@ -211,7 +220,7 @@ const handleChange = (event, newValue) => {
   setValue(newValue);
 };
 
-
+if(permitted){
   return (
     <section className="home">
       <div className="title text"> <b> Add a new device </b></div>
@@ -423,6 +432,9 @@ const handleChange = (event, newValue) => {
       </Paper>
     </section>
   )
+  }else{
+    return(<></>)
+  }
 }
 
 export default AddDevice;

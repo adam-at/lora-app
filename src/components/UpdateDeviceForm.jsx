@@ -19,10 +19,20 @@ import IconButton from '@mui/material/IconButton';
 import {proxy} from "./Proxy";
 
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
+import UserProfile from "./UserProfile";
 
 
 
 function UpdateDeviceForm() {
+  const path = window.location.pathname.split('/');
+
+  const user = UserProfile.getUser();
+  const admin = user.isAdmin;
+
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
+  const devAdmin = org && org.isDeviceAdmin;
+  const permitted = admin || orgAdmin || devAdmin;
 
   const [applicationID, setApplicationID] = useState([]);
   const [description, setDescription] = useState("");
@@ -128,7 +138,6 @@ function UpdateDeviceForm() {
 
   }
 
-  const path = window.location.pathname.split("/");
 
   const URLprofile = proxy + "http://203.162.235.53:8080/api/device-profiles?limit=1000&applicationID="+path[4];
 
@@ -297,7 +306,7 @@ const handleChange = (event, newValue) => {
       </Tabs>
       <TabPanel value={value} index={0}>
 
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
               <InputLabel variant="standard" required>Device name</InputLabel>
               <Input
                 required
@@ -310,7 +319,7 @@ const handleChange = (event, newValue) => {
               <FormHelperText variant="standard">The name may only contain words, numbers and dashes.</FormHelperText>
             </FormControl>
 
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
               <InputLabel variant="standard" required>Device description</InputLabel>
               <Input
                 required
@@ -326,7 +335,7 @@ const handleChange = (event, newValue) => {
 
 
             <Grid item xs={12}>
-          <FormControl sx={{ m: 1, width: '95%'}}>
+          <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
           <InputLabel variant="standard" required>Device Profile</InputLabel>
             <Select
               required
@@ -344,7 +353,7 @@ const handleChange = (event, newValue) => {
           </Grid>
           
           <Grid item xs={12}>
-          <FormControlLabel
+          <FormControlLabel disabled={!permitted}
               control={<Checkbox color="primary" name="skip-check" checked={skipFCntCheck} value={skipFCntCheck} onChange={() => setSkipFCntCheck(!skipFCntCheck)} />}
               label="Disable frame-counter validation" className="text"
             />
@@ -354,7 +363,7 @@ const handleChange = (event, newValue) => {
           </Grid>
 
           <Grid item xs={12}>
-          <FormControlLabel
+          <FormControlLabel disabled={!permitted}
               control={<Checkbox color="primary" name="isDisabled" checked={isDisabled} value={isDisabled} onChange={() => setIsDisabled(!isDisabled)} />}
               label="Device is disabled" className="text"
             />
@@ -379,7 +388,7 @@ const handleChange = (event, newValue) => {
                  {variables.map((variable,index) =>(
                   <Grid container key={index} spacing={3}>
                   <Grid item xd={12} sm={6}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
                       <InputLabel variant="standard" required>Name</InputLabel>
                       <Input
                         required
@@ -392,7 +401,7 @@ const handleChange = (event, newValue) => {
                     </FormControl>  
                   </Grid>
                   <Grid item xd={12} sm={5}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
                       <InputLabel variant="standard" required>Value</InputLabel>
                       <Input
                         required
@@ -428,7 +437,7 @@ const handleChange = (event, newValue) => {
                  {tags.map((tag,index) =>(
                   <Grid container key={index} spacing={3}>
                   <Grid item xd={12} sm={6}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
                       <InputLabel variant="standard" required>Name</InputLabel>
                       <Input
                         required
@@ -441,7 +450,7 @@ const handleChange = (event, newValue) => {
                     </FormControl>  
                   </Grid>
                   <Grid item xd={12} sm={5}>
-                    <FormControl sx={{ m: 1, width: '95%'}}>
+                    <FormControl sx={{ m: 1, width: '95%'}} disabled={!permitted}>
                       <InputLabel variant="standard" required>Value</InputLabel>
                       <Input
                         required
@@ -466,14 +475,18 @@ const handleChange = (event, newValue) => {
               </TabPanel>
     </Box>
           
-          
-          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="device"/></Grid>
-          <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleDeviceUpdate}> Update Device </Button>
-          </Grid>
-          <Grid item xs={12} sm={1}>
-            <Button variant="contained" onClick={navigateToAppDetails}> Cancel </Button>
-          </Grid>
+          {permitted && (
+            <>
+              <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="device"/></Grid>
+              <Grid item xs={12} sm={6}>
+                <Button variant="contained" onClick={handleDeviceUpdate}> Update Device </Button>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <Button variant="contained" onClick={navigateToAppDetails}> Cancel </Button>
+              </Grid>
+            </>
+          )}
+
         </Grid>        
       </Paper>
   )

@@ -10,7 +10,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {proxy} from "../Proxy";
 
+import UserProfile from "../UserProfile";
+
 function AddOrganizationApplication() {
+  const path = window.location.pathname.split('/');
+
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
+  
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [serviceProfileId, setServiceProfileId] = useState("");
@@ -26,7 +34,7 @@ function AddOrganizationApplication() {
         }
       }
   );
-  const path = window.location.pathname.split("/");
+
   const [data, getData] = useState([]);
     const URLservice = proxy + "http://203.162.235.53:8080/api/service-profiles?limit=1000&organizationID="+path[2];
     const header ={
@@ -37,8 +45,10 @@ function AddOrganizationApplication() {
       }
  
     useEffect(() => {
+      if(orgAdmin){
         fetchData();
         setOrganizationId(path[2]);
+      }
           }, [])
  
  
@@ -107,6 +117,7 @@ const handleAppSubmit = () => {
   /* if error 400 stay on the same page with an error alert, else go go to /users*/ 
 }
 
+if(orgAdmin){
   return (
     <section className="home">
       <div className="title text"> <b> Add a new application</b></div>
@@ -169,6 +180,9 @@ const handleAppSubmit = () => {
       </Paper>
     </section>
   )
+  }else{
+    return(<></>)
+  }
 }
 
 export default AddOrganizationApplication;

@@ -10,7 +10,14 @@ import {key} from "./jwt";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 function UpdateOrganizationForm() {
+  const path = window.location.pathname.split('/');
+
+  const userOrg = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = userOrg && userOrg.isAdmin;
+
   const user = JSON.parse(localStorage.getItem("user"));
   const admin = user.isAdmin;
 
@@ -159,7 +166,7 @@ useEffect( () => {
       <Paper elevation={6} className="form-with-tabs dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!orgAdmin}>
               <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Organization name</InputLabel>
               <Input
                 required
@@ -173,7 +180,7 @@ useEffect( () => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!orgAdmin}>
               <InputLabel htmlFor="standard-adornment-password" variant="standard" required>Display Name</InputLabel>
               <Input
                 id="display-name"
@@ -235,13 +242,18 @@ useEffect( () => {
             </>
           )}
 
-          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="organization"/></Grid>
-          <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleOrganizationUpdate}> Update Organization </Button>
-          </Grid>
-          <Grid item xs={12} sm={1}>
-            <Button variant="contained" onClick={navigateToOrganizations}> Cancel </Button>
-          </Grid>
+          {orgAdmin && (
+            <>
+              <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="organization"/></Grid>
+              <Grid item xs={12} sm={6}>
+                <Button variant="contained" onClick={handleOrganizationUpdate}> Update Organization </Button>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <Button variant="contained" onClick={navigateToOrganizations}> Cancel </Button>
+              </Grid>
+            </>
+          )}
+   
         </Grid>        
       </Paper>
   )

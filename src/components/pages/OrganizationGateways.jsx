@@ -24,8 +24,19 @@ import Link from '@mui/material/Link';
 import {proxy} from "../Proxy";
 import LastSeen from "../LastSeen";
 
+import UserProfile from '../UserProfile';
+
 
 function OrganizationGateways(){
+    const path = window.location.pathname.split('/');
+  
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin;
+  
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    const orgAdmin = org && org.isAdmin;
+    const gwAdmin = org && org.isGatewayAdmin;
+    const permitted = admin || orgAdmin || gwAdmin;
 
     
     const [data, getData] = useState([]);
@@ -39,7 +50,7 @@ function OrganizationGateways(){
  
 
     useEffect(() => {
-        fetchData()
+            fetchData()
     }, []);
  
  
@@ -84,9 +95,11 @@ function OrganizationGateways(){
         <div className="title text">
              <b>Organization Gateways</b>
         </div>
+        {permitted && (
         <div className="add-button">
             <Button variant="contained" onClick={navigateToAddGateway}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
+        )}
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">

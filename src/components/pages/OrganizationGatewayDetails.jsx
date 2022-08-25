@@ -9,6 +9,8 @@ import '../Dashboard.css';
 import '../Navbar.css';
 import GatewayDetails from '../GatewayDetails';
 
+import UserProfile from "../UserProfile";
+
 
 function LinkTab(props) {
   return (
@@ -23,7 +25,15 @@ function LinkTab(props) {
 }
 
 function OrganizationGatewayDetails() {
+  const path = window.location.pathname.split('/');
+  
+  const user = UserProfile.getUser();
+  const admin = user.isAdmin;
 
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
+  const gwAdmin = org && org.isGatewayAdmin;
+  const permitted = admin || orgAdmin || gwAdmin;
   
 
 //Handling tabs
@@ -42,15 +52,18 @@ const handleChange = (event, newValue) => {
         aria-label="Tabs where each tab needs to be selected manually"
       >
         <LinkTab label="Details" />
-        <LinkTab label="Configuration" href="/edit"/>
+        {permitted && <LinkTab label="Configuration" href="/edit"/>}
       </Tabs>
       </div>
       <TabPanel value={value} index={0}>
           <GatewayDetails/>
       </TabPanel>
+      {permitted && (
       <TabPanel value={value} index={1}>
         <UpdateOrganizationGatewayForm/>
       </TabPanel>
+      )}
+
 
     </section>
   )

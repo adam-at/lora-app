@@ -21,13 +21,22 @@ import EUI64Field from "../EUI64";
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import "../Map.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
-import {Icon} from 'leaflet'
+import {Icon} from 'leaflet';
+
+import UserProfile from "../UserProfile"
 
 
 
 function AddOrganizationGateway() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const path = window.location.pathname.split('/');
+  
+  const user = UserProfile.getUser();
   const admin = user.isAdmin;
+
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
+  const gwAdmin = org && org.isGatewayAdmin;
+  const permitted = admin || orgAdmin || gwAdmin;
 
   const [boards, setBoards] = useState([]);
   const [description, setDescription] = useState("");
@@ -124,7 +133,6 @@ function AddOrganizationGateway() {
     return tags;
   };
 
-  const path = window.location.pathname.split("/");
 
   const URL2 = proxy + "http://203.162.235.53:8080/api/network-servers?limit=1000";
 
@@ -139,7 +147,9 @@ function AddOrganizationGateway() {
       if(admin){
         fetchData("");
       }else{
-        fetchData("&organizationID="+path[2]);
+        if(permitted){
+          fetchData("&organizationID="+path[2]);
+        }
       }
         setOrganizationID(path[2]);
     }, [])
@@ -253,7 +263,7 @@ const handleChange = (event, newValue) => {
   setValue(newValue);
 };
 
-
+  if(permitted){
   return (
     <section className="home">
       <div className="title text"> <b> Add a new gateway </b></div>
@@ -476,6 +486,9 @@ const handleChange = (event, newValue) => {
       </Paper>
     </section>
   )
+  }else{
+    return(<></>)
+  }
 }
 
 export default AddOrganizationGateway;

@@ -9,8 +9,13 @@ import FormHelperText from '@mui/material/FormHelperText';
 import {proxy} from "./Proxy";
 
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog.jsx";
+import UserProfile from "./UserProfile"
 
 function UpdateOrganizationApplicationForm() {
+  const path = window.location.pathname.split('/');
+
+  const org = UserProfile.getOrganizationFromId(path[2]);
+  const orgAdmin = org && org.isAdmin;
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -29,7 +34,7 @@ function UpdateOrganizationApplicationForm() {
         }
       }
   );
-  const path = window.location.pathname.split("/");
+
   const URL = proxy + "http://203.162.235.53:8080/api/applications/"+path[path.length-1];
     const header ={
         headers: {
@@ -140,7 +145,7 @@ const deleteData = () => {
       <Paper elevation={6} className="form-with-tabs dark-if-needed">
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!orgAdmin}>
               <InputLabel variant="standard" required>Application name</InputLabel>
               <Input
                 required
@@ -154,7 +159,7 @@ const deleteData = () => {
             <FormHelperText variant="standard">The name may only contain words, numbers and dashes.</FormHelperText>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: '95%'}}>
+            <FormControl sx={{ m: 1, width: '95%'}} disabled={!orgAdmin}>
               <InputLabel variant="standard" required>Application description</InputLabel>
               <Input
                 required
@@ -167,13 +172,18 @@ const deleteData = () => {
             </FormControl>
           </Grid>
           
-          <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="application"/></Grid>
-          <Grid item xs={12} sm={6}>
-            <Button variant="contained" onClick={handleAppUpdate}> Update application </Button>
-          </Grid>
-          <Grid item xs={12} sm={1}>
-            <Button variant="contained" onClick={navigateToApps}> Cancel </Button>
-          </Grid>
+          {orgAdmin && (
+            <>
+              <Grid item xs={12} sm={5}><DeleteConfirmationDialog fun={deleteData} name="application"/></Grid>
+              <Grid item xs={12} sm={6}>
+                <Button variant="contained" onClick={handleAppUpdate}> Update application </Button>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <Button variant="contained" onClick={navigateToApps}> Cancel </Button>
+              </Grid>
+            </>
+          )}
+
         </Grid>        
       </Paper>
   )

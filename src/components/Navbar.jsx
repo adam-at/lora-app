@@ -12,6 +12,7 @@ function Navbar() {
   const user = UserProfile.getUser();
   const userId = user.id;
   const admin = user.isAdmin;
+  const username = user.email;
 
   window.onload=function(){
   const body = document.querySelector('body'),
@@ -102,7 +103,7 @@ const navigateToApiKeys = () => {
 
                 <div className="text logo-text">
                     <span className="name">MyCS</span>
-                    <span className="profession">Welcome !</span>
+                    <span className="profession">{username}</span>
                 </div>
             </div>
 

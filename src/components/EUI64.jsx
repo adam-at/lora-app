@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 import TextField from "@mui/material/TextField";
 import InputAdornment from '@mui/material/InputAdornment';
@@ -18,6 +19,7 @@ class EUI64HEXMask extends Component {
     return(
       <MaskedInput
         {...other}
+        ref={inputRef}
         mask={[
           /[A-Fa-f0-9]/,
           /[A-Fa-f0-9]/,

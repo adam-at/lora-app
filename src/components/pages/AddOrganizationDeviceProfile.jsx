@@ -28,9 +28,13 @@ import UserProfile from "../UserProfile"
 function AddOrganizationDeviceProfile() {
   const path = window.location.pathname.split('/');
   const org = UserProfile.getOrganizationFromId(path[2]);
-
   const user = UserProfile.getUser();
   const admin = user.isAdmin;
+  const orgAdmin = org && org.isAdmin;
+  const devAdmin = org && org.isDeviceAdmin;
+  const permitted = admin || orgAdmin || devAdmin;
+
+
 
   const [adrAlgorithmID, setAdrAlgorithmID] = useState("");
   const [classBTimeout, setClassBTimeOut] = useState(0);
@@ -221,10 +225,8 @@ function AddOrganizationDeviceProfile() {
       if(admin){
         fetchData("");
       }else{
-        if(org){
-        if(org.isAdmin || org.isDeviceAdmin){
-          fetchData("&organizationID="+path[2]);
-        }    
+        if(permitted){
+          fetchData("&organizationID="+path[2]);    
       }
     }
         setOrganizationID(path[2]);
@@ -349,7 +351,7 @@ const handleChange = (event, newValue) => {
   setValue(newValue);
 };
 
-  if(org && (org.isAdmin || org.isDeviceAdmin)){
+  if(permitted){
   return (
     <section className="home">
       <div className="title text"> <b> Add a new device profile </b></div>

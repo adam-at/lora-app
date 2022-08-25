@@ -25,13 +25,22 @@ import {TablePaginationActions} from './TablePagination.jsx';
 import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
+import UserProfile from "./UserProfile"
 
 import moment from "moment";
 
 
 function ApplicationDevices(){
-
     const path = window.location.pathname.split('/');
+
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin
+
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    const orgAdmin = org && org.isAdmin;
+    const devAdmin = org && org.isDeviceAdmin;
+    const permitted = admin || orgAdmin || devAdmin;
+
     const [data, getData] = useState([]);
     const URL = proxy + "http://203.162.235.53:8080/api/devices?limit=1000&applicationID="+path[path.length-1];
     const header ={
@@ -111,9 +120,11 @@ function ApplicationDevices(){
 
     return(
         <> 
+        {permitted && (
         <div className="add-button-device">
-        <Button variant="contained" onClick={navigateToAddDevice}><FontAwesomeIcon icon={solid("plus")}/>Add device</Button>
+            <Button variant="contained" onClick={navigateToAddDevice}><FontAwesomeIcon icon={solid("plus")}/>Add device</Button>
         </div>
+        )}
         <div className="form-with-tabs">
             <TableContainer component={Paper} className="table-devices dark-if-needed">
                 <Table sx={{ minWidth: 1000 }} aria-label="simple table">

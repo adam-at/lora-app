@@ -27,8 +27,8 @@ import UserProfile from "../UserProfile"
 function OrganizationApiKeys(){
     const path = window.location.pathname.split('/');
 
-    const org = UserProfile.getOrganizationFromId(parseInt(path[2]));
-    const orgAdmin = org.isAdmin;
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    const orgAdmin = org && org.isAdmin;
     
 
     const [data, getData] = useState([]);

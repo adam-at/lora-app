@@ -21,12 +21,19 @@ import {key} from "../jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "../Proxy";
 
+import UserProfile from "../UserProfile";
+
 
 function OrganizationApplications(){
 
+    const path = window.location.pathname.split('/');
+
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    const orgAdmin = org && org.isAdmin;
+
     
     const [data, getData] = useState([]);
-    const URL = proxy + "http://203.162.235.53:8080/api/applications?limit=1000&organizationID="+window.location.pathname.substring(15,window.location.pathname.length-13);
+    const URL = proxy + "http://203.162.235.53:8080/api/applications?limit=1000&organizationID="+path[2];
     const header ={
         headers: {
           Accept: "application/json",
@@ -80,9 +87,11 @@ function OrganizationApplications(){
         <div className="title text">
              <b>Organization Applications</b>
         </div>
+        {orgAdmin && (
         <div className="add-button">
             <Button variant="contained" onClick={navigateToAddApplications}><FontAwesomeIcon icon={solid("plus")}/>Add</Button>
         </div>
+        )}
         <div className="table">
             <TableContainer component={Paper} className="dark-if-needed">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">

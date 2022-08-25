@@ -98,7 +98,7 @@ const [statsGwRSSI, setStatsGwRSSI] = useState({
   labels: [],
   datasets: [
     {
-      label: "RSSU (reported by gateways)",
+      label: "RSSI (reported by gateways)",
       borderColor: "rgba(33, 150, 243, 1)",
       backgroundColor: "rgba(0, 0, 0, 0)",
       lineTension: 0,
