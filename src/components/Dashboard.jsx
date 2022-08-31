@@ -2,15 +2,15 @@ import React from 'react';
 import { useState, useEffect} from "react";
 
 import '../App.css';
-import './Dashboard.css';
-import './Navbar.css';
+import './css/Dashboard.css';
+import './css/Navbar.css';
 import Grid from '@mui/material/Grid';
 import DashboardLayout from './DashboardLayout';
 
 import {key} from "./jwt";
-import {proxy} from "./Proxy";
 
-import UserProfile from "./UserProfile";
+
+import UserProfile from "./Users/UserProfile";
 
 
 function Dashboard() {
@@ -18,7 +18,7 @@ function Dashboard() {
   const admin = user.isAdmin;
   
   const [dataGw, setDataGw] = useState([]);
-  const URL = proxy + "http://203.162.235.53:8080/api/gateways?limit=1000";
+  const URL = "http://203.162.235.53:8080/api/gateways?limit=1000";
   const header ={
       headers: {
         Accept: "application/json",
@@ -49,7 +49,7 @@ function Dashboard() {
   }
 
   const [summaryGw, setSummaryGw] = useState([]);
-  const URLSummary = proxy + "http://203.162.235.53:8080/api/internal/gateways/summary";
+  const URLSummary = "http://203.162.235.53:8080/api/internal/gateways/summary";
 
 
 
@@ -66,7 +66,7 @@ function Dashboard() {
   }
 
   const [summaryDv, setSummaryDv] = useState([]);
-  const URLSummary2 = proxy + "http://203.162.235.53:8080/api/internal/devices/summary";
+  const URLSummary2 = "http://203.162.235.53:8080/api/internal/devices/summary";
 
 
 

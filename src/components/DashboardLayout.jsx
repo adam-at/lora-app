@@ -2,12 +2,12 @@ import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import '../App.css';
-import './Dashboard.css';
-import './Navbar.css';
+import './css/Dashboard.css';
+import './css/Navbar.css';
 import Grid from '@mui/material/Grid';
-import GatewaysLocations from './GatewaysLocations';
-import GatewaysActivity from './GatewaysActivity';
-import DevicesActivity from './DevicesActivity';
+import GatewaysLocations from './Gateways/GatewaysLocations';
+import GatewaysActivity from './Gateways/GatewaysActivity';
+import DevicesActivity from './Devices/DevicesActivity';
 
 
 function DashboardLayout(props){

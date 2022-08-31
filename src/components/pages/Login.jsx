@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,10 +10,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import UserProfile from "../UserProfile";
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {proxy} from "../Proxy";
+
+
+import UserProfile from "../Users/UserProfile";
+
 
 
 const theme = createTheme();
@@ -21,7 +23,7 @@ export default function Login() {
   const [loggedIn, setLoggedIn] = useState(false);
 
 
-  const URL = proxy + "http://203.162.235.53:8080/api/internal/login";
+  const URL = "http://203.162.235.53:8080/api/internal/login";
  
     const postData = (user) => {
       const strUser = JSON.stringify(user);
@@ -86,7 +88,7 @@ export default function Login() {
 
   
 
-  const URLprofile = proxy + "http://203.162.235.53:8080/api/internal/profile";
+  const URLprofile = "http://203.162.235.53:8080/api/internal/profile";
   const getData = () => {
     const header ={
         headers: {

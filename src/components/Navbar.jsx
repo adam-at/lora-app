@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro'
-import './Navbar.css'
+import './css/Navbar.css'
 import { useNavigate } from 'react-router-dom';
-import OrganizationSelect from './OrganizationSelect';
+import OrganizationSelect from './Organizations/OrganizationSelect';
 import Link from '@mui/material/Link';
-import UserProfile from "./UserProfile"
+import UserProfile from "./Users/UserProfile";
 
 
 function Navbar() {

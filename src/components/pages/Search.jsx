@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {key} from "../jwt";
-import SearchResults from "../SearchResults.jsx";
 import Table from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {proxy} from "../Proxy";
+
+import {key} from "../jwt";
+import SearchResults from "../SearchResults.jsx";
 
 function Search() {
 
     const [data, getData] = useState([]);
-    const URL = proxy + "http://203.162.235.53:8080/api/internal"+window.location.href.substring(21)+"&limit=1000";
+    const URL = "http://203.162.235.53:8080/api/internal"+window.location.href.substring(21)+"&limit=1000";
     console.log(window.location.pathname);
     console.log(window.location.href.substring(21));
     const header ={
