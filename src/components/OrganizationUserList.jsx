@@ -21,8 +21,19 @@ import {key} from "./jwt";
 import Link from '@mui/material/Link';
 import {proxy} from "./Proxy";
 
+import UserProfile from "./UserProfile";
+
 
 function OrganizationUserList(){
+
+    const path = window.location.pathname.split('/');
+
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin
+
+    const org = UserProfile.getOrganizationFromId(path[2]);
+    const orgAdmin = org && org.isAdmin;
+    const permitted = admin || orgAdmin;
 
     const navigate = useNavigate();
 
@@ -44,7 +55,9 @@ function OrganizationUserList(){
       };
  
     useEffect(() => {
-        fetchData()
+        if(permitted){
+            fetchData();
+        }
     }, []);
  
  
@@ -76,6 +89,7 @@ function OrganizationUserList(){
         setPage(0);
     };
 
+    if(permitted){
     return(
     <section className="home">
         <div className="title text">
@@ -144,6 +158,9 @@ function OrganizationUserList(){
         </div>
     </section>
     );
+    }else{
+        return(<></>)
+    }
 }
 
 export default OrganizationUserList;

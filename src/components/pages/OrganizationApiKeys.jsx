@@ -27,8 +27,13 @@ import UserProfile from "../UserProfile"
 function OrganizationApiKeys(){
     const path = window.location.pathname.split('/');
 
+    const user = UserProfile.getUser();
+    const admin = user.isAdmin
+
     const org = UserProfile.getOrganizationFromId(path[2]);
     const orgAdmin = org && org.isAdmin;
+    const devAdmin = org && org.isDeviceAdmin;
+    const permitted = admin || orgAdmin || devAdmin;
     
 
     const [data, getData] = useState([]);
@@ -41,7 +46,7 @@ function OrganizationApiKeys(){
       }
  
     useEffect(() => {
-        if(orgAdmin){
+        if(permitted){
             fetchData();
         }
     }, []);
@@ -108,7 +113,7 @@ function OrganizationApiKeys(){
               })
       };
 
-    if(orgAdmin){
+    if(permitted){
     return(
     <section className="home">
         <div className="title text">
